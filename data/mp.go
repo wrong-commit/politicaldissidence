@@ -1,12 +1,22 @@
 package data
 
-type Mp struct {
-	honorific     string
-	firstName     string
-	surname       string
-	otherName     string
-	preferredName string
+import "fmt"
 
-	party string
-	state string
+type MP struct {
+	Honorific     string
+	FirstName     string
+	Surname       string
+	OtherName     string
+	PreferredName string
+
+	Party string
+	State string
+}
+
+func (mp MP) Name() string {
+	return fmt.Sprintf("%s %s %s %s", mp.Honorific, mp.FirstName, mp.OtherName, mp.Surname)
+}
+
+func (mp MP) ToString() string {
+	return fmt.Sprintf("(%s) %s - %s", mp.Party, mp.Name(), mp.State)
 }

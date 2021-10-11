@@ -4,27 +4,28 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"politicaldissonance/data"
 	"strings"
 
 	"golang.org/x/net/html"
 )
 
-func GetSenators() []data.Mp {
-
-	mps := []data.Mp{}
-
-	return mps
-}
-
+/*
+ * Get the URL to the Senate's CSV file from the APH site
+ */
 func FindSenatorsCsv() (string, error) {
 	return findAphCsv("allsenph.csv")
 }
 
+/*
+ * Get the URL to the House of Reps' Members CSV file from the APH site
+ */
 func FindMembersCsv() (string, error) {
 	return findAphCsv("FamilynameRepsCSV.csv")
 }
 
+/*
+ *
+ */
 func findAphCsv(expectedCsvHref string) (string, error) {
 	doc, err := findAphHtml()
 	if err != nil {
@@ -39,6 +40,9 @@ func findAphCsv(expectedCsvHref string) (string, error) {
 	return fmt.Sprintf("https://www.aph.gov.au%s", filename), nil
 }
 
+/*
+ * Get the HTML from the APH site containing Members and Senators list
+ */
 func findAphHtml() (*html.Node, error) {
 	resp, err := http.Get("https://www.aph.gov.au/Senators_and_Members/Guidelines_for_Contacting_Senators_and_Members/Address_labels_and_CSV_files")
 
@@ -49,13 +53,15 @@ func findAphHtml() (*html.Node, error) {
 
 	defer resp.Body.Close()
 
-	// TODO: why is this wrong ?
 	fmt.Println("[*]", resp.Request.Method, resp.StatusCode, resp.Request.URL.String())
 
 	// find link wth "allsenph.csv"
 	return html.Parse(resp.Body)
 }
 
+/*
+ * Find an <a> tag in a HTML node that's href attribute contains the filename param
+ */
 func findAnchorWithPartialHref(doc *html.Node, filename string) (string, error) {
 	var iterate func(*html.Node) (string, error)
 	iterate = func(n *html.Node) (string, error) {
