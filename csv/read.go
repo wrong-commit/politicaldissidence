@@ -1,5 +1,5 @@
 /*
- * Convert different CSV formats into the politicaldissonance/data MP struct.
+ * Convert different CSV formats into the politicaldissidence/data MP struct.
  * TODO: exported methods should take a reader directly, allows for easier switching between CSV and Response Body when
  * developing.
  */
@@ -12,7 +12,7 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"politicaldissonance/data"
+	"politicaldissidence/data"
 )
 
 func ParseSenatorMps(url string) ([]data.MP, error) {
@@ -29,8 +29,16 @@ func ParseSenatorMps(url string) ([]data.MP, error) {
 		fmt.Println("[-] Could not read CSV", err.Error())
 	}
 
-	return getMpRows(records,
-		"Title", "First Name", "Surname", "Other Name", "Preferred Name", "Political Party", "State")
+	mps, err := getMpRows(records,
+		"Title", "First Name", "Surname", "Other Name", "Preferred Name", "Political Party", "State", "Electorate")
+	if err != nil {
+		return nil, err
+	}
+
+	for _, mp := range mps {
+		mp.Level = data.Level.FedSenator
+	}
+	return mps, nil
 }
 
 func ParseMemberMps(url string) ([]data.MP, error) {
@@ -47,11 +55,27 @@ func ParseMemberMps(url string) ([]data.MP, error) {
 		fmt.Println("[-] Could not read CSV", err.Error())
 	}
 
-	return getMpRows(records,
-		"Honorific", "First Name", "Surname", "Other Name", "Preferred Name", "Political Party", "State")
+	mps, err := getMpRows(records,
+		"Honorific", "First Name", "Surname", "Other Name", "Preferred Name", "Political Party", "State", "Electorate")
+	if err != nil {
+		return nil, err
+	}
+
+	for _, mp := range mps {
+		mp.Level = data.Level.FedRep
+	}
+	return mps, nil
 }
 
-func getMpRows(records [][]string, honorific string, firstName string, surname string, otherName string, preferedName string, party string, state string) ([]data.MP, error) {
+func getMpRows(records [][]string,
+	honorific string,
+	firstName string,
+	surname string,
+	otherName string,
+	preferedName string,
+	party string,
+	state string,
+	electorate string) ([]data.MP, error) {
 	columns := []string{
 		honorific,
 		firstName,
@@ -60,6 +84,7 @@ func getMpRows(records [][]string, honorific string, firstName string, surname s
 		preferedName,
 		party,
 		state,
+		electorate,
 	}
 
 	rows, err := extractColumns(records, columns)
@@ -80,6 +105,7 @@ func getMpRows(records [][]string, honorific string, firstName string, surname s
 			PreferredName: row[4],
 			Party:         row[5],
 			State:         row[6],
+			Electorate:    row[7],
 		}
 		mps[i] = mp
 	}

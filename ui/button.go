@@ -1,0 +1,35 @@
+package ui
+
+import (
+	"github.com/jroimartin/gocui"
+)
+
+type buttonWidget struct {
+	name    string
+	x, y    int
+	w       int
+	label   string
+	handler func(*gocui.Gui, *gocui.View) error
+}
+
+// NewButtonWidget returns a new button widget.
+func NewButtonWidget(name string, x, y int, label string, handler func(g *gocui.Gui, v *gocui.View) error) *buttonWidget {
+	return &buttonWidget{name, x, y, len(label) + 1, label, handler}
+}
+
+// createButtonWidget creates a button widget.
+func (ui *UI) createButtonWidget(name string, x, y int, label string, handler func(g *gocui.Gui, v *gocui.View) error) (*gocui.View, error) {
+	button := NewButtonWidget(name, x, y, label, handler)
+	v, err := ui.gui.SetView(button.name, button.x, button.y, button.x+button.w, button.y+2)
+
+	if err != gocui.ErrUnknownView {
+		return nil, err
+	}
+	if err := ui.writeContent(name, button.label); err != nil {
+		return nil, err
+	}
+	if err := ui.gui.SetKeybinding(button.name, gocui.KeyEnter, gocui.ModNone, button.handler); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
