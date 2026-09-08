@@ -120,7 +120,7 @@ Scope: register **`e`** and **`t`** on `LIST_URLS_MODAL` like Enter / `c` / ← 
 
 Ignore **`e`** / **`t`** while Searching is already open (same “search already in progress” guard as paging).
 
-Update [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md) Select a URL section.
+Update [KEYBOARD_SHORTCUTS.md](../KEYBOARD_SHORTCUTS.md) Select a URL section.
 
 ### 6. Logging (console)
 

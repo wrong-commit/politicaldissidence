@@ -36,7 +36,7 @@ From the Select a URL modal, move to the **previous / next page** of **Bing** se
 - **←** on page `0`: do **not** search; log a short console message (e.g. already on first page) and keep the current modal focused.
 - **→** when the next page returns no links / hard failure: see failure behaviour below; do not leave the user stuck without feedback.
 
-Update [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md) Select a URL section.
+Update [KEYBOARD_SHORTCUTS.md](../KEYBOARD_SHORTCUTS.md) Select a URL section.
 
 ### 3. Status bar
 

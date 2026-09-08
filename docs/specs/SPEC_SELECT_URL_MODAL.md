@@ -92,7 +92,7 @@ Implementation note: `panel.decorate` in `listDomainPanel.go` is currently a no-
 - On failure: log an error; leave selection and modal open.
 - Clipboard: use a small cross-platform approach suitable for this Go module (e.g. OS clipboard helper / existing CLI). Windows is a primary target for this project.
 
-Update [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md) Select a URL section to include **c**.
+Update [KEYBOARD_SHORTCUTS.md](../KEYBOARD_SHORTCUTS.md) Select a URL section to include **c**.
 
 ## Data / API shape (suggested)
 

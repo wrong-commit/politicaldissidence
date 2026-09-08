@@ -142,7 +142,7 @@ Add a small Go program under `cmd/`, e.g.:
 cmd/checkdomains/main.go
 ```
 
-Invoke from the project root (same machine / Go path as [AGENTS.md](AGENTS.md) / DONTREADME):
+Invoke from the project root (same machine / Go path as [AGENTS.md](../AGENTS.md) / DONTREADME):
 
 ```powershell
 go run ./cmd/checkdomains
