@@ -291,6 +291,7 @@ func (ui *UI) createPanelView(name string, x1, y1, x2, y2 int) (*gocui.View, err
 	case WHOIS_PANEL:
 		v.Wrap = true
 		v.Editable = false
+		v.Autoscroll = false
 		break
 	default:
 		v.Editor = gocui.DefaultEditor //newEditor(ui, nil)
@@ -508,6 +509,33 @@ func (ui *UI) prevView(wrap bool) error {
 	}
 	ui.currentView = index % len(tabViews)
 	return ui.activatePanelView(ui.currentView)
+}
+
+// scrollWhoisPage scrolls the Domain Information panel by one page.
+// direction < 0 scrolls up; direction > 0 scrolls down.
+func (ui *UI) scrollWhoisPage(direction int) error {
+	v, err := ui.gui.View(WHOIS_PANEL)
+	if err != nil {
+		return nil
+	}
+	_, sy := v.Size()
+	if sy <= 0 {
+		return nil
+	}
+	ox, oy := v.Origin()
+	lines := len(v.ViewBufferLines())
+	maxOy := lines - sy
+	if maxOy < 0 {
+		maxOy = 0
+	}
+	newOy := oy + direction*sy
+	if newOy < 0 {
+		newOy = 0
+	}
+	if newOy > maxOy {
+		newOy = maxOy
+	}
+	return v.SetOrigin(ox, newOy)
 }
 
 // ClearView clears the panel view.

@@ -101,9 +101,8 @@ var keyHandlers = &handlers{
 	//	up/down -  keys to navigate MPs
 	{listView, gocui.KeyArrowUp, "<UP>", "Previous Mp", onPrevMp},
 	{listView, gocui.KeyArrowDown, "<DOWN>", "Next Mp", onNextMp},
-	// 	ctrl f - 	change filters
-	{listView, gocui.KeyCtrlF, "Ctrl+F", "Change filter of visible MPs (all/with domains/no domains)", func(ui *UI, wrap bool) Fn {
-		// ui.log("[*] register LIST_URLS_PANEL:gocui.KeyCtrlF", false)
+	// 	f - change filters
+	{listView, 'f', "f", "Change filter of visible MPs (all/with domains/no domains)", func(ui *UI, wrap bool) Fn {
 		onFilter := func(_ *gocui.Gui, v *gocui.View) error {
 			nextFilter := ui.nextFilter()
 			nextVisi := make([]data.MP, 0)
@@ -156,6 +155,9 @@ var keyHandlers = &handlers{
 	{nil, gocui.KeyCtrlS, "Ctrl+S", "Save ", onSave},
 	// 	ctrl r - reload
 	{nil, gocui.KeyCtrlR, "Ctrl+R", "Reload ", onReload},
+	// Domain Information (whois) panel scroll — global; panel is not focusable
+	{nil, gocui.KeyPgup, "PgUp", "Scroll Domain Information up", onWhoisPageUp},
+	{nil, gocui.KeyPgdn, "PgDn", "Scroll Domain Information down", onWhoisPageDown},
 }
 
 // onCheckDomain updates the expiry
@@ -228,6 +230,20 @@ func onNextDomain(ui *UI, _ bool) Fn {
 	// ui.log("[*] register onNextDomain", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
 		return ui.nextDomain(v)
+	}
+}
+
+// onWhoisPageUp scrolls the Domain Information panel up by one page.
+func onWhoisPageUp(ui *UI, _ bool) Fn {
+	return func(*gocui.Gui, *gocui.View) error {
+		return ui.scrollWhoisPage(-1)
+	}
+}
+
+// onWhoisPageDown scrolls the Domain Information panel down by one page.
+func onWhoisPageDown(ui *UI, _ bool) Fn {
+	return func(*gocui.Gui, *gocui.View) error {
+		return ui.scrollWhoisPage(1)
 	}
 }
 

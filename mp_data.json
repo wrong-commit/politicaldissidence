@@ -555,7 +555,7 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-08T16:02:52.0682816+10:00",
+           "checkedAt": "2026-09-08T16:25:09.3633612+10:00",
            "error": "Could not parse \u003cau.linkedin.com\u003e"
          },
          "dns": {
@@ -831,7 +831,46 @@
      "party": "ALP",
      "state": "NSW",
      "level": "",
-     "domains": null
+     "domains": [
+       {
+         "hostname": "patconroy.com.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-08T16:17:27.3187414+10:00",
+         "whois": {
+           "checkedAt": "2026-09-08T16:17:27.3187414+10:00",
+           "status": [
+             "ok"
+           ],
+           "updated": "2026-09-05T01:09:44Z",
+           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
+           "nameServers": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-08T16:17:27.0085661+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "104.21.34.141",
+             "172.67.161.173",
+             "2606:4700:3033::6815:228d",
+             "2606:4700:3032::ac43:a1ad"
+           ],
+           "ns": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ],
+           "mx": [
+             "mx3.netregistry.net",
+             "mx2.netregistry.net"
+           ]
+         }
+       }
+     ]
    },
    {
      "honorific": "Hon",
@@ -867,7 +906,52 @@
      "party": "ALP",
      "state": "VIC",
      "level": "",
-     "domains": null
+     "domains": [
+       {
+         "hostname": "www.markdreyfus.com",
+         "expiry": "2027-05-17T07:39:36Z",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-08T16:05:09.394016+10:00",
+         "whois": {
+           "checkedAt": "2026-09-08T16:05:09.394016+10:00",
+           "status": [
+             "ok"
+           ],
+           "created": "2006-05-17T07:39:36Z",
+           "updated": "2025-02-02T08:13:04Z",
+           "expiry": "2027-05-17T07:39:36Z",
+           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
+           "nameServers": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-08T16:05:08.6519571+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "172.67.199.213",
+             "104.21.13.106",
+             "2606:4700:3034::ac43:c7d5",
+             "2606:4700:3030::6815:d6a"
+           ],
+           "ns": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ],
+           "mx": [
+             "smtp.secureserver.net",
+             "mailstore1.secureserver.net"
+           ],
+           "txt": [
+             "ca3-74463ae6e93a40c38ea64189e21ab5a9",
+             "google-site-verification=bv0qwuXwo6JOFKJVvic5KzhDAFYnkuL0XQxId0QxncA"
+           ]
+         }
+       }
+     ]
    },
    {
      "honorific": "Hon",

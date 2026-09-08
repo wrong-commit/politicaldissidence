@@ -94,8 +94,8 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
     - [x] Validate `mp_data.json` on load / reload (see [SPEC_JSON_VALIDATION.md](SPEC_JSON_VALIDATION.md))
     - [x] Fix UI bugginess, cursor gets out of whack 
     - [x] Add multiple engines/search terms to url lookup
-    - [ ] DNS Record Checks as well as WHOIS
-        - [ ] [SPEC_DNS_EMPTY.md](SPEC_DNS_EMPTY.md)
+    - [x] DNS Record Checks as well as WHOIS
+        - [x] [SPEC_DNS_EMPTY.md](SPEC_DNS_EMPTY.md)
 - [ ] Maintainence 
     - [ ] Detect when URL disappears
     - [ ] Alert when current list changes found/removed

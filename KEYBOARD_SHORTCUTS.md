@@ -15,6 +15,8 @@ In-app help: press **Ctrl+H** to open a modal listing shortcuts for the current 
 | **Ctrl+C** | Quit the app, or close the open modal if one is showing. Does not save to avoid corrupting the DB while developing. |
 | **Ctrl+S** | Save MPs and domains to disk                                                                                        |
 | **Ctrl+R** | Reload MPs and domains from disk                                                                                    |
+| **PgUp**   | Scroll Domain Information panel up one page                                                                         |
+| **PgDn**   | Scroll Domain Information panel down one page                                                                       |
 
 
 ---
@@ -30,7 +32,7 @@ Focus this panel with **Tab** (or click it).
 | ---------- | -------------------------------------------------------------------------- |
 | **↑**      | Previous MP                                                                |
 | **↓**      | Next MP                                                                    |
-| **Ctrl+F** | Cycle MP filter: `all` → `have domains` → `no domains` → `all`             |
+| **f**      | Cycle MP filter: `all` → `have domains` → `no domains` → `all`             |
 | **Tab**    | Focus next panel (Domains)                                                 |
 | **g**      | Guess domain (search for the selected MP, then open URL picker)            |
 
@@ -51,6 +53,15 @@ Focus this panel with **Tab** (or click it). Shows domains for the currently sel
 | **Tab**    | Focus next panel (List)                                      |
 | **g**      | Guess domain (same as on List)                               |
 | **u**      | Check domain (WHOIS + DNS for the selected domain) |
+
+
+---
+
+
+
+## Domain Information panel (`whois`)
+
+Display-only (not focusable). Shows WHOIS + DNS for the domain selected in Member Domains. Scroll with **PgUp** / **PgDn** from anywhere (see Global).
 
 
 ---
@@ -106,6 +117,7 @@ Ctrl+H          Help
 Ctrl+C          Quit / close modal
 Ctrl+S          Save
 Ctrl+R          Reload
+PgUp / PgDn     Scroll Domain Information
 Tab             Switch List ↔ Domains
 
 List / Domains:
@@ -113,7 +125,7 @@ List / Domains:
   g             Guess domain (search)
 
 List only:
-  Ctrl+F        Cycle filter
+  f             Cycle filter
 
 Domains only:
   u             Check domain (WHOIS)
