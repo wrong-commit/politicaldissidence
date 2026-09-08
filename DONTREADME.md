@@ -1,5 +1,30 @@
 # Political Dissidence 
 
+## Build and run
+
+Requires [Go](https://go.dev/dl/) (module targets Go 1.17+).
+
+From the project root:
+
+```powershell
+go build
+.\politicaldissidence.exe
+```
+
+Or in one step without writing a binary:
+
+```powershell
+go run .
+```
+
+On macOS / Linux (or Git Bash), the `make` script builds then runs:
+
+```sh
+./make
+```
+
+That script runs `go build` and, on success, `./politicaldissidence`.
+
 ## TODO
 
 - [ ] Automating MP detection

@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"politicaldissidence/data"
+	"politicaldissidence/searching"
 
 	"github.com/jroimartin/gocui"
 )
@@ -18,11 +19,13 @@ type UI struct {
 	currentView  int
 	nextItem     int
 	currentModal string
-	consoleLog   string
-	startupLog   string
-	cursors      Cursors
-	modalTimer   *time.Timer
-	logTimer     *time.Timer
+	// Capture log() message calls
+	consoleLog string
+	// Capture startup logs separate. Clear after init
+	startupLog string
+	cursors    Cursors
+	modalTimer *time.Timer
+	logTimer   *time.Timer
 	// True when application has started
 	started bool
 	mutex   *sync.Mutex
@@ -40,6 +43,8 @@ type State struct {
 	currentIndex int
 	//
 	domainState *DomainState
+	// search state
+	searchState *SearchState
 }
 
 // State for the Domain list
@@ -54,7 +59,7 @@ type DomainState struct {
 func NewUI() *UI {
 	var err error
 	ui := new(UI)
-	ui.state = &State{nil, nil, "all", -1, nil}
+	ui.state = &State{nil, nil, "all", -1, nil, nil}
 	ui.gui, err = gocui.NewGui(gocui.OutputNormal)
 	if err != nil {
 		log.Panicln(err)
@@ -90,6 +95,8 @@ func (ui *UI) initGui(g *gocui.Gui) error {
 
 	// Set Layout function
 	ui.gui.SetManager(ui)
+
+	ui.state.searchState = &SearchState{term: "", result: &[]searching.Link{}}
 
 	// Register keybindings
 	err := keyHandlers.ApplyKeyBindings(ui, g)

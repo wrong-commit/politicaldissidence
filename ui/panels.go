@@ -32,10 +32,11 @@ const MinGUIWindow = 600
 
 const (
 	// Panel constants
-	LOGO_PANEL   = "logo"
-	LIST_PANEL   = "list"
-	LOG_PANEL    = "log"
-	DOMAIN_PANEL = "domains"
+	LOGO_PANEL      = "logo"
+	LIST_PANEL      = "list"
+	LOG_PANEL       = "log"
+	DOMAIN_PANEL    = "domains"
+	LIST_URLS_PANEL = "new_url_panel"
 	// DIAGRAM_PANEL        = "diagram"
 	// PROGRESS_PANEL       = "progress"
 	HELP_PANEL       = "help"
@@ -99,6 +100,16 @@ var panelViews = map[string]panelProperties{
 		editable: false,
 		cursor:   false,
 	},
+	LIST_URLS_PANEL: {
+		title:    "List URL Panel",
+		text:     "tmp",
+		x1:       0.7,
+		y1:       0.5,
+		x2:       1.0,
+		y2:       1.0,
+		editable: false,
+		cursor:   false,
+	},
 }
 
 // Modal views
@@ -131,7 +142,7 @@ var modalViews = map[string]panelProperties{
 // Panel views to render
 var (
 	// Panel Views
-	mainViews = []string{
+	MainViews = []string{
 		LOGO_PANEL,
 		LOG_PANEL,
 		LIST_PANEL,
@@ -156,7 +167,7 @@ func (ui *UI) Layout(g *gocui.Gui) error {
 	}
 
 	// Initialize each panel
-	for _, view := range mainViews {
+	for _, view := range MainViews {
 		if _, err := ui.initPanelView(view); err != nil {
 			return err
 		}
@@ -242,6 +253,13 @@ func (ui *UI) createPanelView(name string, x1, y1, x2, y2 int) (*gocui.View, err
 		// write filter
 		p.text += "\nFilter:" + ui.state.filter
 		// break
+	case LIST_URLS_PANEL:
+		results := *ui.state.searchState.result
+		if ui.state.searchState.term != "" && results != nil {
+			newBufferText, _, _, _ := panel.DrawListUrlPanel(ui.gui, results)
+			p.text = newBufferText
+		}
+
 	}
 
 	if err := ui.writeContent(name, p.text); err != nil {
@@ -328,7 +346,18 @@ func (ui *UI) setPanelView(name string) error {
 
 // writeContent writes the content into the specific view and set the cursor to the buffer end.
 func (ui *UI) writeContent(name, text string) error {
-	v, err := ui.gui.View(name)
+	return ui.writeContent2(name, text, ui.gui)
+}
+
+// writeContent writes the content into the specific view and set the cursor to the buffer end.
+func (ui *UI) writeContent2(name, text string, g *gocui.Gui) error {
+	var v *gocui.View
+	var err error
+	if g != nil {
+		v, err = g.View(name)
+	} else {
+		v, err = ui.gui.View(name)
+	}
 	if err != nil {
 		return err
 	}

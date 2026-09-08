@@ -3,7 +3,7 @@ package panel
 import (
 	"errors"
 	"fmt"
-	"politicaldissidence/ui/searching"
+	"politicaldissidence/searching"
 	"strings"
 
 	"github.com/jroimartin/gocui"
