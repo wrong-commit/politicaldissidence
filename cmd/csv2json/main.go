@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	senatorsPath := flag.String("senators", "", "path to senators CSV (e.g. allsenph.csv)")
+	senatorsPath := flag.String("senators", "", "path to senators CSV (e.g. allsenel.csv)")
 	membersPath := flag.String("members", "", "path to House of Reps CSV (e.g. FamilynameRepsCSV.csv)")
 	outPath := flag.String("o", "mps_from_csv.json", "output JSON path (does not overwrite mp_data.json by default)")
 	flag.Parse()

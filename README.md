@@ -1,5 +1,12 @@
 # Political Dissidence 
 
+## Generate source database
+Download CSV files from https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members
+Run cmd/csv2json with the right parameters
+```
+go run ./cmd/csv2json --senators "./allsenel.csv"
+```
+
 ## Build and run
 
 Requires [Go](https://go.dev/dl/) (module targets Go 1.17+).

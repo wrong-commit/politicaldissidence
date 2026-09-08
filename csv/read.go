@@ -19,7 +19,7 @@ import (
 
 func ParseSenatorMps(url string) ([]data.MP, error) {
 	_ = url
-	return ParseSenatorFile("./allsenph.csv")
+	return ParseSenatorFile("./allsenel.csv")
 }
 
 func ParseMemberMps(url string) ([]data.MP, error) {
@@ -56,7 +56,7 @@ func ParseSenatorReader(r io.Reader) ([]data.MP, error) {
 	}
 
 	mps, err := getMpRows(records,
-		"Title", "First Name", "Surname", "Other Name", "Preferred Name", "Political Party", "State", "Electorate")
+		"Title", "First Name", "Surname", "Other Name", "Preferred Name", "Political Party", "State", "Electorate Suburb")
 	if err != nil {
 		return nil, err
 	}
