@@ -54,6 +54,7 @@ Focus this panel with **Tab** (or click it). Shows domains for the currently sel
 | **Tab**    | Focus next panel (List)                                      |
 | **g**      | Guess domain (same as on List)                               |
 | **u**      | Check domain (WHOIS + DNS + HTTPS for the selected domain) |
+| **Ctrl+D** | Remove the selected domain from the current MP             |
 
 
 ---
@@ -131,6 +132,7 @@ List only:
 
 Domains only:
   u             Check domain (WHOIS)
+  Ctrl+D        Remove domain
 
 URL picker:
   Enter         Confirm selection

@@ -124,6 +124,8 @@ var keyHandlers = &handlers{
 	{tabViews, 'g', "g", "Guess domain", onGuessDomain},
 	//	u - update domain
 	{domainViews, 'u', "u", "Check Domain", onCheckDomain},
+	//	ctrl d - remove selected domain from MP
+	{domainViews, gocui.KeyCtrlD, "<CTRL>+d", "Remove Domain", onRemoveDomain},
 	// ADD_DOMAIN_PANEL:
 	// 	enter - confirm url to search
 	{addDomainView, gocui.KeyEnter, "Enter", "Confirm Domain", onConfirmNewDomain},
@@ -147,6 +149,13 @@ func onCheckDomain(ui *UI, wrap bool) Fn {
 	// ui.log("[*] register onCheckDomain", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
 		return ui.checkDomain()
+	}
+}
+
+// onRemoveDomain deletes the selected domain from the current MP.
+func onRemoveDomain(ui *UI, wrap bool) Fn {
+	return func(*gocui.Gui, *gocui.View) error {
+		return ui.removeDomain()
 	}
 }
 

@@ -328,6 +328,67 @@ func (ui *UI) addDomainModalTest(addDomainView *gocui.View) error {
 	return ui.addDomain(domain, ui.state.currentIndex, true)
 }
 
+// removeDomainAt deletes domains[idx] and returns the new slice plus a selection index
+// clamped into the remaining list (0 when empty).
+func removeDomainAt(domains []data.Domain, idx int) (out []data.Domain, newIdx int, removed data.Domain, ok bool) {
+	if idx < 0 || idx >= len(domains) {
+		return domains, idx, data.Domain{}, false
+	}
+	removed = domains[idx]
+	// Full slice expression avoids aliasing capacity into the tail.
+	out = append(domains[:idx:idx], domains[idx+1:]...)
+	if len(out) == 0 {
+		return out, 0, removed, true
+	}
+	newIdx = idx
+	if newIdx >= len(out) {
+		newIdx = len(out) - 1
+	}
+	return out, newIdx, removed, true
+}
+
+// removeDomain deletes the currently selected domain from the current MP.
+func (ui *UI) removeDomain() error {
+	if ui.state.domainState == nil || ui.state.domainState.domains == nil {
+		return ui.log("Please select a domain !", true)
+	}
+	idx := ui.state.domainState.index
+	mp := ui.mpAt(ui.state.currentIndex)
+	if mp == nil {
+		return ui.log("Please select a domain !", true)
+	}
+	allIdx := ui.state.currentIndex
+	if ui.state.visibleIdx != nil {
+		allIdx = ui.state.visibleIdx[ui.state.currentIndex]
+	}
+
+	newDomains, newIdx, removed, ok := removeDomainAt(mp.Domains, idx)
+	if !ok {
+		return ui.log("Please select a domain !", true)
+	}
+	mp.Domains = newDomains
+	ui.log(fmt.Sprintf("Removed domain <%s> from MP <%s>", removed.Hostname, mp.Name()), false)
+
+	// Keep filtered display list in sync (and drop MPs that no longer match).
+	ui.applyFilter(ui.state.filter)
+
+	visIdx := ui.visibleIndexOfAll(allIdx)
+	if visIdx < 0 {
+		ui.state.currentIndex = -1
+		_ = ui.selectMp(0)
+		return ui.setPanelView(LIST_PANEL)
+	}
+	ui.state.currentIndex = visIdx
+	ui.state.domainState = &DomainState{&(*ui.state.all)[allIdx].Domains, newIdx}
+	if len(newDomains) > 0 {
+		_ = ui.selectDomain(newIdx)
+	} else {
+		_, _ = ui.initPanelView(DOMAIN_PANEL)
+		_, _ = ui.initPanelView(WHOIS_PANEL)
+	}
+	return ui.setPanelView(DOMAIN_PANEL)
+}
+
 // addDomain adds a domain to a MP. if showDomain is true, the DOMAIN_PANEL is opened and the new domain is
 // selected. Registered domainAddedJobs (WHOIS, calc demo, …) run in background goroutines.
 func (ui *UI) addDomain(domain string, mpIndex int, showDomain bool) error {

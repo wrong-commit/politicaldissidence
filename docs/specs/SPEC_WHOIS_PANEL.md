@@ -52,7 +52,7 @@ MP: Jane Doe
 ...
 ```
 
-Empty / no record: `No WHOIS lookup yet`.
+Empty / no record: `No domain lookup yet`.
 
 ### 4. Follow Member Domains selection
 

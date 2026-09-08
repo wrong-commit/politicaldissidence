@@ -495,7 +495,78 @@
      "party": "ALP",
      "state": "SA",
      "level": "Federal House of Representatives Member",
-     "domains": null
+     "domains": [
+       {
+         "hostname": "www.mattblatt.com.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-09T09:42:45.9835765+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T09:42:45.9835765+10:00",
+           "status": [
+             "clientdeleteprohibited",
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-15T21:32:16Z",
+           "registrar": "Domain Directors Pty Ltd trading as Instra",
+           "nameServers": [
+             "dns1.p03.nsone.net",
+             "dns2.p03.nsone.net",
+             "dns3.p03.nsone.net",
+             "dns4.p03.nsone.net"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T09:42:45.5951115+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "151.101.2.114",
+             "151.101.66.114",
+             "151.101.194.114",
+             "151.101.130.114"
+           ],
+           "ns": [
+             "dns4.p03.nsone.net",
+             "dns1.p03.nsone.net",
+             "dns3.p03.nsone.net",
+             "dns2.p03.nsone.net"
+           ],
+           "mx": [
+             "aspmx.l.google.com",
+             "alt1.aspmx.l.google.com",
+             "alt2.aspmx.l.google.com",
+             "alt4.aspmx.l.google.com",
+             "alt3.aspmx.l.google.com"
+           ],
+           "txt": [
+             "v=spf1 a mx include:_spf.google.com include:mail.zendesk.com include:spf.mandrillapp.com ip4:208.117.49.47 ip4:149.72.26.31  include:_spf.salesforce.com  ~all",
+             "v=DMARC1;p=none;pct=10;rua=mailto:dmarc@kogan.com",
+             "_globalsign-domain-verification=bskFnD33BpbNO3a8aW7dgxEM2Dan9uTmIynaOIm7wl",
+             "google-site-verification=5QWTkjyuedV6iDzIqV_jxyJ3iEbG47PbXC5zbwqpdb4"
+           ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T09:42:45.893007+10:00",
+           "status": "enabled",
+           "notAfter": "2026-11-22T01:40:03Z",
+           "httpStatus": 403,
+           "apex": {
+             "hostname": "mattblatt.com.au",
+             "status": "enabled",
+             "notAfter": "2026-11-22T01:40:03Z",
+             "httpStatus": 403
+           },
+           "www": {
+             "hostname": "www.mattblatt.com.au",
+             "status": "enabled",
+             "notAfter": "2026-11-22T01:40:03Z",
+             "httpStatus": 403
+           }
+         }
+       }
+     ]
    },
    {
      "honorific": "Mr",
@@ -704,7 +775,7 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-09T09:38:35.0115444+10:00",
+           "checkedAt": "2026-09-09T09:42:19.9082331+10:00",
            "error": "Could not get WHOIS for \u003cjimchalmers.org\u003e"
          },
          "dns": {
@@ -2935,47 +3006,7 @@
      "party": "ALP",
      "state": "NSW",
      "level": "",
-     "domains": [
-       {
-         "hostname": "au.linkedin.com",
-         "expiry": "",
-         "expired": false,
-         "alert": false,
-         "lastChecked": "0001-01-01T00:00:00Z",
-         "whois": {
-           "checkedAt": "2026-09-09T09:38:36.8291642+10:00",
-           "error": "Could not parse \u003cau.linkedin.com\u003e"
-         },
-         "dns": {
-           "checkedAt": "2026-09-09T09:12:41.0610459+10:00",
-           "empty": false,
-           "outcome": "ok",
-           "a": [
-             "172.64.146.215",
-             "104.18.41.41",
-             "2603:1061:14:17::1"
-           ]
-         },
-         "https": {
-           "checkedAt": "2026-09-09T09:13:01.1676383+10:00",
-           "status": "enabled",
-           "notAfter": "2026-10-02T23:59:59Z",
-           "httpStatus": 200,
-           "apex": {
-             "hostname": "au.linkedin.com",
-             "status": "enabled",
-             "notAfter": "2026-10-02T23:59:59Z",
-             "httpStatus": 200
-           },
-           "www": {
-             "hostname": "www.au.linkedin.com",
-             "status": "missing",
-             "notAfter": "0001-01-01T00:00:00Z",
-             "error": "tls dial www.au.linkedin.com: dial tcp: lookup www.au.linkedin.com: no such host"
-           }
-         }
-       }
-     ]
+     "domains": []
    },
    {
      "honorific": "Hon",

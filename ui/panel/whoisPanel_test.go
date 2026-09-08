@@ -9,7 +9,7 @@ import (
 )
 
 func TestDrawWhoisPanel_Empty(t *testing.T) {
-	if got := DrawWhoisPanel("example.com", "", nil, nil, nil); got != "No WHOIS lookup yet" {
+	if got := DrawWhoisPanel("example.com", "", nil, nil, nil); got != "No domain lookup yet" {
 		t.Fatalf("nil: %q", got)
 	}
 }
