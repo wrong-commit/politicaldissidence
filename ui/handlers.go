@@ -37,7 +37,7 @@ var keyHandlers = &handlers{
 	// up/down - keys to navigate URLs
 	// enter - choose URL
 	{listUrlView, gocui.KeyArrowDown, "<DOWN>", "Next Url", func(ui *UI, wrap bool) Fn {
-		ui.log("[*] register LIST_URLS_PANEL:gocui.KeyArrowDown", false)
+		// ui.log("[*] register LIST_URLS_PANEL:gocui.KeyArrowDown", false)
 		return func(g *gocui.Gui, v *gocui.View) error {
 			// do not move past last line
 			if _, cy := v.Cursor(); cy < len(v.BufferLines())-1 {
@@ -47,7 +47,7 @@ var keyHandlers = &handlers{
 		}
 	}},
 	{listUrlView, gocui.KeyArrowUp, "<UP>", "Prev Url", func(ui *UI, wrap bool) Fn {
-		ui.log("[*] register LIST_URLS_PANEL:gocui.KeyArrowUp", false)
+		// ui.log("[*] register LIST_URLS_PANEL:gocui.KeyArrowUp", false)
 		return func(g *gocui.Gui, v *gocui.View) error {
 			// do not move past first line
 			if _, cy := v.Cursor(); cy > 0 {
@@ -60,7 +60,7 @@ var keyHandlers = &handlers{
 	 * handler uses the current cursor position to select a URL
 	 */
 	{listUrlView, gocui.KeyEnter, "Enter", "Add URL", func(ui *UI, wrap bool) Fn {
-		ui.log("[*] register LIST_URLS_PANEL:gocui.KeyEnter", false)
+		// ui.log("[*] register LIST_URLS_PANEL:gocui.KeyEnter", false)
 		return func(g *gocui.Gui, v *gocui.View) error {
 			_, cy := v.Cursor()
 			// get current line
@@ -83,7 +83,7 @@ var keyHandlers = &handlers{
 	{listView, gocui.KeyArrowDown, "<DOWN>", "Next Mp", onNextMp},
 	// 	ctrl f - 	change filters
 	{listView, gocui.KeyCtrlF, "Ctrl+F", "Change filter of visible MPs (all/with domains/no domains)", func(ui *UI, wrap bool) Fn {
-		ui.log("[*] register LIST_URLS_PANEL:gocui.KeyCtrlF", false)
+		// ui.log("[*] register LIST_URLS_PANEL:gocui.KeyCtrlF", false)
 		onFilter := func(*gocui.Gui, *gocui.View) error {
 			nextFilter := ui.nextFilter()
 			nextVisi := make([]data.MP, 0)
@@ -135,7 +135,7 @@ var keyHandlers = &handlers{
 
 // onCheckDomain updates the expiry
 func onCheckDomain(ui *UI, wrap bool) Fn {
-	ui.log("[*] register onCheckDomain", false)
+	// ui.log("[*] register onCheckDomain", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
 		return ui.checkDomain()
 	}
@@ -143,7 +143,7 @@ func onCheckDomain(ui *UI, wrap bool) Fn {
 
 // onOpenGuessDomain opens the "Add Domain" modal
 func onGuessDomain(ui *UI, wrap bool) Fn {
-	ui.log("[*] register onOpenGuessDomain", false)
+	// ui.log("[*] register onOpenGuessDomain", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
 		return ui.toggleSearchingModal(g)
 	}
@@ -151,7 +151,7 @@ func onGuessDomain(ui *UI, wrap bool) Fn {
 
 // onOpenAddDomain opens the "Add Domain" modal
 func onOpenAddDomain(ui *UI, wrap bool) Fn {
-	ui.log("[*] register onOpenAddDomain", false)
+	// ui.log("[*] register onOpenAddDomain", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
 		return ui.toggleNewDomain(g)
 	}
@@ -159,7 +159,7 @@ func onOpenAddDomain(ui *UI, wrap bool) Fn {
 
 // onConfirmNewDomain opens the "Add Domain" modal
 func onConfirmNewDomain(ui *UI, wrap bool) Fn {
-	ui.log("[*] register onAddDomain", false)
+	// ui.log("[*] register onAddDomain", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
 		ui.log(fmt.Sprintf("Calling onAddDomain(%s)", v.Buffer()), false)
 		return ui.addDomainModalTest(v)
@@ -168,7 +168,7 @@ func onConfirmNewDomain(ui *UI, wrap bool) Fn {
 
 // onPrevPanel retrieves the previous panel
 func onPrevPanel(ui *UI, wrap bool) Fn {
-	ui.log("[*] register onPrevPanel", false)
+	// ui.log("[*] register onPrevPanel", false)
 	return func(*gocui.Gui, *gocui.View) error {
 		return ui.prevView(wrap)
 	}
@@ -176,7 +176,7 @@ func onPrevPanel(ui *UI, wrap bool) Fn {
 
 // onNextPanel retrieves the next panel.
 func onNextPanel(ui *UI, wrap bool) Fn {
-	ui.log("[*] register onNexPanel", false)
+	// ui.log("[*] register onNexPanel", false)
 	return func(*gocui.Gui, *gocui.View) error {
 		return ui.nextView(wrap)
 	}
@@ -184,7 +184,7 @@ func onNextPanel(ui *UI, wrap bool) Fn {
 
 // onPrevMp retrieves the next panel.
 func onPrevMp(ui *UI, _ bool) Fn {
-	ui.log("[*] register onPrevMp", false)
+	// ui.log("[*] register onPrevMp", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
 		return ui.prevMp(v)
 	}
@@ -192,7 +192,7 @@ func onPrevMp(ui *UI, _ bool) Fn {
 
 // onNextPanel retrieves the next panel.
 func onNextMp(ui *UI, _ bool) Fn {
-	ui.log("[*] register onNextMp", false)
+	// ui.log("[*] register onNextMp", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
 		return ui.nextMp(v)
 	}
@@ -200,7 +200,7 @@ func onNextMp(ui *UI, _ bool) Fn {
 
 // onPrevDomain retrieves the next panel.
 func onPrevDomain(ui *UI, _ bool) Fn {
-	ui.log("[*] register onPrevDomain", false)
+	// ui.log("[*] register onPrevDomain", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
 		return ui.prevDomain(v)
 	}
@@ -208,7 +208,7 @@ func onPrevDomain(ui *UI, _ bool) Fn {
 
 // onNextDomain retrieves the next panel.
 func onNextDomain(ui *UI, _ bool) Fn {
-	ui.log("[*] register onNextDomain", false)
+	// ui.log("[*] register onNextDomain", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
 		return ui.nextDomain(v)
 	}
@@ -216,7 +216,7 @@ func onNextDomain(ui *UI, _ bool) Fn {
 
 // ApplyKeyBindings applies key bindings to panel views.
 func (handlers handlers) ApplyKeyBindings(ui *UI, g *gocui.Gui) error {
-	ui.log("Applying keybindings", false)
+	// ui.log("Applying keybindings", false)
 	for _, h := range handlers {
 		if len(h.views) == 0 {
 			h.views = []string{""}
@@ -228,7 +228,7 @@ func (handlers handlers) ApplyKeyBindings(ui *UI, g *gocui.Gui) error {
 			if err := g.SetKeybinding(view, h.key, gocui.ModNone, h.action(ui, true)); err != nil {
 				return err
 			}
-			ui.log(fmt.Sprintf("KB->%s %s", h.views, h.keyName), false)
+			// ui.log(fmt.Sprintf("KB->%s %s", h.views, h.keyName), false)
 		}
 	}
 
@@ -240,7 +240,7 @@ func (handlers handlers) ApplyKeyBindings(ui *UI, g *gocui.Gui) error {
 
 // onHelp opens the Help Content modl
 func onHelp(ui *UI, handler handlers) Fn {
-	ui.log("[*] register onHelp", false)
+	// ui.log("[*] register onHelp", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
 		return ui.toggleHelp(g, handler.HelpContent(v.Name()))
 	}
@@ -248,7 +248,7 @@ func onHelp(ui *UI, handler handlers) Fn {
 
 // onSave persists the MPs and domains to disk
 func onSave(ui *UI, wrap bool) Fn {
-	ui.log("[*] register onSave", false)
+	// ui.log("[*] register onSave", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
 		return ui.Save()
 	}
@@ -256,7 +256,7 @@ func onSave(ui *UI, wrap bool) Fn {
 
 // onReload reeads the MPs and domains from disk
 func onReload(ui *UI, wrap bool) Fn {
-	ui.log("[*] register onReload", false)
+	// ui.log("[*] register onReload", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
 		return ui.Reload()
 	}
@@ -264,7 +264,7 @@ func onReload(ui *UI, wrap bool) Fn {
 
 // onQuit is an event listener which get triggered when a quit action is performed.
 func onQuit(ui *UI, wrap bool) Fn {
-	ui.log("[*] register onQuit", false)
+	//ui.log("[*] register onQuit", false)
 	return func(*gocui.Gui, *gocui.View) error {
 		if ui.currentModal == "" {
 			return gocui.ErrQuit

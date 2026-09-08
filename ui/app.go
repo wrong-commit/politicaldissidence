@@ -6,7 +6,6 @@ package ui
  */
 import (
 	"fmt"
-	"log"
 	"politicaldissidence/data"
 	"politicaldissidence/db"
 	"politicaldissidence/refresh"
@@ -43,12 +42,17 @@ func (ui *UI) Save() error {
 	return ui.log("Saved <3", false)
 }
 
-// Reload reloads data from disk, clears state
+// Load reads and validates MP JSON from disk into UI state (startup).
 func (ui *UI) Load() error {
-	mps, err := db.ReadMps()
-	if err != nil {
-		log.Panicln("Could not read MPs from disk", err)
+	status := db.ReadMpsValidated()
+	_ = ui.logPlain(status.LogMessage())
+	if !status.Valid() {
+		empty := []data.MP{}
+		ui.state.all = &empty
+		ui.state.visible = &empty
+		return status.Err
 	}
+	mps := status.MPs
 	ui.state.all = &mps
 	ui.state.visible = &mps
 	ui.log(fmt.Sprintf("Loaded %d MPs ", len(*ui.state.visible)), false)
@@ -57,17 +61,18 @@ func (ui *UI) Load() error {
 		v.text = panel.DrawListMpPanel(ui.gui, &mps)
 	}
 
-	defer ui.selectMp(0)
+	_ = ui.selectMp(0)
 	return nil
 }
 
-// Reload reloads data from disk, clears state
+// Reload re-reads and validates MP JSON from disk, replacing in-memory state only when valid.
 func (ui *UI) Reload() error {
-	mps, err := db.ReadMps()
-	if err != nil {
-		ui.log("Could not write MPs to disk", true)
-		return err
+	status := db.ReadMpsValidated()
+	_ = ui.logPlain(status.LogMessage())
+	if !status.Valid() {
+		return status.Err
 	}
+	mps := status.MPs
 	ui.state.all = &mps
 	ui.state.visible = &mps
 	ui.log(fmt.Sprintf("Reloaded %d MPs ", len(*ui.state.visible)), false)
@@ -80,7 +85,6 @@ func (ui *UI) Reload() error {
 	}
 	ui.selectMp(0)
 
-	// ui.updateView()
 	return ui.log("Reloaded <3", false)
 }
 
@@ -153,7 +157,7 @@ func (ui *UI) selectMp(newMpIndex int) error {
 	// ui.log(fmt.Sprintf("DEBUG selectMp(%d + 1 -> %d)", ui.state.currentIndex, newMpIndex), false)
 
 	if newMpIndex < 0 || newMpIndex >= len(*ui.state.visible) {
-		ui.log(fmt.Sprintf("Invalid MP idx %d", newMpIndex), true)
+		// ui.log(fmt.Sprintf("Invalid MP idx %d", newMpIndex), true)
 		return nil
 	}
 	// Store selected MP in state if index has changed

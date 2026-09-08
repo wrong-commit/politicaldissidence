@@ -181,7 +181,7 @@ func (ui *UI) Layout(g *gocui.Gui) error {
 		if err != nil && err != gocui.ErrUnknownView {
 			return err
 		}
-		if len(*ui.state.visible) != 0 {
+		if ui.state.visible != nil && len(*ui.state.visible) != 0 {
 			ui.log("Setting selected MP to 0 ", false)
 			v.SetCursor(0, 0)
 			// draw
@@ -244,27 +244,27 @@ func (ui *UI) createPanelView(name string, x1, y1, x2, y2 int) (*gocui.View, err
 			p.text = strings.TrimSuffix(ui.startupLog, "\n")
 		}
 	case LIST_PANEL:
-		// update text
-		p.text = panel.DrawListMpPanel(ui.gui, ui.state.visible)
+		if ui.state.visible != nil {
+			p.text = panel.DrawListMpPanel(ui.gui, ui.state.visible)
+		}
 	case DOMAIN_PANEL:
-		p.text = panel.DrawListDomainPanel(ui.gui, ui.state.domainState.domains)
-		//v.
+		if ui.state.domainState != nil && ui.state.domainState.domains != nil {
+			p.text = panel.DrawListDomainPanel(ui.gui, ui.state.domainState.domains)
+		}
 	case LOGO_PANEL:
-		// write current member name
-		if ui.state.currentIndex < len(*ui.state.visible)-1 {
+		p.text = ""
+		if ui.state.visible != nil && ui.state.currentIndex >= 0 && ui.state.currentIndex < len(*ui.state.visible) {
 			p.text = "\n" + (*ui.state.visible)[ui.state.currentIndex].Name()
-			// p.text = "\n" + (*ui.state.visible)[ui.state.currentIndex].Name()
 		}
-		// write filter
 		p.text += "\nFilter:" + ui.state.filter
-		// break
 	case LIST_URLS_PANEL:
-		results := *ui.state.searchState.result
-		if ui.state.searchState.term != "" && results != nil {
-			newBufferText, _, _, _ := panel.DrawListUrlPanel(ui.gui, results)
-			p.text = newBufferText
+		if ui.state.searchState != nil && ui.state.searchState.result != nil {
+			results := *ui.state.searchState.result
+			if ui.state.searchState.term != "" && results != nil {
+				newBufferText, _, _, _ := panel.DrawListUrlPanel(ui.gui, results)
+				p.text = newBufferText
+			}
 		}
-
 	}
 
 	if err := ui.writeContent(name, p.text); err != nil {

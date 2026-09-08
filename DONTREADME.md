@@ -32,6 +32,7 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
 ## Specs
 
 - [Background WHOIS refresh](SPEC_BACKGROUND_WHOIS.md)
+- [MP JSON validation on load / reload](SPEC_JSON_VALIDATION.md)
 
 ## TODO
 
@@ -49,20 +50,23 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
     - [x] Linking MP and domain
     - [x] Display list of MPs requiring linkage
     - [ ] Search engines
-    -   [x] duckduckgo
-    -   [ ] google
-    -   [ ] bing
-    - [ ] bypass google/ddg rate limit 
+        - [x] duckduckgo
+        - [ ] google
+        - [x] bing
+        - [ ] bypass google/ddg rate limit 
     - [x] Allow CRUD to set domain to MP
     - [x] WHOIS lookup to check domain
         - [x] Perform WHOIS and get expiry date
-        - [ ] Background WHOIS refresh (see [SPEC_BACKGROUND_WHOIS.md](SPEC_BACKGROUND_WHOIS.md))
+        - [x] Background WHOIS refresh (see [SPEC_BACKGROUND_WHOIS.md](SPEC_BACKGROUND_WHOIS.md))
         - [x] Persist domain `lastChecked` on WHOIS
         - [x] Show last-checked in domain panel
-    - [ ] Fix UI bugginess, cursor gets out of whack 
+    - [x] Validate `mp_data.json` on load / reload (see [SPEC_JSON_VALIDATION.md](SPEC_JSON_VALIDATION.md))
+    - [x] Fix UI bugginess, cursor gets out of whack 
 - [ ] Maintainence 
     - [ ] Detect when URL disappears
     - [ ] Alert when current list changes found/removed
+    - [x] Check all domains on startup
+    - [x] JSON Validation on startup/reload
 - [ ] Code
     - [ ] Figure out how and when to use `log` package, replace fmt.Println
     - [ ] Cleanup CLI code base buginess / shit ness 

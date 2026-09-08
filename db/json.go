@@ -6,48 +6,103 @@ package db
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"politicaldissidence/data"
-	"strings"
 )
 
 const mpJsonFilename = "mp_data.json"
 
-// const domainsJsonFilename = "mp_domains.json"
-
-func ReadMps() ([]data.MP, error) {
-	data, err := readFile(mpJsonFilename)
-
-	if err != nil {
-		fmt.Println("[-] Could not read MP data")
-		return nil, err
-	}
-
-	r := strings.NewReader(data)
-	return deserializeMps(r)
+// MPJSONStatus is the outcome of reading and validating mp_data.json.
+type MPJSONStatus struct {
+	Path      string // absolute path of the file checked
+	SizeBytes int64
+	MPs       []data.MP
+	Err       error // nil when Valid
+	Line      int   // 1-based line of Err when known; 0 if unknown
+	Col       int   // 1-based column of Err when known; 0 if unknown
 }
 
-// func ReadDomains() ([]data.Domain, error) {
-// 	data, err := readFile(domainsJsonFilename)
+// Valid reports whether the JSON file passed structural validation.
+func (s MPJSONStatus) Valid() bool {
+	return s.Err == nil
+}
 
-// 	if err != nil {
-// 		fmt.Println("[-] Could not read Domain data")
-// 		return nil, err
-// 	}
+// SizeKB returns file size in kibibytes (bytes/1024).
+func (s MPJSONStatus) SizeKB() float64 {
+	return float64(s.SizeBytes) / 1024.0
+}
 
-// 	r := strings.NewReader(data)
-// 	return deserializeDomains(r)
-// }
+// LogMessage returns the console line for this validation result.
+func (s MPJSONStatus) LogMessage() string {
+	if s.Valid() {
+		return "INFO mp_data.json valid"
+	}
+	reason := "unknown error"
+	if s.Err != nil {
+		reason = s.Err.Error()
+	}
+	if s.Line > 0 {
+		return fmt.Sprintf("ERROR mp_data.json invalid path=%s size=%.1fKB line=%d col=%d: %s",
+			s.Path, s.SizeKB(), s.Line, s.Col, reason)
+	}
+	return fmt.Sprintf("ERROR mp_data.json invalid path=%s size=%.1fKB: %s", s.Path, s.SizeKB(), reason)
+}
+
+// ReadMpsValidated reads and validates the default MP JSON file.
+func ReadMpsValidated() MPJSONStatus {
+	return ValidateMPJSONFile(mpJsonFilename)
+}
+
+// ValidateMPJSONFile reads path, checks it is entirely correct MP JSON, and returns status.
+func ValidateMPJSONFile(path string) MPJSONStatus {
+	abs, absErr := filepath.Abs(path)
+	if absErr != nil {
+		abs = path
+	}
+
+	status := MPJSONStatus{Path: abs}
+
+	if fi, err := os.Stat(path); err == nil {
+		status.SizeBytes = fi.Size()
+	}
+
+	buf, err := os.ReadFile(path)
+	if err != nil {
+		status.Err = err
+		return status
+	}
+	// Prefer size from bytes read when Stat failed but read succeeded.
+	if status.SizeBytes == 0 {
+		status.SizeBytes = int64(len(buf))
+	}
+
+	mps, loc, err := decodeMpsStrict(buf)
+	if err != nil {
+		status.Err = err
+		status.Line = loc.line
+		status.Col = loc.col
+		return status
+	}
+	status.MPs = mps
+	return status
+}
+
+func ReadMps() ([]data.MP, error) {
+	status := ReadMpsValidated()
+	if status.Err != nil {
+		fmt.Println("[-] Could not read MP data")
+		return nil, status.Err
+	}
+	return status.MPs, nil
+}
 
 func WriteMps(mps []data.MP) error {
 	return write(mps, mpJsonFilename)
 }
-
-// func WriteDomains(domains []data.Domain) error {
-// 	return write(domains, domainsJsonFilename)
-// }
 
 func write(v interface{}, filename string) error {
 	var file *os.File
@@ -66,6 +121,7 @@ func write(v interface{}, filename string) error {
 			return err
 		}
 	}
+	defer file.Close()
 
 	// convert v to json bytes[]
 	var buf bytes.Buffer
@@ -86,40 +142,83 @@ func write(v interface{}, filename string) error {
 	return err
 }
 
-func readFile(filename string) (string, error) {
-	buf, err := os.ReadFile(filename)
-	if err != nil {
-		return "", err
-	}
-
-	return string(buf), nil
+type filePos struct {
+	line, col int
 }
 
-// TODO: make deserializeX functions a single function
-/**
- * Deserialize a JSON string into []data.MP
- */
-func deserializeMps(r io.Reader) ([]data.MP, error) {
-	var pResp []data.MP
+// decodeMpsStrict requires a single root JSON array of MP objects and rejects trailing garbage.
+func decodeMpsStrict(buf []byte) ([]data.MP, filePos, error) {
+	dec := json.NewDecoder(bytes.NewReader(buf))
+	var raw json.RawMessage
+	if err := dec.Decode(&raw); err != nil {
+		pos, ann := annotateJSONErr(buf, err, 0)
+		if pos.line == 0 {
+			pos = offsetToLineCol(buf, dec.InputOffset())
+		}
+		return nil, pos, ann
+	}
+	rawStart := dec.InputOffset() - int64(len(raw))
 
-	if err := json.NewDecoder(r).Decode(&pResp); err != nil {
-		fmt.Printf("Could not unmarshal JSON - %s", err.Error())
-		return nil, err
+	if tok, err := dec.Token(); err != io.EOF {
+		off := dec.InputOffset()
+		if err != nil {
+			pos, ann := annotateJSONErr(buf, err, 0)
+			if pos.line == 0 {
+				pos = offsetToLineCol(buf, off)
+			}
+			return nil, pos, fmt.Errorf("trailing garbage after JSON value: %w", ann)
+		}
+		pos := offsetToLineCol(buf, off)
+		return nil, pos, fmt.Errorf("trailing garbage after JSON value: %v", tok)
 	}
 
-	return pResp, nil
+	trimmed := bytes.TrimSpace(raw)
+	if len(trimmed) == 0 || trimmed[0] != '[' {
+		pos := offsetToLineCol(buf, rawStart)
+		return nil, pos, fmt.Errorf("root must be a JSON array")
+	}
+
+	var mps []data.MP
+	if err := json.Unmarshal(raw, &mps); err != nil {
+		pos, ann := annotateJSONErr(buf, err, rawStart)
+		return nil, pos, ann
+	}
+	return mps, filePos{}, nil
 }
 
-/**
- * Deserialize a JSON string into []data.Domain
- */
-func deserializeDomains(r io.Reader) ([]data.Domain, error) {
-	var pResp []data.Domain
-
-	if err := json.NewDecoder(r).Decode(&pResp); err != nil {
-		fmt.Printf("Could not unmarshal JSON - %s", err.Error())
-		return nil, err
+// annotateJSONErr maps json.SyntaxError / UnmarshalTypeError offsets onto line/col in buf.
+// baseOffset is added for errors whose Offset is relative to a sub-slice (e.g. RawMessage).
+func annotateJSONErr(buf []byte, err error, baseOffset int64) (filePos, error) {
+	var syn *json.SyntaxError
+	if errors.As(err, &syn) {
+		pos := offsetToLineCol(buf, baseOffset+syn.Offset)
+		return pos, err
 	}
+	var typ *json.UnmarshalTypeError
+	if errors.As(err, &typ) {
+		pos := offsetToLineCol(buf, baseOffset+typ.Offset)
+		return pos, err
+	}
+	return filePos{}, err
+}
 
-	return pResp, nil
+// offsetToLineCol converts a byte offset into 1-based line and column.
+// Offset is treated as the number of bytes before the error position (Go json.SyntaxError convention).
+func offsetToLineCol(buf []byte, offset int64) filePos {
+	if offset < 0 {
+		offset = 0
+	}
+	if offset > int64(len(buf)) {
+		offset = int64(len(buf))
+	}
+	line, col := 1, 1
+	for i := int64(0); i < offset && i < int64(len(buf)); i++ {
+		if buf[i] == '\n' {
+			line++
+			col = 1
+		} else {
+			col++
+		}
+	}
+	return filePos{line: line, col: col}
 }
