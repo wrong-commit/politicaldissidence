@@ -32,6 +32,7 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
 ## Specs
 
 - [Background WHOIS refresh](SPEC_BACKGROUND_WHOIS.md)
+- [WHOIS information panel](SPEC_WHOIS_PANEL.md)
 - [Domain-added background jobs](SPEC_DOMAIN_ADDED_JOBS.md)
 - [MP JSON validation on load / reload](SPEC_JSON_VALIDATION.md)
 - [Atomic MP JSON save](SPEC_JSON_SAVE.md)
@@ -67,13 +68,15 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
         - [x] Domain-added jobs kickoff (see [SPEC_DOMAIN_ADDED_JOBS.md](SPEC_DOMAIN_ADDED_JOBS.md))
         - [x] Persist domain `lastChecked` on WHOIS
         - [x] Show last-checked in domain panel
+        - [ ] Show full WHOIS response
     - [x] Validate `mp_data.json` on load / reload (see [SPEC_JSON_VALIDATION.md](SPEC_JSON_VALIDATION.md))
     - [x] Fix UI bugginess, cursor gets out of whack 
-    - [ ] 
+    - [x] Add multiple engines/search terms to url lookup
 - [ ] Maintainence 
     - [ ] Detect when URL disappears
     - [ ] Alert when current list changes found/removed
     - [x] Check all domains on startup
+    - [x] WHOIS information panel (see [SPEC_WHOIS_PANEL.md](SPEC_WHOIS_PANEL.md))
     - [x] JSON Validation on startup/reload
 - [ ] Code
     - [ ] Figure out how and when to use `log` package, replace fmt.Println

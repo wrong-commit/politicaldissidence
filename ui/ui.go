@@ -11,6 +11,7 @@ import (
 	"politicaldissidence/jobs"
 	"politicaldissidence/refresh"
 	"politicaldissidence/searching"
+	"politicaldissidence/ui/panel"
 
 	"github.com/jroimartin/gocui"
 )
@@ -53,6 +54,8 @@ type State struct {
 	searchState *SearchState
 	// session search prefs (engine / term); survive closing Select a URL
 	searchPrefs SearchPrefs
+	// session-only latest WHOIS detail for WHOIS_PANEL (not persisted)
+	whoisSnapshot *panel.WhoisSnapshot
 }
 
 // State for the Domain list
@@ -77,6 +80,7 @@ func NewUI() *UI {
 		ui.log("NewUI() -> "+fmt.Sprint(err.Error()), true)
 	}
 	ui.cursors = NewCursors()
+	ui.mutex = &sync.Mutex{}
 	ui.domainAddedJobs = []jobs.Job{
 		jobs.NewWhoisOnAdd(ui.refreshDomainWhois),
 		// jobs.NewCalcDemo(),

@@ -9,8 +9,8 @@ import (
 // WhoisMaxAge is the background refresh throttle window.
 const WhoisMaxAge = 10 * 24 * time.Hour
 
-// lookupExpiry is the WHOIS expiry function; overridden in tests.
-var lookupExpiry = whois.GetExpiry
+// lookupInfo is the WHOIS lookup function; overridden in tests.
+var lookupInfo = whois.Lookup
 
 // now returns the current time; overridden in tests.
 var now = time.Now
@@ -37,23 +37,47 @@ func (d Domain) NeedsWhois(at time.Time, maxAge time.Duration) bool {
 
 // UpdateExpiry updates the expiry on a domain object via live WHOIS.
 func (d *Domain) UpdateExpiry() (string, error) {
-	return d.updateExpiry(lookupExpiry)
+	info, err := d.UpdateExpiryInfo()
+	if err != nil {
+		return info.Message, err
+	}
+	return info.ExpirationDate, nil
 }
 
-func (d *Domain) updateExpiry(lookup func(string) (string, error)) (expiry string, err error) {
+// UpdateExpiryInfo runs WHOIS and updates Expiry / LastChecked on success.
+// The returned Info is for session display only and is never persisted on Domain.
+func (d *Domain) UpdateExpiryInfo() (whois.Info, error) {
+	return d.updateExpiryInfo(lookupInfo)
+}
+
+func (d *Domain) updateExpiryInfo(lookup func(string) (whois.Info, error)) (info whois.Info, err error) {
 	// catch panic inside whois when domain is invalid
 	defer func() {
 		if r := recover(); r != nil {
 			err = fmt.Errorf("recovered in UpdateExpiry: %v", r)
 		}
 	}()
-	var expiryDate string
-	expiryDate, err = lookup(d.Hostname)
+	info, err = lookup(d.Hostname)
 	if err != nil {
-		return expiryDate, err
+		return info, err
 	}
-	d.Expiry = expiryDate
+	d.Expiry = info.ExpirationDate
 	d.LastChecked = now()
 	// TODO: check if date is after current date
-	return d.Expiry, nil
+	return info, nil
+}
+
+// updateExpiry is kept for tests that inject a string-only lookup.
+func (d *Domain) updateExpiry(lookup func(string) (string, error)) (expiry string, err error) {
+	info, err := d.updateExpiryInfo(func(hostname string) (whois.Info, error) {
+		s, e := lookup(hostname)
+		if e != nil {
+			return whois.Info{Hostname: hostname, Message: s}, e
+		}
+		return whois.Info{Hostname: hostname, ExpirationDate: s}, nil
+	})
+	if err != nil {
+		return info.Message, err
+	}
+	return info.ExpirationDate, nil
 }

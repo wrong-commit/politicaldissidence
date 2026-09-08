@@ -41,7 +41,7 @@ func bingSearchURL(term string, page int) string {
 // Go searches Bing and returns result links for the given 0-based page.
 func (bing) Go(term string, page int) ([]Link, error) {
 	endpoint := bingSearchURL(term, page)
-	debugLog("DEBUG searching bing %s", endpoint)
+	// debugLog("DEBUG searching bing %s", endpoint)
 	req, err := http.NewRequest(http.MethodGet, endpoint, nil)
 	if err != nil {
 		return nil, err

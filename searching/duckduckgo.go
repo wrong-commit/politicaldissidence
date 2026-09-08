@@ -177,7 +177,7 @@ func findNamedInputValue(n *html.Node, name string) string {
 func postDuckDuckGo(term string, page int, vqd string) (string, error) {
 	endpoint := "https://lite.duckduckgo.com/lite/"
 	values := duckDuckGoForm(term, page, vqd)
-	debugLog("DEBUG searching duckduckgo POST %s %s", endpoint, values.Encode())
+	// debugLog("DEBUG searching duckduckgo POST %s %s", endpoint, values.Encode())
 
 	req, err := http.NewRequest(http.MethodPost, endpoint, strings.NewReader(values.Encode()))
 	if err != nil {

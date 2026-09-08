@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"politicaldissidence/data"
+	"politicaldissidence/whois"
 )
 
 const (
@@ -51,7 +52,7 @@ func (l LogFn) Error(msg string) {
 // Deps holds injectable dependencies for a refresh run.
 type Deps struct {
 	Now          func() time.Time
-	UpdateExpiry func(d *data.Domain) (string, error)
+	UpdateExpiry func(d *data.Domain) (whois.Info, error)
 	Save         func(mps []data.MP) error
 	Log          Logger
 	MaxAge       time.Duration
@@ -61,14 +62,16 @@ type Deps struct {
 	Sleep func(time.Duration)
 	// Force skips the 10-day throttle (U).
 	Force bool
+	// OnLookup is called after every attempted WHOIS (not for skipped/fresh domains).
+	OnLookup func(mpName string, info whois.Info, err error)
 }
 
 // Result summarizes a refresh run.
 type Result struct {
-	TotalDomains  int
-	CheckedMPs    int
+	TotalDomains   int
+	CheckedMPs     int
 	UpdatedDomains int
-	Skipped       bool // true when env skip prevented a background start
+	Skipped        bool // true when env skip prevented a background start
 }
 
 // BackgroundEnabled reports whether the background job should run.
@@ -115,8 +118,8 @@ func (d Deps) withDefaults() Deps {
 		d.Now = time.Now
 	}
 	if d.UpdateExpiry == nil {
-		d.UpdateExpiry = func(dom *data.Domain) (string, error) {
-			return dom.UpdateExpiry()
+		d.UpdateExpiry = func(dom *data.Domain) (whois.Info, error) {
+			return dom.UpdateExpiryInfo()
 		}
 	}
 	if d.MaxAge == 0 {
@@ -158,8 +161,13 @@ func Run(mps []data.MP, deps Deps) Result {
 			if deps.Delay > 0 {
 				deps.Sleep(deps.Delay)
 			}
-			deps.Log.Debug(FormatDebug(mps[i].Name(), dom.Hostname))
-			if _, err := deps.UpdateExpiry(dom); err != nil {
+			mpName := mps[i].Name()
+			deps.Log.Debug(FormatDebug(mpName, dom.Hostname))
+			info, err := deps.UpdateExpiry(dom)
+			if deps.OnLookup != nil {
+				deps.OnLookup(mpName, info, err)
+			}
+			if err != nil {
 				deps.Log.Error(FormatError(dom.Hostname, err.Error()))
 				continue
 			}

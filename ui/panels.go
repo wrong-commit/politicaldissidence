@@ -33,7 +33,7 @@ const MinGUIWindow = 600
 
 const (
 	// Panel constants
-	LOGO_PANEL      = "logo"
+	WHOIS_PANEL     = "whois"
 	LIST_PANEL      = "list"
 	LOG_PANEL       = "log"
 	DOMAIN_PANEL    = "domains"
@@ -78,17 +78,17 @@ var panelViews = map[string]panelProperties{
 		editable: false,
 		cursor:   true,
 	},
-	// panel created for learning
-	LOGO_PANEL: {
-		title: "Logo Panel",
-		text:  "Lol", // version.DrawLogo(),
-		// random box
+	// Session-only latest WHOIS detail (not persisted)
+	WHOIS_PANEL: {
+		title: "WHOIS information",
+		text:  "",
+		// right panel
 		x1:       2.0 / 3.0,
 		y1:       0.0,
 		x2:       1.0,
 		y2:       0.6,
-		editable: true,
-		cursor:   true,
+		editable: false,
+		cursor:   false,
 	},
 	// bottom
 	LOG_PANEL: {
@@ -144,7 +144,7 @@ var modalViews = map[string]panelProperties{
 var (
 	// Panel Views
 	MainViews = []string{
-		LOGO_PANEL,
+		WHOIS_PANEL,
 		LOG_PANEL,
 		LIST_PANEL,
 		DOMAIN_PANEL,
@@ -254,12 +254,11 @@ func (ui *UI) createPanelView(name string, x1, y1, x2, y2 int) (*gocui.View, err
 		if ui.state.domainState != nil && ui.state.domainState.domains != nil {
 			p.text = panel.DrawListDomainPanel(ui.gui, ui.state.domainState.domains)
 		}
-	case LOGO_PANEL:
-		p.text = ""
-		if ui.state.visible != nil && ui.state.currentIndex >= 0 && ui.state.currentIndex < len(*ui.state.visible) {
-			p.text = "\n" + (*ui.state.visible)[ui.state.currentIndex].Name()
-		}
-		p.text += "\nFilter:" + ui.state.filter
+	case WHOIS_PANEL:
+		ui.mutex.Lock()
+		snap := ui.state.whoisSnapshot
+		ui.mutex.Unlock()
+		p.text = panel.DrawWhoisPanel(snap)
 	case LIST_URLS_PANEL:
 		if ui.state.searchState != nil && ui.state.searchState.result != nil {
 			results := *ui.state.searchState.result
@@ -291,6 +290,10 @@ func (ui *UI) createPanelView(name string, x1, y1, x2, y2 int) (*gocui.View, err
 		v.Highlight = true
 		v.Editable = true
 		v.Autoscroll = false
+		break
+	case WHOIS_PANEL:
+		v.Wrap = true
+		v.Editable = false
 		break
 	default:
 		v.Editor = gocui.DefaultEditor //newEditor(ui, nil)

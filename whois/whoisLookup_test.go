@@ -122,3 +122,47 @@ func TestGetExpiryWith_EmptyExpiry(t *testing.T) {
 		t.Fatalf("want empty expiry, got %q", got)
 	}
 }
+
+func TestLookupWith_SuccessFields(t *testing.T) {
+	raw := testdata(t, "example_com.txt")
+	info, err := LookupWith("example.com", func(hostname string) (string, error) {
+		return raw, nil
+	})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if info.Hostname != "example.com" {
+		t.Fatalf("hostname %q", info.Hostname)
+	}
+	if !strings.Contains(info.ExpirationDate, "2027") {
+		t.Fatalf("expiry %q", info.ExpirationDate)
+	}
+	if info.Registrar == "" {
+		t.Fatal("expected registrar")
+	}
+	if len(info.NameServers) == 0 {
+		t.Fatal("expected name servers")
+	}
+	if len(info.Status) == 0 {
+		t.Fatal("expected status")
+	}
+	if info.Message != "" {
+		t.Fatalf("message should be empty, got %q", info.Message)
+	}
+}
+
+func TestLookupWith_FetchError(t *testing.T) {
+	fetchErr := errors.New("network down")
+	info, err := LookupWith("example.com.au", func(hostname string) (string, error) {
+		return "", fetchErr
+	})
+	if err == nil {
+		t.Fatal("expected error")
+	}
+	if !strings.Contains(info.Message, "Could not get WHOIS for <example.com.au>") {
+		t.Fatalf("message = %q", info.Message)
+	}
+	if info.Hostname != "example.com.au" {
+		t.Fatalf("hostname %q", info.Hostname)
+	}
+}

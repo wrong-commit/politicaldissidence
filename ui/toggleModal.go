@@ -104,7 +104,7 @@ func (ui *UI) toggleListUrlsModal(g *gocui.Gui) error {
 		modalHeight = 3
 	}
 
-	ui.log(fmt.Sprintf("Opening list urls modal width size (%d,%d)", modalWidth, modalHeight), false)
+	// ui.log(fmt.Sprintf("Opening list urls modal width size (%d,%d)", modalWidth, modalHeight), false)
 	v, err := ui.openModal(LIST_URLS_MODAL, modalWidth, modalHeight, false)
 	if err != nil {
 		return ui.log(fmt.Sprintf("Could not open URL list modal: %v", err), true)
@@ -129,7 +129,7 @@ func (ui *UI) toggleListUrlsModal(g *gocui.Gui) error {
 	return nil
 }
 
-// toggleListUrlsPanel to hide logo_panel and show this one
+// toggleListUrlsPanel swaps the right-hand panel layout for URL results (legacy helper).
 func (ui *UI) toggleListUrlsPanel(g *gocui.Gui) error {
 	// newBufferText, newBufferWidth, newBufferHeight, drawErr := panel.DrawListUrlPanel(g, ui.state.searchState.result)
 	// if drawErr != nil {
@@ -143,7 +143,7 @@ func (ui *UI) toggleListUrlsPanel(g *gocui.Gui) error {
 		LIST_PANEL,
 		DOMAIN_PANEL,
 	}
-	// ui.DeleteView(LOGO_PANEL)
+	// ui.DeleteView(WHOIS_PANEL)
 	// MainViews = append(MainViews, LIST_URLS_PANEL)
 	// v,err := ui.gui.View(LIST_URLS_PANEL)
 	// if err !=nil {

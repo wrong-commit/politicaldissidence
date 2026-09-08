@@ -1,9 +1,13 @@
 package ui
 
 import (
+	"time"
+
 	"politicaldissidence/data"
 	"politicaldissidence/db"
 	"politicaldissidence/refresh"
+	"politicaldissidence/ui/panel"
+	"politicaldissidence/whois"
 
 	"github.com/jroimartin/gocui"
 )
@@ -32,19 +36,53 @@ func (ui *UI) whoisLog(msg string, isError bool) {
 	})
 }
 
+// whoisRefreshDeps builds refresh.Deps shared by startup scan, Ctrl+U, and add-domain WHOIS.
+func (ui *UI) whoisRefreshDeps(force bool, delay time.Duration, save bool) refresh.Deps {
+	deps := refresh.Deps{
+		Log:      ui.whoisLogger(),
+		Force:    force,
+		Delay:    delay,
+		OnLookup: ui.onWhoisLookup,
+	}
+	if save {
+		deps.Save = func(mps []data.MP) error {
+			return db.WriteMps(mps)
+		}
+	}
+	return deps
+}
+
+func (ui *UI) onWhoisLookup(mpName string, info whois.Info, err error) {
+	snap := &panel.WhoisSnapshot{
+		Hostname:    info.Hostname,
+		MPName:      mpName,
+		CheckedAt:   time.Now(),
+		Status:      append([]string(nil), info.Status...),
+		Created:     info.CreatedDate,
+		Updated:     info.UpdatedDate,
+		Expiry:      info.ExpirationDate,
+		Registrar:   info.Registrar,
+		NameServers: append([]string(nil), info.NameServers...),
+	}
+	if err != nil {
+		snap.Error = info.Message
+		if snap.Error == "" {
+			snap.Error = err.Error()
+		}
+	}
+	ui.mutex.Lock()
+	ui.state.whoisSnapshot = snap
+	ui.mutex.Unlock()
+	ui.refreshWhoisPanel()
+}
+
 // startBackgroundWhois runs a one-shot background WHOIS refresh after load.
 // Honours SKIP_BACKGROUND_WHOIS_LOOKUP=true.
 func (ui *UI) startBackgroundWhois() {
 	if ui.state.all == nil {
 		return
 	}
-	deps := refresh.Deps{
-		Log:   ui.whoisLogger(),
-		Delay: refresh.DefaultLookupDelay,
-		Save: func(mps []data.MP) error {
-			return db.WriteMps(mps)
-		},
-	}
+	deps := ui.whoisRefreshDeps(false, refresh.DefaultLookupDelay, true)
 	_, _ = ui.whoisRunner.TryRun(*ui.state.all, deps)
 	ui.refreshDomainPanel()
 }
@@ -61,10 +99,7 @@ func (ui *UI) refreshDomainWhois(mpIndex, domainIdx int) {
 	mp := (*ui.state.visible)[mpIndex]
 	one := mp
 	one.Domains = (*ui.state.visible)[mpIndex].Domains[domainIdx : domainIdx+1]
-	_ = refresh.Run([]data.MP{one}, refresh.Deps{
-		Log:   ui.whoisLogger(),
-		Force: true,
-	})
+	_ = refresh.Run([]data.MP{one}, ui.whoisRefreshDeps(true, 0, false))
 	ui.refreshDomainPanel()
 }
 
@@ -85,5 +120,15 @@ func (ui *UI) refreshDomainPanel() {
 			return err
 		}
 		return setListCursor(v, ui.state.domainState.index)
+	})
+}
+
+func (ui *UI) refreshWhoisPanel() {
+	if ui.gui == nil {
+		return
+	}
+	ui.gui.Update(func(g *gocui.Gui) error {
+		_, err := ui.initPanelView(WHOIS_PANEL)
+		return err
 	})
 }

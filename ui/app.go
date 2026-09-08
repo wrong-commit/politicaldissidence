@@ -233,10 +233,7 @@ func (ui *UI) checkDomain() error {
 	mp := (*ui.state.visible)[ui.state.currentIndex]
 	one := mp
 	one.Domains = (*ui.state.domainState.domains)[idx : idx+1]
-	_ = refresh.Run([]data.MP{one}, refresh.Deps{
-		Log:   ui.whoisLogger(),
-		Force: true,
-	})
+	_ = refresh.Run([]data.MP{one}, ui.whoisRefreshDeps(true, 0, false))
 	return ui.setPanelView(DOMAIN_PANEL)
 }
 
