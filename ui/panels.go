@@ -55,7 +55,7 @@ const (
 var panelViews = map[string]panelProperties{
 	// scrollable list of pabels
 	LIST_PANEL: {
-		title: "List Panel",
+		title: "Parliament Members",
 		text:  "", // populated from `list.go`
 		// left panel
 		x1:       0.0,
@@ -68,7 +68,7 @@ var panelViews = map[string]panelProperties{
 	// 	Panel to list domains and expiries
 	// Has functionality to add domain
 	DOMAIN_PANEL: {
-		title: "Domain Panel",
+		title: "Member Domains",
 		text:  "", // TODO: update
 		// left panel
 		x1:       0.3,
@@ -467,7 +467,11 @@ func (ui *UI) createModal(name string, w, h int) (*gocui.View, error) {
 func (ui *UI) closeOpenedModals(views []string) error {
 	for _, v := range views {
 		if view, _ := ui.gui.View(v); view != nil {
-			ui.closeModal(view.Name())
+			name := view.Name()
+			if name == LIST_URLS_MODAL {
+				ui.resetURLSearchState()
+			}
+			ui.closeModal(name)
 		}
 	}
 	return nil

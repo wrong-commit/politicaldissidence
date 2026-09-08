@@ -62,7 +62,7 @@ func (ui *UI) toggleListUrlsModal(g *gocui.Gui) error {
 	if ui.currentModal == LIST_URLS_MODAL {
 		// remove new global key bindings for modal
 		// stop modal timer ?
-		return ui.closeModal(ui.currentModal)
+		return ui.closeListUrlsModal()
 	}
 
 	var existingHosts []string
@@ -109,6 +109,18 @@ func (ui *UI) toggleListUrlsModal(g *gocui.Gui) error {
 	if err != nil {
 		return ui.log(fmt.Sprintf("Could not open URL list modal: %v", err), true)
 	}
+	page := 1
+	if ui.state.searchState != nil {
+		page = ui.state.searchState.page + 1
+		if page < 1 {
+			page = 1
+		}
+	}
+	title := fmt.Sprintf("Select a URL (Page %d)", page)
+	v.Title = title
+	p := panelViews[LIST_URLS_MODAL]
+	p.title = title
+	panelViews[LIST_URLS_MODAL] = p
 	v.Wrap = false
 	v.SelBgColor = gocui.ColorCyan
 	v.SelFgColor = gocui.ColorWhite
@@ -165,12 +177,9 @@ func (ui *UI) toggleSearchingModal(g *gocui.Gui) error {
 		ui.state.searchState.term = ""
 		return ui.closeModal(ui.currentModal)
 	}
-	v, err := ui.openModal(SEARCHING_MODAL, 40, 1, false)
-	if err != nil {
+	if _, err := ui.openSearchingModal(g); err != nil {
 		return err
 	}
-	v.Editor = gocui.DefaultEditor
-	ui.gui.Cursor = false
 	var mp data.MP
 	if ui.state.currentIndex > len(*ui.state.visible)-1 {
 		return nil
@@ -179,4 +188,15 @@ func (ui *UI) toggleSearchingModal(g *gocui.Gui) error {
 	ui.log("Searching MP "+mp.Name(), false)
 	go ui.SearchAndDisplay(g, mp)
 	return nil
+}
+
+// openSearchingModal creates and focuses the Searching popup (does not start a search).
+func (ui *UI) openSearchingModal(g *gocui.Gui) (*gocui.View, error) {
+	v, err := ui.openModal(SEARCHING_MODAL, 40, 1, false)
+	if err != nil {
+		return nil, err
+	}
+	v.Editor = gocui.DefaultEditor
+	ui.gui.Cursor = false
+	return v, nil
 }

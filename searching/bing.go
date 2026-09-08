@@ -12,9 +12,25 @@ import (
 
 type bing struct{}
 
-// Go searches Bing and returns result links.
-func (bing) Go(term string) ([]Link, error) {
-	endpoint := "https://www.bing.com/search?q=" + url.QueryEscape(term)
+// BingPageSize is the approximate number of organic results per Bing page.
+const BingPageSize = 10
+
+// BingFirst returns the Bing `first` query value for a 0-based page index.
+func BingFirst(page int) int {
+	if page < 0 {
+		page = 0
+	}
+	return page*BingPageSize + 1
+}
+
+// Go searches Bing and returns result links for the given 0-based page.
+func (bing) Go(term string, page int) ([]Link, error) {
+	first := BingFirst(page)
+	endpoint := fmt.Sprintf(
+		"https://www.bing.com/search?q=%s&first=%d",
+		url.QueryEscape(term),
+		first,
+	)
 	req, err := http.NewRequest(http.MethodGet, endpoint, nil)
 	if err != nil {
 		return nil, err

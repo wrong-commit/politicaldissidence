@@ -42,7 +42,7 @@ func (ui *UI) appendLog(message string) error {
 		ui.startupLog += time.Now().Format(timeFormat) + message + "\n"
 		return nil
 	}
-	ui.consoleLog += time.Now().Format(timeFormat) + message + "\n"
+	ui.consoleLog += time.Now().Format(timeFormat) + " " + message + "\n"
 	ui.writeContent2(LOG_PANEL, strings.TrimSuffix(ui.consoleLog, "\n"), ui.gui)
 	return nil
 }

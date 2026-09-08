@@ -29,8 +29,8 @@ func (u UrlSearcher) Search(term string) ([]Link, error) {
 	}
 
 	// DuckDuckGo often serves a bot-challenge page to automated clients.
-	// Fall back to Bing so Ctrl+G still produces selectable URLs.
-	bingLinks, bingErr := bing{}.Go(term)
+	// Fall back to Bing so non-UI callers still get selectable URLs.
+	bingLinks, bingErr := bing{}.Go(term, 0)
 	if bingErr == nil && len(bingLinks) > 0 {
 		return bingLinks, nil
 	}
@@ -45,6 +45,11 @@ func (u UrlSearcher) Search(term string) ([]Link, error) {
 		return nil, bingErr
 	}
 	return nil, fmt.Errorf("no search results for %q", term)
+}
+
+// SearchPage fetches one page of Bing results (0-based page). Used by Ctrl+G / ← / →.
+func (u UrlSearcher) SearchPage(term string, page int) ([]Link, error) {
+	return bing{}.Go(term, page)
 }
 
 // assertRequest returns an error if the request is invalid

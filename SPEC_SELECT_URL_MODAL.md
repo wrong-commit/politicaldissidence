@@ -134,6 +134,7 @@ Do not strip path before handlers need it; host extraction stays for display + `
 - Changing search engines or result count
 - Mouse click-to-select items
 - Showing link descriptions (`Link[1]`) in the list
+- Search result paging (← / →) — see [SPEC_SELECT_URL_PAGING.md](SPEC_SELECT_URL_PAGING.md)
 
 
 

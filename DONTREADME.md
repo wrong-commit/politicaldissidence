@@ -35,6 +35,7 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
 - [MP JSON validation on load / reload](SPEC_JSON_VALIDATION.md)
 - [Atomic MP JSON save](SPEC_JSON_SAVE.md)
 - [Select a URL modal improvements](SPEC_SELECT_URL_MODAL.md)
+- [Select a URL search paging (v2)](SPEC_SELECT_URL_PAGING.md)
 
 ## TODO
 
@@ -56,6 +57,7 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
         - [ ] google
         - [x] bing
         - [ ] bypass google/ddg rate limit 
+        - [ ] pagination
     - [x] Allow CRUD to set domain to MP
     - [x] WHOIS lookup to check domain
         - [x] Perform WHOIS and get expiry date

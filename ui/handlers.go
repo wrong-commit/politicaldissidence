@@ -57,7 +57,7 @@ var keyHandlers = &handlers{
 			if !ok || strings.TrimSpace(domain) == "" {
 				return ui.log(fmt.Sprintf("Could not parse domain from <%s>", link[0]), true)
 			}
-			defer ui.closeModal(LIST_URLS_MODAL)
+			defer ui.closeListUrlsModal()
 			return ui.addDomain(domain, ui.state.currentIndex, true)
 		}
 	}},
@@ -75,6 +75,16 @@ var keyHandlers = &handlers{
 				return ui.log(fmt.Sprintf("Could not copy to clipboard: %v", err), true)
 			}
 			return ui.log(fmt.Sprintf("Copied to clipboard: %s", url), false)
+		}
+	}},
+	{listUrlView, gocui.KeyArrowRight, "<RIGHT>", "Next search page", func(ui *UI, wrap bool) Fn {
+		return func(g *gocui.Gui, v *gocui.View) error {
+			return ui.changeURLSearchPage(g, 1)
+		}
+	}},
+	{listUrlView, gocui.KeyArrowLeft, "<LEFT>", "Prev search page", func(ui *UI, wrap bool) Fn {
+		return func(g *gocui.Gui, v *gocui.View) error {
+			return ui.changeURLSearchPage(g, -1)
 		}
 	}},
 	// LIST_PANEL:

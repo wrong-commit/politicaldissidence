@@ -78,7 +78,9 @@ Opened with **Ctrl+A** from List or Domains. Type a domain, then confirm.
 
 Opened after **Ctrl+G** finishes searching. Lists candidate URLs/domains for the selected MP.
 
-Status line at the top of the modal: `enter: Add Domain, c: Copy Link`
+Status line at the top of the modal: `enter: Add Domain, c: Copy Link, ←/→: Page`
+
+Title includes the Bing result page, e.g. `Select a URL (Page 1)`.
 
 
 | Key        | Action                                                              |
@@ -87,6 +89,8 @@ Status line at the top of the modal: `enter: Add Domain, c: Copy Link`
 | **↓**      | Next URL                                                            |
 | **Enter**  | Add the selected URL’s domain to the current MP and close the modal |
 | **c**      | Copy the selected full URL to the clipboard (modal stays open)      |
+| **←**      | Previous Bing result page (no-op on page 1)                         |
+| **→**      | Next Bing result page (shows Searching while fetching)              |
 | **Ctrl+C** | Close modal without quitting                                        |
 
 

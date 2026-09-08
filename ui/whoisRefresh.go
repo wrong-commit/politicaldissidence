@@ -73,9 +73,17 @@ func (ui *UI) refreshDomainPanel() {
 		return
 	}
 	ui.gui.Update(func(g *gocui.Gui) error {
-		if ui.state.domainState != nil && ui.state.domainState.domains != nil {
-			return ui.setPanelView(DOMAIN_PANEL)
+		if ui.state.domainState == nil || ui.state.domainState.domains == nil {
+			return nil
 		}
-		return nil
+		// Redraw in place — do not steal focus from LIST_PANEL (or elsewhere).
+		if _, err := ui.initPanelView(DOMAIN_PANEL); err != nil {
+			return err
+		}
+		v, err := g.View(DOMAIN_PANEL)
+		if err != nil {
+			return err
+		}
+		return setListCursor(v, ui.state.domainState.index)
 	})
 }
