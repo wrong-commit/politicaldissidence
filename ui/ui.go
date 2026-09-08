@@ -48,6 +48,8 @@ type State struct {
 	domainState *DomainState
 	// search state
 	searchState *SearchState
+	// session search prefs (engine / term); survive closing Select a URL
+	searchPrefs SearchPrefs
 }
 
 // State for the Domain list
@@ -62,7 +64,10 @@ type DomainState struct {
 func NewUI() *UI {
 	var err error
 	ui := new(UI)
-	ui.state = &State{nil, nil, "all", -1, nil, nil}
+	ui.state = &State{filter: "all", currentIndex: -1, searchPrefs: SearchPrefs{
+		engine:    searching.EngineBing,
+		termIndex: 1,
+	}}
 	ui.gui, err = gocui.NewGui(gocui.OutputNormal)
 	if err != nil {
 		log.Panicln(err)
@@ -100,6 +105,7 @@ func (ui *UI) initGui(g *gocui.Gui) error {
 	ui.gui.SetManager(ui)
 
 	ui.state.searchState = &SearchState{term: "", result: &[]searching.Link{}}
+	ui.ensureSearchPrefs()
 
 	searching.DebugLog = func(msg string) {
 		ui.searchDebugLog(msg)

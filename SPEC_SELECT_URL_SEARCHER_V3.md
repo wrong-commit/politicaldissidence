@@ -35,11 +35,7 @@ For v3, terms are only these two presets — no free-form query editor.
   4. On success, reopen Select a URL with the new results; on failure, restore prior results when possible (same pattern as v2 paging failure).
 - **Retain preference:** store the last-used engine on UI session state (not cleared by `resetURLSearchState` when dismissing Select a URL). Subsequent **Ctrl+G** and ← / → use that engine until the user toggles again (or the process exits).
 - **Default:** Bing (matches v2 behaviour) until the user presses **`e`**.
-- **Paging with DuckDuckGo:** if DDG has no page offset yet, either:
-  - add a minimal DDG page parameter / offset in the same change, **or**
-  - keep ← / → Bing-only and, while DDG is selected, log that paging is unavailable / no-op on ← / →.
-
-  Prefer wiring `UrlSearcher.SearchPage(term, page, engine)` (or equivalent) so Ctrl+G, ← / →, **`e`**, and term toggle all share one fetch path. Leave the old DDG-then-Bing `Search()` fallback for non-UI callers if still useful.
+- **Paging:** Bing and DuckDuckGo both support ← / → via `UrlSearcher.SearchPage(term, page, engine)`. DDG lite uses form offsets (`s` / `dc`) plus a `vqd` bootstrapped from the intro (page 0) response. Leave the old DDG-then-Bing `Search()` fallback for non-UI callers if still useful.
 
 ### 2. Search term toggle (`SearchTerm1` / `SearchTerm2`)
 
@@ -172,12 +168,12 @@ Ctrl+G uses the last preferred engine and term index.
 
 ## Acceptance criteria
 
-- [ ] From Select a URL, **`e`** switches Bing ↔ DuckDuckGo, shows Searching, then reopens with page-0 results for the current term
-- [ ] Last-used engine is reused for the next Ctrl+G (and for ← / → when that engine supports paging) after closing the modal
-- [ ] `MP.SearchTerm1()` and `MP.SearchTerm2()` exist; UI **`t`** toggles between them and re-fetches page 0
-- [ ] Last-used term index is reused for the next Ctrl+G
-- [ ] Status bar includes **↑/↓** plus existing and new hints (engine / term)
-- [ ] Toggles are blocked or no-op with a clear message if a search is already in progress
-- [ ] Failures follow v2: console log + reopen prior results when available; do not wedge on Searching
-- [ ] `KEYBOARD_SHORTCUTS.md` documents **e**, **t**, and the updated status line
-- [ ] Call sites updated after `SearchTerm` → `SearchTerm1` rename
+- [x] From Select a URL, **`e`** switches Bing ↔ DuckDuckGo, shows Searching, then reopens with page-0 results for the current term
+- [x] Last-used engine is reused for the next Ctrl+G (and for ← / → when that engine supports paging) after closing the modal
+- [x] `MP.SearchTerm1()` and `MP.SearchTerm2()` exist; UI **`t`** toggles between them and re-fetches page 0
+- [x] Last-used term index is reused for the next Ctrl+G
+- [x] Status bar includes **↑/↓** plus existing and new hints (engine / term)
+- [x] Toggles are blocked or no-op with a clear message if a search is already in progress
+- [x] Failures follow v2: console log + reopen prior results when available; do not wedge on Searching
+- [x] `KEYBOARD_SHORTCUTS.md` documents **e**, **t**, and the updated status line
+- [x] Call sites updated after `SearchTerm` → `SearchTerm1` rename

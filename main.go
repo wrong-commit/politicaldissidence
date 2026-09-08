@@ -1,4 +1,4 @@
-package main
+﻿package main
 
 import (
 	"fmt"
@@ -22,9 +22,9 @@ func mainUrlSearcher() {
 	if err != nil {
 		return
 	}
-	fmt.Println("Loaded MPs, searching terms for MP 69", allMps[sixtynine].SearchTerm())
+	fmt.Println("Loaded MPs, searching terms for MP 69", allMps[sixtynine].SearchTerm1())
 	searcher := searching.UrlSearcher{}
-	resp, err := searcher.Search(allMps[sixtynine].SearchTerm())
+	resp, err := searcher.Search(allMps[sixtynine].SearchTerm1())
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -107,7 +107,7 @@ func addFirstDomains(mps *[]data.MP) {
 			continue
 		}
 
-		fmt.Println((*mps)[i].SearchTerm())
+		fmt.Println((*mps)[i].SearchTerm1())
 		fmt.Print("Enter domain name: ")
 		var input string
 		fmt.Scanln(&input)

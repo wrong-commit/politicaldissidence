@@ -33,7 +33,7 @@ func debugLog(format string, args ...interface{}) {
 }
 
 func (u UrlSearcher) Search(term string) ([]Link, error) {
-	found, err := duckduck{}.Go(term)
+	found, err := duckduck{}.Go(term, 0)
 	if err == nil && len(found) > 0 {
 		return found, nil
 	}
@@ -57,10 +57,15 @@ func (u UrlSearcher) Search(term string) ([]Link, error) {
 	return nil, fmt.Errorf("no search results for %q", term)
 }
 
-// SearchPage fetches one page of Bing results (0-based page). Used by Ctrl+G / ← / →.
-func (u UrlSearcher) SearchPage(term string, page int) ([]Link, error) {
-	// FIXME: add ddg and bing as fallback
-	return bing{}.Go(term, page)
+// SearchPage fetches one page of results for the given engine (0-based page).
+// Used by g / ← / → / engine / term toggles.
+func (u UrlSearcher) SearchPage(term string, page int, engine Engine) ([]Link, error) {
+	switch engine.Normalize() {
+	case EngineDuckDuckGo:
+		return duckduck{}.Go(term, page)
+	default:
+		return bing{}.Go(term, page)
+	}
 }
 
 // assertRequest returns an error if the request is invalid

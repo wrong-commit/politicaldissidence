@@ -109,14 +109,7 @@ func (ui *UI) toggleListUrlsModal(g *gocui.Gui) error {
 	if err != nil {
 		return ui.log(fmt.Sprintf("Could not open URL list modal: %v", err), true)
 	}
-	page := 1
-	if ui.state.searchState != nil {
-		page = ui.state.searchState.page + 1
-		if page < 1 {
-			page = 1
-		}
-	}
-	title := fmt.Sprintf("Select a URL (Page %d)", page)
+	title := ui.urlListModalTitle()
 	v.Title = title
 	p := panelViews[LIST_URLS_MODAL]
 	p.title = title

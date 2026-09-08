@@ -56,10 +56,10 @@ type Deps struct {
 	Log          Logger
 	MaxAge       time.Duration
 	// Delay waits this long before each WHOIS lookup (background rate limit).
-	// Zero means no delay (Ctrl+U / tests).
+	// Zero means no delay (U / tests).
 	Delay time.Duration
 	Sleep func(time.Duration)
-	// Force skips the 10-day throttle (Ctrl+U).
+	// Force skips the 10-day throttle (U).
 	Force bool
 }
 

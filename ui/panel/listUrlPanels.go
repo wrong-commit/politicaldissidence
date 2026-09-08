@@ -16,7 +16,7 @@ const (
 	URLListLinesPerItem = 3
 )
 
-const urlListStatusText = "enter: Add Domain, c: Copy Link, ←/→: Page"
+const urlListStatusText = "↑/↓: Move, enter: Add Domain, c: Copy Link, ←/→: Page, e: Engine, t: Term"
 
 // URLListItemIndex maps a view cursor Y to a selectable result index.
 // Returns -1 if the cursor is on the status bar or otherwise invalid.

@@ -33,7 +33,7 @@ Focus this panel with **Tab** (or click it).
 | **Ctrl+F** | Cycle MP filter: `all` → `have domains` → `no domains` → `all`             |
 | **Tab**    | Focus next panel (Domains)                                                 |
 | **Ctrl+A** | Open Add Domain modal                                                      |
-| **Ctrl+G** | Guess domain (search DuckDuckGo for the selected MP, then open URL picker) |
+| **g**      | Guess domain (search for the selected MP, then open URL picker)            |
 
 
 ---
@@ -51,8 +51,8 @@ Focus this panel with **Tab** (or click it). Shows domains for the currently sel
 | **↓**      | Next domain                                                  |
 | **Tab**    | Focus next panel (List)                                      |
 | **Ctrl+A** | Open Add Domain modal                                        |
-| **Ctrl+G** | Guess domain (same as on List)                               |
-| **Ctrl+U** | Check domain (WHOIS / expiry update for the selected domain) |
+| **g**      | Guess domain (same as on List)                               |
+| **U**      | Check domain (WHOIS / expiry update for the selected domain) |
 
 
 ---
@@ -76,11 +76,11 @@ Opened with **Ctrl+A** from List or Domains. Type a domain, then confirm.
 
 ## Select a URL modal (`search`)
 
-Opened after **Ctrl+G** finishes searching. Lists candidate URLs/domains for the selected MP.
+Opened after **g** finishes searching. Lists candidate URLs/domains for the selected MP.
 
-Status line at the top of the modal: `enter: Add Domain, c: Copy Link, ←/→: Page`
+Status line at the top of the modal: `↑/↓: Move, enter: Add Domain, c: Copy Link, ←/→: Page, e: Engine, t: Term`
 
-Title includes the Bing result page, e.g. `Select a URL (Page 1)`.
+Title includes page, engine, and term index, e.g. `Select a URL (Page 1 · Bing · T1)`.
 
 
 | Key        | Action                                                              |
@@ -89,8 +89,10 @@ Title includes the Bing result page, e.g. `Select a URL (Page 1)`.
 | **↓**      | Next URL                                                            |
 | **Enter**  | Add the selected URL’s domain to the current MP and close the modal |
 | **c**      | Copy the selected full URL to the clipboard (modal stays open)      |
-| **←**      | Previous Bing result page (no-op on page 1)                         |
-| **→**      | Next Bing result page (shows Searching while fetching)              |
+| **←**      | Previous result page (no-op on page 1)                              |
+| **→**      | Next result page (shows Searching while fetching)                   |
+| **e**      | Toggle search engine Bing ↔ DuckDuckGo; re-fetch page 0             |
+| **t**      | Toggle search term T1 ↔ T2; re-fetch page 0                         |
 | **Ctrl+C** | Close modal without quitting                                        |
 
 
@@ -100,7 +102,7 @@ Title includes the Bing result page, e.g. `Select a URL (Page 1)`.
 
 ## Searching modal (`searching`)
 
-Shown briefly while a background domain search runs after **Ctrl+G**. Not meant for interaction; it closes when the search finishes (or on **Ctrl+C**).
+Shown briefly while a background domain search runs after **g**. Not meant for interaction; it closes when the search finishes (or on **Ctrl+C**).
 
 ---
 
@@ -126,15 +128,17 @@ Tab             Switch List ↔ Domains
 List / Domains:
   ↑ ↓           Navigate
   Ctrl+A        Add domain
-  Ctrl+G        Guess domain (search)
+  g             Guess domain (search)
 
 List only:
   Ctrl+F        Cycle filter
 
 Domains only:
-  Ctrl+U        Check domain (WHOIS)
+  U             Check domain (WHOIS)
 
 Add Domain / URL picker:
   Enter         Confirm selection
+  ↑ ↓ ← →      Move / page
+  e / t         Engine / term
 ```
 

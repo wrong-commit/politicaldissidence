@@ -22,7 +22,7 @@ func (mp MP) NeedsDomain() bool {
 }
 
 func (mp MP) Name() string {
-	return fmt.Sprintf("%s %s %s", mp.Honorific, mp.FirstName, mp.Surname)
+	return fmt.Sprintf("%s %s", mp.FirstName, mp.Surname)
 }
 
 func (mp MP) NameWithHonorific() string {
@@ -33,7 +33,7 @@ func (mp MP) ToString() string {
 	return fmt.Sprintf("(%s) %s - %s", mp.Party, mp.NameWithHonorific(), mp.Electorate)
 }
 
-func (mp MP) SearchTerm() string {
+func (mp MP) SearchTerm1() string {
 	return fmt.Sprintf("%s member for %s %s ", mp.NameWithHonorific(), mp.Electorate, mp.Party)
 }
 

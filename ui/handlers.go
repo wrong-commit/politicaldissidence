@@ -87,6 +87,16 @@ var keyHandlers = &handlers{
 			return ui.changeURLSearchPage(g, -1)
 		}
 	}},
+	{listUrlView, 'e', "e", "Toggle search engine", func(ui *UI, wrap bool) Fn {
+		return func(g *gocui.Gui, v *gocui.View) error {
+			return ui.toggleURLSearchEngine(g)
+		}
+	}},
+	{listUrlView, 't', "t", "Toggle search term", func(ui *UI, wrap bool) Fn {
+		return func(g *gocui.Gui, v *gocui.View) error {
+			return ui.toggleURLSearchTerm(g)
+		}
+	}},
 	// LIST_PANEL:
 	//	up/down -  keys to navigate MPs
 	{listView, gocui.KeyArrowUp, "<UP>", "Previous Mp", onPrevMp},
@@ -126,10 +136,10 @@ var keyHandlers = &handlers{
 	{domainViews, gocui.KeyArrowDown, "<DOWN>", "Domain Mp", onNextDomain},
 	//	ctrl a - add a new domain
 	{tabViews, gocui.KeyCtrlA, "Ctrl+A", "Add Domain", onOpenAddDomain},
-	//	ctrl g - Guess domain
-	{tabViews, gocui.KeyCtrlG, "Ctrl+G", "Guess domain", onGuessDomain},
-	//	ctrl u - update domain
-	{domainViews, gocui.KeyCtrlU, "Ctrl+U", "Check Domain", onCheckDomain},
+	//	g - Guess domain
+	{tabViews, 'g', "g", "Guess domain", onGuessDomain},
+	//	U - update domain
+	{domainViews, 'U', "U", "Check Domain", onCheckDomain},
 	// ADD_DOMAIN_PANEL:
 	// 	enter - confirm url to search
 	{addDomainView, gocui.KeyEnter, "Enter", "Confirm Domain", onConfirmNewDomain},

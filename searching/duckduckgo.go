@@ -13,16 +13,51 @@ import (
 type duckduck struct {
 }
 
-// Go will search DuckDuckGo's lite page and return top results
-func (duckduck) Go(term string) ([]Link, error) {
-	doc, err := postDuckDuckGo(term)
+// DuckDuckGo first continuation offset and step match DDG-lite / SearXNG:
+// page 1 (0-based) → s=10, then +15 per page.
+const (
+	duckDuckGoFirstOffset = 10
+	duckDuckGoOffsetStep  = 15
+)
+
+// DuckDuckGoOffset returns the lite form `s` value for a 0-based page.
+// Page 0 has no offset (ok=false).
+func DuckDuckGoOffset(page int) (s int, ok bool) {
+	if page <= 0 {
+		return 0, false
+	}
+	return duckDuckGoFirstOffset + (page-1)*duckDuckGoOffsetStep, true
+}
+
+// Go searches DuckDuckGo lite and returns result links for the given 0-based page.
+// Pages after 0 require a vqd from an intro (page 0) response.
+func (duckduck) Go(term string, page int) ([]Link, error) {
+	if page < 0 {
+		page = 0
+	}
+
+	vqd := ""
+	if page > 0 {
+		intro, err := postDuckDuckGo(term, 0, "")
+		if err != nil {
+			return nil, err
+		}
+		if isDuckDuckGoChallenge(intro) {
+			return nil, fmt.Errorf("duckduckgo blocked the request (bot challenge)")
+		}
+		vqd = extractVQD(intro)
+		if vqd == "" {
+			return nil, fmt.Errorf("duckduckgo: missing vqd for paging")
+		}
+	}
+
+	doc, err := postDuckDuckGo(term, page, vqd)
 	if err != nil {
 		return nil, err
 	}
 	if isDuckDuckGoChallenge(doc) {
 		return nil, fmt.Errorf("duckduckgo blocked the request (bot challenge)")
 	}
-	// parse body as HTML for inspection
 	node, err := html.Parse(strings.NewReader(doc))
 	if err != nil {
 		return nil, err
@@ -106,19 +141,59 @@ func findHref(n *html.Node) string {
 	return ""
 }
 
+func extractVQD(doc string) string {
+	node, err := html.Parse(strings.NewReader(doc))
+	if err != nil {
+		return ""
+	}
+	return findNamedInputValue(node, "vqd")
+}
+
+func findNamedInputValue(n *html.Node, name string) string {
+	if n.Type == html.ElementNode && n.Data == "input" {
+		var inputName, inputVal string
+		for _, a := range n.Attr {
+			switch a.Key {
+			case "name":
+				inputName = a.Val
+			case "value":
+				inputVal = a.Val
+			}
+		}
+		if inputName == name && inputVal != "" {
+			return inputVal
+		}
+	}
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		if v := findNamedInputValue(c, name); v != "" {
+			return v
+		}
+	}
+	return ""
+}
+
 // postDuckDuckGo submits a search to DuckDuckGo lite.
-func postDuckDuckGo(term string) (string, error) {
+// page is 0-based; vqd is required when page > 0.
+func postDuckDuckGo(term string, page int, vqd string) (string, error) {
 	endpoint := "https://lite.duckduckgo.com/lite/"
-	values := url.Values{}
-	values.Set("q", term)
-	debugLog("DEBUG searching duckduckgo POST %s q=%s", endpoint, term)
+	values := duckDuckGoForm(term, page, vqd)
+	debugLog("DEBUG searching duckduckgo POST %s %s", endpoint, values.Encode())
 
 	req, err := http.NewRequest(http.MethodPost, endpoint, strings.NewReader(values.Encode()))
 	if err != nil {
 		return "", err
 	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("User-Agent", "Mozilla/5.0 (compatible; PoliticalDissidence/1.0)")
+	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
+	req.Header.Set("Accept", "text/html,application/xhtml+xml")
+	req.Header.Set("Accept-Language", "en-US,en;q=0.9")
+	if page > 0 {
+		req.Header.Set("Referer", "https://lite.duckduckgo.com/")
+		req.Header.Set("Sec-Fetch-Dest", "document")
+		req.Header.Set("Sec-Fetch-Mode", "navigate")
+		req.Header.Set("Sec-Fetch-Site", "same-origin")
+		req.Header.Set("Sec-Fetch-User", "?1")
+	}
 
 	resp, err := httpClient.Do(req)
 	if err != nil {
@@ -135,4 +210,25 @@ func postDuckDuckGo(term string) (string, error) {
 		return "", fmt.Errorf("unexpected status %d %s", resp.StatusCode, resp.Status)
 	}
 	return bodyToString(resp.Body), nil
+}
+
+// duckDuckGoForm builds the lite POST body for a 0-based page.
+func duckDuckGoForm(term string, page int, vqd string) url.Values {
+	values := url.Values{}
+	values.Set("q", term)
+	if page <= 0 {
+		values.Set("b", "")
+		return values
+	}
+	s, _ := DuckDuckGoOffset(page)
+	values.Set("s", fmt.Sprintf("%d", s))
+	values.Set("dc", fmt.Sprintf("%d", s+1))
+	values.Set("nextParams", "")
+	values.Set("v", "l")
+	values.Set("o", "json")
+	values.Set("api", "d.js")
+	if vqd != "" {
+		values.Set("vqd", vqd)
+	}
+	return values
 }
