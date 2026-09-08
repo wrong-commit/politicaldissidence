@@ -46,7 +46,7 @@ var keyHandlers = &handlers{
 			return ui.moveURLListSelection(v, -1)
 		}
 	}},
-	{listUrlView, gocui.KeyEnter, "Enter", "Add Domain", func(ui *UI, wrap bool) Fn {
+	{listUrlView, gocui.KeyEnter, "<ENTER>", "Add Domain", func(ui *UI, wrap bool) Fn {
 		return func(g *gocui.Gui, v *gocui.View) error {
 			link, err := ui.selectedURLListLink(v)
 			if err != nil {
@@ -128,16 +128,16 @@ var keyHandlers = &handlers{
 	// 	enter - confirm url to search
 	{addDomainView, gocui.KeyEnter, "Enter", "Confirm Domain", onConfirmNewDomain},
 	// 	tab - cycle main panels
-	{tabViews, gocui.KeyTab, "Tab", "Next Panel", onNextPanel},
+	{tabViews, gocui.KeyTab, "<TAB>", "Next Panel", onNextPanel},
 	// 	ctrl c - close modal or quit application
-	{nil, gocui.KeyCtrlC, "Ctrl+C", "Quit/Close Modal", onQuit},
+	{nil, gocui.KeyCtrlC, "<CTRL>+c", "Quit/Close Modal", onQuit},
 	// 	ctrl s - save
-	{nil, gocui.KeyCtrlS, "Ctrl+S", "Save ", onSave},
+	{nil, gocui.KeyCtrlS, "<CTRL>+s", "Save ", onSave},
 	// 	ctrl r - reload
-	{nil, gocui.KeyCtrlR, "Ctrl+R", "Reload ", onReload},
+	{nil, gocui.KeyCtrlR, "<CTRL>+r", "Reload ", onReload},
 	// Domain Information (whois) panel scroll — global; panel is not focusable
-	{nil, gocui.KeyPgup, "PgUp", "Scroll Domain Information up", onWhoisPageUp},
-	{nil, gocui.KeyPgdn, "PgDn", "Scroll Domain Information down", onWhoisPageDown},
+	{nil, gocui.KeyPgup, "<PGUP>", "Scroll Domain Information up", onWhoisPageUp},
+	{nil, gocui.KeyPgdn, "<PGDN>", "Scroll Domain Information down", onWhoisPageDown},
 }
 
 // onCheckDomain updates the expiry
@@ -337,7 +337,7 @@ func (handlers handlers) HelpContent(activePanel string) string {
 
 	fmt.Fprintf(w, "\n\tGloba handlers\t\n")
 	fmt.Fprint(w, HELP_TABLE_TITLE)
-	fmt.Fprintf(w, "  %s\t: %s\n", "Ctrl+h", "Toggle Help")
+	fmt.Fprintf(w, "  %s\t: %s\n", "<CTRL>+h", "Toggle Help")
 	for _, handler := range anywhere {
 		if handler.keyName == "" || handler.help == "" {
 			continue
