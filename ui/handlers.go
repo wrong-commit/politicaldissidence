@@ -134,12 +134,10 @@ var keyHandlers = &handlers{
 	//	up/down -  keys to select domains
 	{domainViews, gocui.KeyArrowUp, "<UP>", "Previous Domain", onPrevDomain},
 	{domainViews, gocui.KeyArrowDown, "<DOWN>", "Domain Mp", onNextDomain},
-	//	ctrl a - add a new domain
-	{tabViews, gocui.KeyCtrlA, "Ctrl+A", "Add Domain", onOpenAddDomain},
 	//	g - Guess domain
 	{tabViews, 'g', "g", "Guess domain", onGuessDomain},
-	//	U - update domain
-	{domainViews, 'U', "U", "Check Domain", onCheckDomain},
+	//	u - update domain
+	{domainViews, 'u', "u", "Check Domain", onCheckDomain},
 	// ADD_DOMAIN_PANEL:
 	// 	enter - confirm url to search
 	{addDomainView, gocui.KeyEnter, "Enter", "Confirm Domain", onConfirmNewDomain},
@@ -166,14 +164,6 @@ func onGuessDomain(ui *UI, wrap bool) Fn {
 	// ui.log("[*] register onOpenGuessDomain", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
 		return ui.toggleSearchingModal(g)
-	}
-}
-
-// onOpenAddDomain opens the "Add Domain" modal
-func onOpenAddDomain(ui *UI, wrap bool) Fn {
-	// ui.log("[*] register onOpenAddDomain", false)
-	return func(g *gocui.Gui, v *gocui.View) error {
-		return ui.toggleNewDomain(g)
 	}
 }
 

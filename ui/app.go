@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"politicaldissidence/data"
 	"politicaldissidence/db"
+	"politicaldissidence/jobs"
 	"politicaldissidence/refresh"
 	"politicaldissidence/ui/panel"
 	"strings"
@@ -35,7 +36,11 @@ func InitApp() {
 
 // Save saves written MP and domain details to disk
 func (ui *UI) Save() error {
-	if err := db.WriteMps(*ui.state.visible); err != nil {
+	if ui.state.all == nil {
+		ui.log("Could not write MPs to disk", true)
+		return fmt.Errorf("no MPs loaded")
+	}
+	if err := db.WriteMps(*ui.state.all); err != nil {
 		ui.log("Could not write MPs to disk", true)
 		return err
 	}
@@ -245,7 +250,7 @@ func (ui *UI) addDomainModalTest(addDomainView *gocui.View) error {
 }
 
 // addDomain adds a domain to a MP. if showDomain is true, the DOMAIN_PANEL is opened and the new domain is
-// selected. WHOIS for the new domain runs in a background goroutine.
+// selected. Registered domainAddedJobs (WHOIS, calc demo, …) run in background goroutines.
 func (ui *UI) addDomain(domain string, mpIndex int, showDomain bool) error {
 	domain = strings.ReplaceAll(domain, "\n", "")
 	if mpIndex > len(*ui.state.visible)-1 {
@@ -263,7 +268,12 @@ func (ui *UI) addDomain(domain string, mpIndex int, showDomain bool) error {
 	ui.log(fmt.Sprintf("Added domain <%s> to MP <%s>", newDomain.Hostname, mp.Name()), false)
 	// ui.log(fmt.Sprintf("After has %d domains", len((*ui.state.visible)[mpIndex].Domains)), false)
 
-	go ui.refreshDomainWhois(mpIndex, domainIdx)
+	jobs.Kick(jobs.Context{
+		MPIndex:   mpIndex,
+		DomainIdx: domainIdx,
+		Hostname:  newDomain.Hostname,
+		Log:       ui.whoisLog,
+	}, ui.domainAddedJobs...)
 
 	if showDomain {
 		ui.state.domainState.domains = &(*ui.state.visible)[mpIndex].Domains

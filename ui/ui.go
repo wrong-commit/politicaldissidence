@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"politicaldissidence/data"
+	"politicaldissidence/jobs"
 	"politicaldissidence/refresh"
 	"politicaldissidence/searching"
 
@@ -34,6 +35,8 @@ type UI struct {
 	state *State
 	// Single-flight background WHOIS refresh
 	whoisRunner refresh.Runner
+	// Jobs kicked when a domain is added (WHOIS, calc demo, …)
+	domainAddedJobs []jobs.Job
 	// fontPath     string
 }
 
@@ -74,6 +77,10 @@ func NewUI() *UI {
 		ui.log("NewUI() -> "+fmt.Sprint(err.Error()), true)
 	}
 	ui.cursors = NewCursors()
+	ui.domainAddedJobs = []jobs.Job{
+		jobs.NewWhoisOnAdd(ui.refreshDomainWhois),
+		// jobs.NewCalcDemo(),
+	}
 	return ui
 }
 

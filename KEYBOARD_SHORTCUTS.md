@@ -32,7 +32,6 @@ Focus this panel with **Tab** (or click it).
 | **↓**      | Next MP                                                                    |
 | **Ctrl+F** | Cycle MP filter: `all` → `have domains` → `no domains` → `all`             |
 | **Tab**    | Focus next panel (Domains)                                                 |
-| **Ctrl+A** | Open Add Domain modal                                                      |
 | **g**      | Guess domain (search for the selected MP, then open URL picker)            |
 
 
@@ -50,24 +49,8 @@ Focus this panel with **Tab** (or click it). Shows domains for the currently sel
 | **↑**      | Previous domain                                              |
 | **↓**      | Next domain                                                  |
 | **Tab**    | Focus next panel (List)                                      |
-| **Ctrl+A** | Open Add Domain modal                                        |
 | **g**      | Guess domain (same as on List)                               |
-| **U**      | Check domain (WHOIS / expiry update for the selected domain) |
-
-
----
-
-
-
-## Add Domain modal (`adddomain`)
-
-Opened with **Ctrl+A** from List or Domains. Type a domain, then confirm.
-
-
-| Key        | Action                                       |
-| ---------- | -------------------------------------------- |
-| **Enter**  | Confirm and add the domain to the current MP |
-| **Ctrl+C** | Close modal without quitting                 |
+| **u**      | Check domain (WHOIS / expiry update for the selected domain) |
 
 
 ---
@@ -127,16 +110,15 @@ Tab             Switch List ↔ Domains
 
 List / Domains:
   ↑ ↓           Navigate
-  Ctrl+A        Add domain
   g             Guess domain (search)
 
 List only:
   Ctrl+F        Cycle filter
 
 Domains only:
-  U             Check domain (WHOIS)
+  u             Check domain (WHOIS)
 
-Add Domain / URL picker:
+URL picker:
   Enter         Confirm selection
   ↑ ↓ ← →      Move / page
   e / t         Engine / term

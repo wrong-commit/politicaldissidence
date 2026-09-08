@@ -32,6 +32,7 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
 ## Specs
 
 - [Background WHOIS refresh](SPEC_BACKGROUND_WHOIS.md)
+- [Domain-added background jobs](SPEC_DOMAIN_ADDED_JOBS.md)
 - [MP JSON validation on load / reload](SPEC_JSON_VALIDATION.md)
 - [Atomic MP JSON save](SPEC_JSON_SAVE.md)
 - [Select a URL modal improvements](SPEC_SELECT_URL_MODAL.md)
@@ -58,15 +59,17 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
         - [ ] google
         - [x] bing
         - [ ] bypass google/ddg rate limit 
-        - [ ] pagination
+        - [x] pagination
     - [x] Allow CRUD to set domain to MP
     - [x] WHOIS lookup to check domain
         - [x] Perform WHOIS and get expiry date
         - [x] Background WHOIS refresh (see [SPEC_BACKGROUND_WHOIS.md](SPEC_BACKGROUND_WHOIS.md))
+        - [x] Domain-added jobs kickoff (see [SPEC_DOMAIN_ADDED_JOBS.md](SPEC_DOMAIN_ADDED_JOBS.md))
         - [x] Persist domain `lastChecked` on WHOIS
         - [x] Show last-checked in domain panel
     - [x] Validate `mp_data.json` on load / reload (see [SPEC_JSON_VALIDATION.md](SPEC_JSON_VALIDATION.md))
     - [x] Fix UI bugginess, cursor gets out of whack 
+    - [ ] 
 - [ ] Maintainence 
     - [ ] Detect when URL disappears
     - [ ] Alert when current list changes found/removed
