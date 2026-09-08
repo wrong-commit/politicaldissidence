@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"politicaldissidence/ui/panel"
 	"runtime/debug"
+	"strings"
 
 	//"image"
 	//"image/draw"
@@ -237,7 +238,11 @@ func (ui *UI) createPanelView(name string, x1, y1, x2, y2 int) (*gocui.View, err
 	// generate content for panels
 	switch name {
 	case LOG_PANEL:
-		break
+		// Preserve console output across Layout redraws.
+		p.text = strings.TrimSuffix(ui.consoleLog, "\n")
+		if p.text == "" {
+			p.text = strings.TrimSuffix(ui.startupLog, "\n")
+		}
 	case LIST_PANEL:
 		// update text
 		p.text = panel.DrawListMpPanel(ui.gui, ui.state.visible)
@@ -440,7 +445,9 @@ func (ui *UI) closeModal(modals ...string) error {
 			return err
 		}
 		ui.gui.DeleteView(name)
-		ui.gui.DeleteKeybindings(name)
+		// Keep keybindings: they are registered once at startup for modal view
+		// names (e.g. Select a URL). Deleting them here breaks navigation the
+		// next time the modal is opened.
 		ui.gui.Cursor = true
 		ui.currentModal = ""
 	}

@@ -25,23 +25,29 @@ func domainFromUrl(links []searching.Link) ([]string, error) {
 	domains := make([]string, 0)
 	var errStr string
 	for _, link := range links {
+		if len(link) == 0 || strings.TrimSpace(link[0]) == "" {
+			errStr = fmt.Sprintf("empty link\n%s", errStr)
+			continue
+		}
 		host := link[0]
 
-		// if strings.Index(host, "http") == -1 && strings.Index(host, "https") == -1 {
-		// 	break
-		// }
-
 		// TODO: move this into Link itself
-		// remove scheme
-		host = strings.Split(host, "//")[1]
-		// remove path after host:port
-		if strings.Index(host, "/") > -1 {
-			host = strings.Split(host, "/")[0]
+		// remove scheme when present
+		if parts := strings.SplitN(host, "//", 2); len(parts) == 2 {
+			host = parts[1]
 		}
-		if strings.TrimSpace(host) == "" {
+		// remove path after host:port
+		if i := strings.Index(host, "/"); i > -1 {
+			host = host[:i]
+		}
+		// strip credentials / port noise for display selection
+		if at := strings.LastIndex(host, "@"); at > -1 {
+			host = host[at+1:]
+		}
+		host = strings.TrimSpace(host)
+		if host == "" {
 			errStr = fmt.Sprintf("invalid link <%s>\n%s", link[0], errStr)
 		} else {
-			// add non empty domain
 			domains = append(domains, host)
 		}
 	}

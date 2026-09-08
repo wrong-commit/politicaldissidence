@@ -1,8 +1,6 @@
 package ui
 
 import (
-	// DEBUG
-
 	"fmt"
 	"politicaldissidence/data"
 	"politicaldissidence/searching"
@@ -17,38 +15,27 @@ type SearchState struct {
 	result *[]searching.Link
 }
 
-// SearchAndDisplay takes an MP and performs a background search before promptingn
-// for URL results
+// SearchAndDisplay takes an MP and performs a background search before prompting
+// for URL results.
 func (ui *UI) SearchAndDisplay(g *gocui.Gui, mp data.MP) {
-	// g.Update(func(g *gocui.Gui) error {
-	// 	return ui.log("Searching for mp "+mp.SearchTerm(), false)
-	// })
-	defer ui.closeModal(SEARCHING_MODAL)
-
-	// search term, update panel with results
-	links, err := ui.search(mp.SearchTerm())
-	if err != nil {
-		g.Update(func(g *gocui.Gui) error {
-			v, _ := g.View(LOG_PANEL)
-			fmt.Fprintln(v, fmt.Sprintf("Found %d links", len(links)), false)
-			ui.gui = g
-			ui.state.searchState.term = mp.SearchTerm()
-			ui.state.searchState.result = &links
-			ui.closeModal(SEARCHING_MODAL)
-			return ui.toggleListUrlsPanel(g)
-		})
-	}
-}
-
-// search
-func (ui *UI) search(term string) ([]searching.Link, error) {
-	// ui.log(fmt.Sprintf("Searching term <%s>", term), false)
-	// go routine to communicate links and err
+	term := mp.SearchTerm()
 	links, err := searching.UrlSearcher{}.Search(term)
-	if err != nil {
-		ui.log(fmt.Sprintf("Error searching <%s> %v", term, err), true)
-	} else {
-		ui.log(fmt.Sprintf("Found %d links", len(links)), false)
-	}
-	return links, err
+
+	g.Update(func(g *gocui.Gui) error {
+		if cerr := ui.closeModal(SEARCHING_MODAL); cerr != nil {
+			_ = ui.log(fmt.Sprintf("Could not close searching modal: %v", cerr), true)
+		}
+
+		if err != nil {
+			return ui.log(fmt.Sprintf("Error searching <%s>: %v", term, err), true)
+		}
+		if len(links) == 0 {
+			return ui.log(fmt.Sprintf("No links found for <%s>", term), true)
+		}
+
+		ui.state.searchState.term = term
+		ui.state.searchState.result = &links
+		_ = ui.log(fmt.Sprintf("Found %d links for <%s>", len(links), mp.Name()), false)
+		return ui.toggleListUrlsModal(g)
+	})
 }

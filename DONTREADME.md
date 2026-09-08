@@ -25,6 +25,10 @@ On macOS / Linux (or Git Bash), the `make` script builds then runs:
 
 That script runs `go build` and, on success, `./politicaldissidence`.
 
+## Keyboard shortcuts
+
+See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
+
 ## TODO
 
 - [ ] Automating MP detection

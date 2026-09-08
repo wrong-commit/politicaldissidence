@@ -70,17 +70,34 @@ func (ui *UI) toggleListUrlsModal(g *gocui.Gui) error {
 		ui.log(fmt.Sprintf("Links that could not be converted to domain,\n%s", drawErr.Error()), true)
 	}
 
+	if strings.TrimSpace(newBufferText) == "" {
+		return ui.log("No domains could be extracted from search results", true)
+	}
+	// Keep modal usable even when only a few short domains are returned.
+	if newBufferWidth < 20 {
+		newBufferWidth = 20
+	}
+	if newBufferHeight < 1 {
+		newBufferHeight = 1
+	}
+
 	ui.log(fmt.Sprintf("Opening list urls modal width size (%d,%d)", newBufferWidth, newBufferHeight), false)
 	v, err := ui.openModal(LIST_URLS_MODAL, newBufferWidth, newBufferHeight, false)
 	if err != nil {
-		return nil
+		return ui.log(fmt.Sprintf("Could not open URL list modal: %v", err), true)
 	}
 	v.Wrap = false
 	v.SelBgColor = gocui.ColorCyan
 	v.SelFgColor = gocui.ColorWhite
 	v.Editable = false
 	v.Highlight = true
-	return ui.writeContent2(LIST_URLS_MODAL, newBufferText, g)
+	if err := ui.writeContent2(LIST_URLS_MODAL, newBufferText, g); err != nil {
+		return err
+	}
+	// Start selection at the first result (writeContent2 parks the cursor at EOL).
+	_ = v.SetCursor(0, 0)
+	ui.cursors.Set(LIST_URLS_MODAL, 0, 0)
+	return nil
 }
 
 // toggleListUrlsPanel to hide logo_panel and show this one

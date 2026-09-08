@@ -129,7 +129,13 @@
      "party": "LNP",
      "state": "QLD",
      "level": "",
-     "domains": null
+     "domains": [
+       {
+         "hostname": "angiebell.com.au",
+         "expiry": "",
+         "expired": false
+       }
+     ]
    },
    {
      "honorific": "Hon",
@@ -153,7 +159,13 @@
      "party": "ALP",
      "state": "NSW",
      "level": "",
-     "domains": null
+     "domains": [
+       {
+         "hostname": "www.chrisbowen.net",
+         "expiry": "2027-08-07T03:48:55Z",
+         "expired": false
+       }
+     ]
    },
    {
      "honorific": "Mr",
@@ -1854,17 +1866,7 @@
      "domains": null
    }
  ]
-        "otherName": "Xavier",
-        "preferredName": "Ross",
-        "electorate": "Bonner",
-        "party": "LNP",
-        "state": "QLD",
-        "level": "",
-        "domains": null
-    },
-    {
-        "honorific": "Mr",
-        "firstName": "Andrew",
+e": "Andrew",
         "surnname": "Wallace",
         "otherName": "Bruce",
         "preferredName": "Andrew",

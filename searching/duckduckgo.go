@@ -2,21 +2,25 @@ package searching
 
 import (
 	"fmt"
-	"golang.org/x/net/html"
 	"net/http"
+	"net/url"
 	"strings"
+
+	"golang.org/x/net/html"
 )
 
 // TODO: avoid resubmitting form to avoid flagging requests
 type duckduck struct {
 }
 
-// Go will search DuckDuckGo's lite page and return top resuls
+// Go will search DuckDuckGo's lite page and return top results
 func (duckduck) Go(term string) ([]Link, error) {
-	url := fmt.Sprintf("https://duckduckgo.com/?q=%s", term)
-	var doc, err = postDuckDuckGo(url)
+	doc, err := postDuckDuckGo(term)
 	if err != nil {
 		return nil, err
+	}
+	if isDuckDuckGoChallenge(doc) {
+		return nil, fmt.Errorf("duckduckgo blocked the request (bot challenge)")
 	}
 	// parse body as HTML for inspection
 	node, err := html.Parse(strings.NewReader(doc))
@@ -24,6 +28,12 @@ func (duckduck) Go(term string) ([]Link, error) {
 		return nil, err
 	}
 	return parseSearchResults(node)
+}
+
+func isDuckDuckGoChallenge(doc string) bool {
+	return strings.Contains(doc, "anomaly.js") ||
+		strings.Contains(doc, "challenge-form") ||
+		strings.Contains(doc, "anomaly-modal")
 }
 
 // hasClass returns true if the provided node has a class. only basic check of class name
@@ -38,20 +48,13 @@ func hasClass(n *html.Node, className string) bool {
 	return false
 }
 
-// shouldSubmitForm tells us if we should submit a form in the HTML
-func shouldSubmitForm(node *html.Node) bool {
-	return false
-}
-
 // parseSearchResults iterates the HTML to extract search results
 func parseSearchResults(node *html.Node) ([]Link, error) {
 
 	var isSponsoredLink func(*html.Node) bool
 	isSponsoredLink = func(n *html.Node) bool {
 		for parent := n; parent != nil; parent = parent.Parent {
-			//logFn(parent)
 			if parent.Data == "tr" && hasClass(parent, "result-sponsored") {
-				//fmt.Println("Sponsored link found !")
 				return true
 			}
 		}
@@ -60,15 +63,6 @@ func parseSearchResults(node *html.Node) ([]Link, error) {
 
 	var iterate func(*html.Node, []Link) ([]Link, error)
 	iterate = func(n *html.Node, found []Link) ([]Link, error) {
-		//logFn(n)
-
-		//if n.Type == html.ElementNode && n.Data == "tr" {
-		//	// break out of dodgy sponsored links
-		//	if hasClass(n, "result-sponsored") {
-		//		return nil, errors.New("ignore <tr>.result-sponsored")
-		//	}
-		//}
-		// filter
 		if n.Type == html.ElementNode && n.Data == "a" {
 			if hasClass(n, "result-link") {
 				// add href attribute and first child element as links
@@ -78,29 +72,22 @@ func parseSearchResults(node *html.Node) ([]Link, error) {
 					if n.FirstChild != nil && n.FirstChild.Type == html.TextNode {
 						description = n.FirstChild.Data
 					}
-					//fmt.Printf("Found link: %s\n\t%s\n", href, description)
 					l := Link{href, description}
 					found = append(found, l)
 				}
 			}
 			// TODO: bug in html parser does not accept class attribute on TRs. boo ! use tokenizer API  https://zetcode.com/golang/net-html/
-			//
 			if isSponsoredLink(n) {
-				//fmt.Println("Found sponsored link ", findHref(n))
 				return nil, nil
 			}
 		}
 		// tree iterator
 		for c := n.FirstChild; c != nil; c = c.NextSibling {
-			// this is shit, checks that recursive call only append
 			foundOther, _ := iterate(c, found)
 			if len(foundOther) > len(found) {
 				found = foundOther
 			}
 			if found == nil {
-				// ignoring tree
-				//fmt.Println("Broken out of sponsored tree ")
-				//c = c.
 				break
 			}
 		}
@@ -111,7 +98,6 @@ func parseSearchResults(node *html.Node) ([]Link, error) {
 }
 
 func findHref(n *html.Node) string {
-	// iterate until href found
 	for _, a := range n.Attr {
 		if a.Key == "href" {
 			return a.Val
@@ -120,32 +106,32 @@ func findHref(n *html.Node) string {
 	return ""
 }
 
-// search performs a GET to the provided url. returned read need to be closed
+// postDuckDuckGo submits a search to DuckDuckGo lite.
 func postDuckDuckGo(term string) (string, error) {
-	//body := fmt.Sprintf("q=%s", term)
-	url := "https://lite.duckduckgo.com/lite/"
-	values := make(map[string][]string)
-	values["q"] = []string{term}
-	// use PostForm sends correct Content Type
-	resp, err := http.PostForm(url, values)
-	if err := assertRequest(resp, err); err != nil {
+	endpoint := "https://lite.duckduckgo.com/lite/"
+	values := url.Values{}
+	values.Set("q", term)
+
+	req, err := http.NewRequest(http.MethodPost, endpoint, strings.NewReader(values.Encode()))
+	if err != nil {
 		return "", err
 	}
-	defer resp.Body.Close()
-	return bodyToString(&resp.Body), nil
-}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("User-Agent", "Mozilla/5.0 (compatible; PoliticalDissidence/1.0)")
 
-//ignore trees of sponsored links
-func logFn(n *html.Node) {
-	// cleanup data that is hard to log
-	nData := fmt.Sprintf("%s", n.Data)
-	nData = strings.ReplaceAll(nData, "\r", "\\r")
-	nData = strings.ReplaceAll(nData, "\n", "\\n")
-	nData = strings.ReplaceAll(nData, "\t", "\\t")
-	nType := fmt.Sprintf("%s", n.Type)
-	allAtr := ""
-	for _, a := range n.Attr {
-		allAtr += fmt.Sprintf("%s=%s,", a.Key, a.Val)
+	resp, err := httpClient.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("duckduckgo request failed: %w", err)
 	}
-	fmt.Printf("\ttype=%s sz_a=%d data=%s attr=%s \n", nType, len(n.Attr), nData, allAtr)
+	defer resp.Body.Close()
+
+	// 202 is used for the anomaly/challenge interstitial; treat only 200 as success.
+	if resp.StatusCode != http.StatusOK {
+		body := bodyToString(resp.Body)
+		if isDuckDuckGoChallenge(body) {
+			return "", fmt.Errorf("duckduckgo blocked the request (status %d)", resp.StatusCode)
+		}
+		return "", fmt.Errorf("unexpected status %d %s", resp.StatusCode, resp.Status)
+	}
+	return bodyToString(resp.Body), nil
 }
