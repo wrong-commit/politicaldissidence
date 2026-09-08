@@ -58,6 +58,21 @@ go build -o csv2json.exe ./cmd/csv2json
 .\csv2json.exe -members .\FamilynameRepsCSV.csv -o .\members.json
 ```
 
+Merge two MP JSON databases into a new file (dedupe by name; never overwrites `-o`):
+
+```powershell
+go run ./cmd/mergeDatabases -a .\mp_data.json -b .\mps_from_csv.json
+go run ./cmd/mergeDatabases -a .\mp_data.json -b .\mps_from_csv.json -o .\mps_merged.json
+```
+
+Or build and run the executable:
+
+```powershell
+go build -o mergeDatabases.exe ./cmd/mergeDatabases
+.\mergeDatabases.exe -a .\mp_data.json -b .\mps_from_csv.json -o .\mps_merged.json
+```
+
+Details: [cmd/mergeDatabases/README.md](cmd/mergeDatabases/README.md) and [SPEC_MERGE_DATABASES.md](docs/specs/SPEC_MERGE_DATABASES.md).
 On macOS / Linux (or Git Bash), the `make` script builds then runs:
 
 ```sh
@@ -82,6 +97,7 @@ See [KEYBOARD_SHORTCUTS.md](docs/KEYBOARD_SHORTCUTS.md).
 - [Select a URL modal improvements](docs/specs/SPEC_SELECT_URL_MODAL.md)
 - [Select a URL search paging (v2)](docs/specs/SPEC_SELECT_URL_PAGING.md)
 - [Select a URL searcher controls (v3)](docs/specs/SPEC_SELECT_URL_SEARCHER_V3.md)
+- [Merge MP JSON databases](docs/specs/SPEC_MERGE_DATABASES.md)
 
 ## TODO
 

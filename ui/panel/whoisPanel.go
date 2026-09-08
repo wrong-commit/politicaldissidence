@@ -12,7 +12,7 @@ const httpsExpiryLayout = "2006-01-02"
 // DrawWhoisPanel renders the Domain Information panel for a domain's latest WHOIS, HTTPS, and DNS records.
 func DrawWhoisPanel(hostname, mpName string, w *data.WhoisRecord, https *data.HttpsRecord, dns *data.DnsRecord) string {
 	if w == nil && https == nil && dns == nil {
-		return "No WHOIS lookup yet"
+		return "No domain lookup yet"
 	}
 
 	var b strings.Builder
@@ -73,7 +73,7 @@ func DrawWhoisPanel(hostname, mpName string, w *data.WhoisRecord, https *data.Ht
 		if mpName != "" {
 			fmt.Fprintf(&b, "MP: %s\n", mpName)
 		}
-		b.WriteString("No WHOIS lookup yet\n")
+		b.WriteString("No domain lookup yet\n")
 	}
 
 	appendHttpsSection(&b, https)

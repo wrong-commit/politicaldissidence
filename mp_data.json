@@ -1,5 +1,17 @@
 [
    {
+     "honorific": "Mr",
+     "firstName": "Basem",
+     "surnname": "Abdo",
+     "otherName": "Jamal",
+     "preferredName": "Basem",
+     "electorate": "Calwell",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
      "honorific": "Hon",
      "firstName": "Anthony",
      "surnname": "Albanese",
@@ -15,9 +27,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:59:37.6033393+10:00",
+         "lastChecked": "2026-09-09T09:37:41.9095885+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:59:37.6033393+10:00",
+           "checkedAt": "2026-09-09T09:37:41.9095885+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -29,7 +41,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T09:12:29.3425526+10:00",
+           "checkedAt": "2026-09-09T09:37:41.4437355+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -47,74 +59,13 @@
              "alt4.aspmx.l.google.com"
            ],
            "txt": [
-             "google-site-verification=SEnocELh184pXdqukEpwIdXtwPDUnV3Cr4jyJ3DIeqA",
              "google-site-verification=9oUKLuBnaYKBSH2p0uQ9QUIgUe0xMz1dQjQcD03JPt0",
+             "google-site-verification=SEnocELh184pXdqukEpwIdXtwPDUnV3Cr4jyJ3DIeqA",
              "v=spf1 include:_spf.google.com -all"
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T09:12:31.8794354+10:00",
-           "status": "enabled",
-           "notAfter": "2026-10-07T17:40:34Z",
-           "httpStatus": 200,
-           "apex": {
-             "hostname": "anthonyalbanese.com.au",
-             "status": "enabled",
-             "notAfter": "2026-10-07T17:40:34Z",
-             "httpStatus": 200
-           },
-           "www": {
-             "hostname": "www.anthonyalbanese.com.au",
-             "status": "enabled",
-             "notAfter": "2026-10-07T17:40:34Z",
-             "httpStatus": 200
-           }
-         }
-       },
-       {
-         "hostname": "anthonyalbanese.com.au",
-         "expiry": "",
-         "expired": false,
-         "alert": false,
-         "lastChecked": "2026-09-09T08:59:38.9617542+10:00",
-         "whois": {
-           "checkedAt": "2026-09-09T08:59:38.9617542+10:00",
-           "status": [
-             "serverrenewprohibited"
-           ],
-           "updated": "2026-08-15T23:13:50Z",
-           "registrar": "Web Address Registration Pty Ltd",
-           "nameServers": [
-             "magali.ns.cloudflare.com",
-             "sid.ns.cloudflare.com"
-           ]
-         },
-         "dns": {
-           "checkedAt": "2026-09-09T09:12:30.3591634+10:00",
-           "empty": false,
-           "outcome": "ok",
-           "a": [
-             "76.76.21.21"
-           ],
-           "ns": [
-             "sid.ns.cloudflare.com",
-             "magali.ns.cloudflare.com"
-           ],
-           "mx": [
-             "aspmx.l.google.com",
-             "alt1.aspmx.l.google.com",
-             "alt2.aspmx.l.google.com",
-             "alt3.aspmx.l.google.com",
-             "alt4.aspmx.l.google.com"
-           ],
-           "txt": [
-             "google-site-verification=SEnocELh184pXdqukEpwIdXtwPDUnV3Cr4jyJ3DIeqA",
-             "google-site-verification=9oUKLuBnaYKBSH2p0uQ9QUIgUe0xMz1dQjQcD03JPt0",
-             "v=spf1 include:_spf.google.com -all"
-           ]
-         },
-         "https": {
-           "checkedAt": "2026-09-09T09:12:34.3233631+10:00",
+           "checkedAt": "2026-09-09T09:37:43.5774221+10:00",
            "status": "enabled",
            "notAfter": "2026-10-07T17:40:34Z",
            "httpStatus": 200,
@@ -133,6 +84,2480 @@
          }
        }
      ]
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Mary",
+     "surnname": "Aldred",
+     "otherName": "Rose",
+     "preferredName": "Mary",
+     "electorate": "Monash",
+     "party": "LP",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Hon Dr",
+     "firstName": "Anne",
+     "surnname": "Aly",
+     "otherName": "",
+     "preferredName": "Anne",
+     "electorate": "Cowan",
+     "party": "ALP",
+     "state": "WA",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Ash",
+     "surnname": "Ambihaipahar",
+     "otherName": "",
+     "preferredName": "Ash",
+     "electorate": "Barton",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "David",
+     "surnname": "Batt",
+     "otherName": "John",
+     "preferredName": "David",
+     "electorate": "Hinkler",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Angie",
+     "surnname": "Bell",
+     "otherName": "Marion",
+     "preferredName": "Angie",
+     "electorate": "Moncrieff",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "",
+     "domains": [
+       {
+         "hostname": "angiebell.com.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-09T09:37:43.3861817+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T09:37:43.3861817+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-15T21:36:26Z",
+           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
+           "nameServers": [
+             "aron.ns.cloudflare.com",
+             "graham.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T09:37:42.5242533+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "149.28.166.203"
+           ],
+           "ns": [
+             "graham.ns.cloudflare.com",
+             "aron.ns.cloudflare.com"
+           ],
+           "mx": [
+             "angiebell-com-au.mail.protection.outlook.com"
+           ],
+           "txt": [
+             "MS=ms78163494",
+             "v=spf1 +include:_spf.createsend.com +a +mx +include:mailgun.org +include:spf.protection.outlook.com -all"
+           ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T09:37:48.6918677+10:00",
+           "status": "enabled",
+           "notAfter": "2026-11-21T21:24:26Z",
+           "httpStatus": 200,
+           "apex": {
+             "hostname": "angiebell.com.au",
+             "status": "enabled",
+             "notAfter": "2026-11-21T21:24:26Z",
+             "httpStatus": 200
+           },
+           "www": {
+             "hostname": "www.angiebell.com.au",
+             "status": "enabled",
+             "notAfter": "2026-11-21T21:24:26Z",
+             "httpStatus": 200
+           }
+         }
+       }
+     ]
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Jodie",
+     "surnname": "Belyea",
+     "otherName": "Anne",
+     "preferredName": "Jodie",
+     "electorate": "Dunkley",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Carol",
+     "surnname": "Berry",
+     "otherName": "Gaye",
+     "preferredName": "Carol",
+     "electorate": "Whitlam",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Sam",
+     "surnname": "Birrell",
+     "otherName": "James",
+     "preferredName": "Sam",
+     "electorate": "Nicholls",
+     "party": "NATS",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Nicolette",
+     "surnname": "Boele",
+     "otherName": "",
+     "preferredName": "Nicolette",
+     "electorate": "Bradfield",
+     "party": "IND",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Christopher",
+     "surnname": "Bowen",
+     "otherName": "Eyles",
+     "preferredName": "Chris",
+     "electorate": "McMahon",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": [
+       {
+         "hostname": "www.chrisbowen.net",
+         "expiry": "2027-08-07T03:48:55Z",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-09T09:37:45.3859564+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T09:37:45.3859564+10:00",
+           "status": [
+             "ok"
+           ],
+           "created": "2003-08-07T03:48:55Z",
+           "updated": "2026-08-11T03:21:44Z",
+           "expiry": "2027-08-07T03:48:55Z",
+           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
+           "nameServers": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T09:37:43.6073507+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "104.21.43.124",
+             "172.67.179.20",
+             "2606:4700:3031::ac43:b314",
+             "2606:4700:3033::6815:2b7c"
+           ],
+           "ns": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ],
+           "txt": [
+             "v=spf1 include:jangomail.com a mx ~all"
+           ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T09:37:50.0705911+10:00",
+           "status": "enabled",
+           "notAfter": "2026-10-30T09:28:11Z",
+           "httpStatus": 200,
+           "apex": {
+             "hostname": "chrisbowen.net",
+             "status": "enabled",
+             "notAfter": "2026-10-30T09:28:11Z",
+             "httpStatus": 200
+           },
+           "www": {
+             "hostname": "www.chrisbowen.net",
+             "status": "enabled",
+             "notAfter": "2026-10-30T09:28:11Z",
+             "httpStatus": 200
+           }
+         }
+       }
+     ]
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Colin",
+     "surnname": "Boyce",
+     "otherName": "Einar",
+     "preferredName": "Colin",
+     "electorate": "Flynn",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Joanna",
+     "surnname": "Briskey",
+     "otherName": "Leigh",
+     "preferredName": "Jo",
+     "electorate": "Maribyrnong",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Scott",
+     "surnname": "Buchholz",
+     "otherName": "",
+     "preferredName": "",
+     "electorate": "Wright",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "",
+     "domains": [
+       {
+         "hostname": "www.scottbuchholz.com.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-09T09:37:46.8591505+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T09:37:46.8591505+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-15T18:39:45Z",
+           "registrar": "Domain Directors Pty Ltd trading as Instra",
+           "nameServers": [
+             "ns10.dnsmadeeasy.com",
+             "ns11.dnsmadeeasy.com",
+             "ns12.dnsmadeeasy.com",
+             "ns13.dnsmadeeasy.com",
+             "ns14.dnsmadeeasy.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T09:37:44.6709888+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "43.250.142.59"
+           ],
+           "ns": [
+             "ns13.datasearch.com.au",
+             "ns15.datasearch.com.au",
+             "ns14.datasearch.com.au",
+             "ns10.datasearch.com.au",
+             "ns12.datasearch.com.au",
+             "ns11.datasearch.com.au"
+           ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T09:37:53.1474958+10:00",
+           "status": "enabled",
+           "notAfter": "2026-11-19T09:25:09Z",
+           "httpStatus": 200,
+           "apex": {
+             "hostname": "scottbuchholz.com.au",
+             "status": "enabled",
+             "notAfter": "2026-11-19T09:25:09Z",
+             "httpStatus": 200
+           },
+           "www": {
+             "hostname": "www.scottbuchholz.com.au",
+             "status": "enabled",
+             "notAfter": "2026-11-19T09:25:09Z",
+             "httpStatus": 200
+           }
+         }
+       }
+     ]
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Anthony",
+     "surnname": "Burke",
+     "otherName": "Stephen",
+     "preferredName": "Tony",
+     "electorate": "Watson",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": [
+       {
+         "hostname": "www.tonyburke.com.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-09T09:37:48.4156311+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T09:37:48.4156311+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-15T21:00:05Z",
+           "registrar": "Tucows (Australia) Pty Ltd trading as OpenSRS",
+           "nameServers": [
+             "dns1.registrar-servers.com",
+             "dns2.registrar-servers.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T09:37:45.7555524+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "198.185.159.145",
+             "198.185.159.144",
+             "198.49.23.144",
+             "198.49.23.145"
+           ],
+           "ns": [
+             "dns2.registrar-servers.com",
+             "dns1.registrar-servers.com"
+           ],
+           "mx": [
+             "aspmx.l.google.com",
+             "alt2.aspmx.l.google.com",
+             "alt1.aspmx.l.google.com",
+             "alt4.aspmx.l.google.com",
+             "alt3.aspmx.l.google.com"
+           ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T09:37:57.1098855+10:00",
+           "status": "enabled",
+           "notAfter": "2026-11-17T02:53:46Z",
+           "httpStatus": 200,
+           "apex": {
+             "hostname": "tonyburke.com.au",
+             "status": "enabled",
+             "notAfter": "2026-11-17T02:53:46Z",
+             "httpStatus": 200
+           },
+           "www": {
+             "hostname": "www.tonyburke.com.au",
+             "status": "enabled",
+             "notAfter": "2026-11-17T21:05:35Z",
+             "httpStatus": 200
+           }
+         }
+       }
+     ]
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Matt",
+     "surnname": "Burnell",
+     "otherName": "Paul",
+     "preferredName": "Matt",
+     "electorate": "Spence",
+     "party": "ALP",
+     "state": "SA",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Josh",
+     "surnname": "Burns",
+     "otherName": "",
+     "preferredName": "Josh",
+     "electorate": "Macnamara",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": [
+       {
+         "hostname": "www.joshburns.com.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-09T09:37:49.8657961+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T09:37:49.8657961+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-15T20:46:36Z",
+           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
+           "nameServers": [
+             "ns1.nameserver.net.au",
+             "ns2.nameserver.net.au",
+             "ns3.nameserver.net.au"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T09:37:46.887142+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "76.76.21.21"
+           ],
+           "ns": [
+             "ns1.nameserver.net.au",
+             "ns2.nameserver.net.au",
+             "ns3.nameserver.net.au"
+           ],
+           "mx": [
+             "smtp.google.com"
+           ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T09:37:58.4403193+10:00",
+           "status": "enabled",
+           "notAfter": "2026-11-02T03:19:14Z",
+           "httpStatus": 200,
+           "apex": {
+             "hostname": "joshburns.com.au",
+             "status": "enabled",
+             "notAfter": "2026-11-02T03:19:14Z",
+             "httpStatus": 200
+           },
+           "www": {
+             "hostname": "www.joshburns.com.au",
+             "status": "enabled",
+             "notAfter": "2026-11-02T03:22:22Z",
+             "httpStatus": 200
+           }
+         }
+       }
+     ]
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Mark",
+     "surnname": "Butler",
+     "otherName": "Christopher",
+     "preferredName": "",
+     "electorate": "Hindmarsh",
+     "party": "ALP",
+     "state": "SA",
+     "level": "",
+     "domains": [
+       {
+         "hostname": "www.markbutler.net.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-09T09:37:51.3220377+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T09:37:51.3220377+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-16T00:37:05Z",
+           "registrar": "Domain Directors Pty Ltd trading as Instra",
+           "nameServers": [
+             "ns2.idealtechnology.net.au",
+             "ns3.idealtechnology.net.au",
+             "ns1.idealtechnology.net.au"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T09:37:50.9837632+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "198.185.159.144",
+             "198.49.23.145",
+             "198.185.159.145",
+             "198.49.23.144"
+           ],
+           "ns": [
+             "ns1.idealtechnology.net.au",
+             "ns3.idealtechnology.net.au",
+             "ns4.idealtechnology.net.au",
+             "ns2.idealtechnology.net.au"
+           ],
+           "mx": [
+             "markbutler.net.au"
+           ],
+           "txt": [
+             "v=spf1 ip4:111.67.20.9 +a +mx +ip4:111.67.20.120 ~all"
+           ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T09:38:03.0506665+10:00",
+           "status": "enabled",
+           "notAfter": "2026-10-20T06:32:53Z",
+           "httpStatus": 200,
+           "apex": {
+             "hostname": "markbutler.net.au",
+             "status": "enabled",
+             "notAfter": "2026-10-24T13:36:14Z",
+             "httpStatus": 200
+           },
+           "www": {
+             "hostname": "www.markbutler.net.au",
+             "status": "enabled",
+             "notAfter": "2026-10-20T06:32:53Z",
+             "httpStatus": 200
+           }
+         }
+       }
+     ]
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Alison",
+     "surnname": "Byrnes",
+     "otherName": "Joy",
+     "preferredName": "Alison",
+     "electorate": "Cunningham",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Cameron",
+     "surnname": "Caldwell",
+     "otherName": "Mackenzie",
+     "preferredName": "Cameron",
+     "electorate": "Fadden",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Julie-Ann",
+     "surnname": "Campbell",
+     "otherName": "Patricia",
+     "preferredName": "Julie-Ann",
+     "electorate": "Moreton",
+     "party": "ALP",
+     "state": "QLD",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Jamie",
+     "surnname": "Chaffey",
+     "otherName": "Lesley",
+     "preferredName": "Jamie",
+     "electorate": "Parkes",
+     "party": "NATS",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Dr",
+     "firstName": "James",
+     "surnname": "Chalmers",
+     "otherName": "Edward",
+     "preferredName": "Jim",
+     "electorate": "Rankin",
+     "party": "ALP",
+     "state": "QLD",
+     "level": "",
+     "domains": [
+       {
+         "hostname": "jimchalmers.org",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "0001-01-01T00:00:00Z",
+         "whois": {
+           "checkedAt": "2026-09-09T09:38:35.0115444+10:00",
+           "error": "Could not get WHOIS for \u003cjimchalmers.org\u003e"
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T09:37:52.0539808+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "172.67.203.233",
+             "104.21.44.211",
+             "2606:4700:3037::ac43:cbe9",
+             "2606:4700:3030::6815:2cd3"
+           ],
+           "ns": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ],
+           "mx": [
+             "mx.zoho.com.au",
+             "mx2.zoho.com.au",
+             "mx3.zoho.com.au"
+           ],
+           "txt": [
+             "zoho-verification=zb64886461.zmverify.zoho.com.au",
+             "v=spf1 include:zoho.com.au ~all"
+           ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T09:38:04.4705873+10:00",
+           "status": "enabled",
+           "notAfter": "2026-12-03T20:04:32Z",
+           "httpStatus": 200,
+           "apex": {
+             "hostname": "jimchalmers.org",
+             "status": "enabled",
+             "notAfter": "2026-12-03T20:04:32Z",
+             "httpStatus": 200
+           },
+           "www": {
+             "hostname": "www.jimchalmers.org",
+             "status": "enabled",
+             "notAfter": "2026-12-03T20:04:32Z",
+             "httpStatus": 200
+           }
+         }
+       }
+     ]
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Kate",
+     "surnname": "Chaney",
+     "otherName": "Ella",
+     "preferredName": "Kate",
+     "electorate": "Curtin",
+     "party": "IND",
+     "state": "WA",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Hon Dr",
+     "firstName": "Andrew",
+     "surnname": "Charlton",
+     "otherName": "Henry George",
+     "preferredName": "Andrew",
+     "electorate": "Parramatta",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Darren",
+     "surnname": "Chester",
+     "otherName": "Jeffrey",
+     "preferredName": "Darren",
+     "electorate": "Gippsland",
+     "party": "NATS",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Lisa",
+     "surnname": "Chesters",
+     "otherName": "Marie",
+     "preferredName": "Lisa",
+     "electorate": "Bendigo",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Jason",
+     "surnname": "Clare",
+     "otherName": "Dean",
+     "preferredName": "",
+     "electorate": "Blaxland",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Sharon",
+     "surnname": "Claydon",
+     "otherName": "Catherine",
+     "preferredName": "Sharon",
+     "electorate": "Newcastle",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": [
+       {
+         "hostname": "www.sharonclaydon.com",
+         "expiry": "2027-01-30T07:39:19Z",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-09T09:37:54.9715551+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T09:37:54.9715551+10:00",
+           "status": [
+             "ok"
+           ],
+           "created": "2013-01-30T07:39:19Z",
+           "updated": "2026-01-15T10:01:18Z",
+           "expiry": "2027-01-30T07:39:19Z",
+           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
+           "nameServers": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T09:37:53.1541819+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "172.67.185.115",
+             "104.21.59.241",
+             "2606:4700:3036::ac43:b973",
+             "2606:4700:3034::6815:3bf1"
+           ],
+           "ns": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ],
+           "mx": [
+             "mx.emailnb.com"
+           ],
+           "txt": [
+             "v=spf1 a mx include:sendgrid.net ~all"
+           ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T09:38:06.6720315+10:00",
+           "status": "enabled",
+           "notAfter": "2026-11-26T18:40:44Z",
+           "httpStatus": 200,
+           "apex": {
+             "hostname": "sharonclaydon.com",
+             "status": "enabled",
+             "notAfter": "2026-11-26T18:40:44Z",
+             "httpStatus": 200
+           },
+           "www": {
+             "hostname": "www.sharonclaydon.com",
+             "status": "enabled",
+             "notAfter": "2026-11-26T18:40:44Z",
+             "httpStatus": 200
+           }
+         }
+       }
+     ]
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Claire",
+     "surnname": "Clutterham",
+     "otherName": "Louise",
+     "preferredName": "Claire",
+     "electorate": "Sturt",
+     "party": "ALP",
+     "state": "SA",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Renee",
+     "surnname": "Coffey",
+     "otherName": "Kay",
+     "preferredName": "Renee",
+     "electorate": "Griffith",
+     "party": "ALP",
+     "state": "QLD",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Elizabeth",
+     "surnname": "Coker",
+     "otherName": "Ann",
+     "preferredName": "Libby",
+     "electorate": "Corangamite",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": [
+       {
+         "hostname": "www.libbycoker.com.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-09T09:37:56.4457243+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T09:37:56.4457243+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-17T00:57:14Z",
+           "registrar": "Web Address Registration Pty Ltd",
+           "nameServers": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T09:37:54.2872515+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "172.67.186.110",
+             "104.21.1.3",
+             "2606:4700:3030::6815:103",
+             "2606:4700:3035::ac43:ba6e"
+           ],
+           "ns": [
+             "gerald.ns.cloudflare.com",
+             "cheryl.ns.cloudflare.com"
+           ],
+           "mx": [
+             "route1.mx.cloudflare.net",
+             "route2.mx.cloudflare.net",
+             "route3.mx.cloudflare.net"
+           ],
+           "txt": [
+             "v=spf1 include:_spf.mx.cloudflare.net ~all"
+           ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T09:38:08.0635897+10:00",
+           "status": "enabled",
+           "notAfter": "2026-10-11T05:18:59Z",
+           "httpStatus": 200,
+           "apex": {
+             "hostname": "libbycoker.com.au",
+             "status": "enabled",
+             "notAfter": "2026-10-11T05:18:59Z",
+             "httpStatus": 200
+           },
+           "www": {
+             "hostname": "www.libbycoker.com.au",
+             "status": "enabled",
+             "notAfter": "2026-10-11T05:18:59Z",
+             "httpStatus": 200
+           }
+         }
+       }
+     ]
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Julie",
+     "surnname": "Collins",
+     "otherName": "Maree",
+     "preferredName": "",
+     "electorate": "Franklin",
+     "party": "ALP",
+     "state": "TAS",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Emma",
+     "surnname": "Comer",
+     "otherName": "Louise",
+     "preferredName": "Emma",
+     "electorate": "Petrie",
+     "party": "ALP",
+     "state": "QLD",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Patrick",
+     "surnname": "Conaghan",
+     "otherName": "John",
+     "preferredName": "Pat",
+     "electorate": "Cowper",
+     "party": "NATS",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Patrick",
+     "surnname": "Conroy",
+     "otherName": "Martin",
+     "preferredName": "Pat",
+     "electorate": "Shortland",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": [
+       {
+         "hostname": "patconroy.com.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-09T09:37:57.899084+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T09:37:57.899084+10:00",
+           "status": [
+             "ok"
+           ],
+           "updated": "2026-09-05T01:09:44Z",
+           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
+           "nameServers": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T09:37:55.3696477+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "104.21.34.141",
+             "172.67.161.173",
+             "2606:4700:3032::ac43:a1ad",
+             "2606:4700:3033::6815:228d"
+           ],
+           "ns": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ],
+           "mx": [
+             "mx3.netregistry.net",
+             "mx2.netregistry.net"
+           ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T09:38:10.5197746+10:00",
+           "status": "enabled",
+           "notAfter": "2026-11-09T06:18:25Z",
+           "httpStatus": 200,
+           "apex": {
+             "hostname": "patconroy.com.au",
+             "status": "enabled",
+             "notAfter": "2026-11-09T06:18:25Z",
+             "httpStatus": 200
+           },
+           "www": {
+             "hostname": "www.patconroy.com.au",
+             "status": "enabled",
+             "notAfter": "2026-11-09T06:18:25Z",
+             "httpStatus": 200
+           }
+         }
+       }
+     ]
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Kara",
+     "surnname": "Cook",
+     "otherName": "May George",
+     "preferredName": "Kara",
+     "electorate": "Bonner",
+     "party": "ALP",
+     "state": "QLD",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Dr",
+     "firstName": "Patricia",
+     "surnname": "Cook",
+     "otherName": "Ann",
+     "preferredName": "Trish",
+     "electorate": "Bullwinkel",
+     "party": "ALP",
+     "state": "WA",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Dugald",
+     "surnname": "Dick",
+     "otherName": "Milton",
+     "preferredName": "Milton",
+     "electorate": "Oxley",
+     "party": "ALP",
+     "state": "QLD",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Mary",
+     "surnname": "Doyle",
+     "otherName": "Judith Jacinta",
+     "preferredName": "Mary",
+     "electorate": "Aston",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Mark",
+     "surnname": "Dreyfus",
+     "otherName": "Alfred",
+     "preferredName": "Mark",
+     "electorate": "Isaacs",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": [
+       {
+         "hostname": "www.markdreyfus.com",
+         "expiry": "2027-05-17T07:39:36Z",
+         "expired": false,
+         "alert": true,
+         "lastChecked": "2026-09-09T09:37:59.8421484+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T09:37:59.8421484+10:00",
+           "status": [
+             "ok"
+           ],
+           "created": "2006-05-17T07:39:36Z",
+           "updated": "2025-02-02T08:13:04Z",
+           "expiry": "2027-05-17T07:39:36Z",
+           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
+           "nameServers": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T09:37:56.4653203+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "104.21.13.106",
+             "172.67.199.213",
+             "2606:4700:3030::6815:d6a",
+             "2606:4700:3034::ac43:c7d5"
+           ],
+           "ns": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ],
+           "mx": [
+             "smtp.secureserver.net",
+             "mailstore1.secureserver.net"
+           ],
+           "txt": [
+             "ca3-74463ae6e93a40c38ea64189e21ab5a9",
+             "google-site-verification=bv0qwuXwo6JOFKJVvic5KzhDAFYnkuL0XQxId0QxncA"
+           ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T09:38:11.8659825+10:00",
+           "status": "enabled",
+           "notAfter": "2026-11-05T15:35:58Z",
+           "httpStatus": 200,
+           "apex": {
+             "hostname": "markdreyfus.com",
+             "status": "enabled",
+             "notAfter": "2026-11-05T15:35:58Z",
+             "httpStatus": 200
+           },
+           "www": {
+             "hostname": "www.markdreyfus.com",
+             "status": "enabled",
+             "notAfter": "2026-11-05T15:35:58Z",
+             "httpStatus": 200
+           }
+         }
+       }
+     ]
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Maria",
+     "surnname": "Elliot",
+     "otherName": "Justine",
+     "preferredName": "Justine",
+     "electorate": "Richmond",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "David",
+     "surnname": "Farley",
+     "otherName": "",
+     "preferredName": "David",
+     "electorate": "Farrer",
+     "party": "ON",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Cassandra",
+     "surnname": "Fernando",
+     "otherName": "Juanita",
+     "preferredName": "Cassandra",
+     "electorate": "Holt",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Allison",
+     "surnname": "France",
+     "otherName": "Anne",
+     "preferredName": "Ali",
+     "electorate": "Dickson",
+     "party": "ALP",
+     "state": "QLD",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Dr",
+     "firstName": "Michael",
+     "surnname": "Freelander",
+     "otherName": "Randolph",
+     "preferredName": "Mike",
+     "electorate": "Macarthur",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Thomas",
+     "surnname": "French",
+     "otherName": "Alan",
+     "preferredName": "Tom",
+     "electorate": "Moore",
+     "party": "ALP",
+     "state": "WA",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Dr",
+     "firstName": "Carina",
+     "surnname": "Garland",
+     "otherName": "Mary Lindsay",
+     "preferredName": "Carina",
+     "electorate": "Chisholm",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Andrew",
+     "surnname": "Gee",
+     "otherName": "Robert",
+     "preferredName": "Andrew",
+     "electorate": "Calare",
+     "party": "NATS",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Steven",
+     "surnname": "Georganas",
+     "otherName": "",
+     "preferredName": "Steve",
+     "electorate": "Adelaide",
+     "party": "ALP",
+     "state": "SA",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Andrew",
+     "surnname": "Giles",
+     "otherName": "James",
+     "preferredName": "Andrew",
+     "electorate": "Scullin",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Patrick",
+     "surnname": "Gorman",
+     "otherName": "",
+     "preferredName": "Patrick",
+     "electorate": "Perth",
+     "party": "ALP",
+     "state": "WA",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Luke",
+     "surnname": "Gosling",
+     "otherName": "John",
+     "preferredName": "Luke",
+     "electorate": "Solomon",
+     "party": "ALP",
+     "state": "NT",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Matthew",
+     "surnname": "Gregg",
+     "otherName": "John",
+     "preferredName": "Matt",
+     "electorate": "Deakin",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Dr",
+     "firstName": "Helen",
+     "surnname": "Haines",
+     "otherName": "Mary",
+     "preferredName": "Helen",
+     "electorate": "Indi",
+     "party": "IND",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Garth",
+     "surnname": "Hamilton",
+     "otherName": "Russell",
+     "preferredName": "Garth",
+     "electorate": "Groom",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Andrew",
+     "surnname": "Hastie",
+     "otherName": "William",
+     "preferredName": "Andrew",
+     "electorate": "Canning",
+     "party": "LP",
+     "state": "WA",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Alexander",
+     "surnname": "Hawke",
+     "otherName": "George",
+     "preferredName": "Alex",
+     "electorate": "Mitchell",
+     "party": "LP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Julian",
+     "surnname": "Hill",
+     "otherName": "Christopher",
+     "preferredName": "Julian",
+     "electorate": "Bruce",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Kevin",
+     "surnname": "Hogan",
+     "otherName": "John",
+     "preferredName": "Kevin",
+     "electorate": "Page",
+     "party": "NATS",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Rowan",
+     "surnname": "Holzberger",
+     "otherName": "Aubrey Victor",
+     "preferredName": "Rowan",
+     "electorate": "Forde",
+     "party": "ALP",
+     "state": "QLD",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Edham",
+     "surnname": "Husic",
+     "otherName": "Nurredin",
+     "preferredName": "Ed",
+     "electorate": "Chifley",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Madonna",
+     "surnname": "Jarrett",
+     "otherName": "Louise",
+     "preferredName": "Madonna",
+     "electorate": "Brisbane",
+     "party": "ALP",
+     "state": "QLD",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Marion Alice",
+     "surnname": "Jordan-Baird",
+     "otherName": "Marguerite",
+     "preferredName": "Alice",
+     "electorate": "Gorton",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Barnaby",
+     "surnname": "Joyce",
+     "otherName": "Thomas Gerard",
+     "preferredName": "Barnaby",
+     "electorate": "New England",
+     "party": "NATS",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Robert",
+     "surnname": "Katter",
+     "otherName": "Carl",
+     "preferredName": "Bob",
+     "electorate": "Kennedy",
+     "party": "KAP",
+     "state": "QLD",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Gerardine",
+     "surnname": "Kearney",
+     "otherName": "Mary",
+     "preferredName": "Ged",
+     "electorate": "Cooper",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": [
+       {
+         "hostname": "www.gedkearney.org.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-09T09:38:01.2947606+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T09:38:01.2947606+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-15T21:29:09Z",
+           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
+           "nameServers": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T09:37:57.5184623+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "104.21.40.239",
+             "172.67.140.55",
+             "2606:4700:3030::ac43:8c37",
+             "2606:4700:3032::6815:28ef"
+           ],
+           "ns": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T09:38:13.2316091+10:00",
+           "status": "enabled",
+           "notAfter": "2026-10-29T18:08:55Z",
+           "httpStatus": 200,
+           "apex": {
+             "hostname": "gedkearney.org.au",
+             "status": "enabled",
+             "notAfter": "2026-10-29T18:08:55Z",
+             "httpStatus": 200
+           },
+           "www": {
+             "hostname": "www.gedkearney.org.au",
+             "status": "enabled",
+             "notAfter": "2026-10-29T18:08:55Z",
+             "httpStatus": 200
+           }
+         }
+       }
+     ]
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Simon",
+     "surnname": "Kennedy",
+     "otherName": "Peter",
+     "preferredName": "Simon",
+     "electorate": "Cook",
+     "party": "LP",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Matt",
+     "surnname": "Keogh",
+     "otherName": "James",
+     "preferredName": "Matt",
+     "electorate": "Burt",
+     "party": "ALP",
+     "state": "WA",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Peter",
+     "surnname": "Khalil",
+     "otherName": "",
+     "preferredName": "Peter",
+     "electorate": "Wills",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Catherine",
+     "surnname": "King",
+     "otherName": "Fiona",
+     "preferredName": "",
+     "electorate": "Ballarat",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Madeleine",
+     "surnname": "King",
+     "otherName": "Mary Harvie",
+     "preferredName": "Madeleine",
+     "electorate": "Brand",
+     "party": "ALP",
+     "state": "WA",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Michelle",
+     "surnname": "Landry",
+     "otherName": "Leanne",
+     "preferredName": "Michelle",
+     "electorate": "Capricornia",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Tania",
+     "surnname": "Lawrence",
+     "otherName": "Natalie",
+     "preferredName": "Tania",
+     "electorate": "Hasluck",
+     "party": "ALP",
+     "state": "WA",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Jerome",
+     "surnname": "Laxale",
+     "otherName": "Alexandre Alain",
+     "preferredName": "Jerome",
+     "electorate": "Bennelong",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Dai",
+     "surnname": "Le",
+     "otherName": "Trang",
+     "preferredName": "Dai",
+     "electorate": "Fowler",
+     "party": "IND",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Julian",
+     "surnname": "Leeser",
+     "otherName": "",
+     "preferredName": "Julian",
+     "electorate": "Berowra",
+     "party": "LP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon Dr",
+     "firstName": "Andrew",
+     "surnname": "Leigh",
+     "otherName": "Keith",
+     "preferredName": "",
+     "electorate": "Fenner",
+     "party": "ALP",
+     "state": "ACT",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Sam",
+     "surnname": "Lim",
+     "otherName": "Bon Cheng",
+     "preferredName": "Sam",
+     "electorate": "Tangney",
+     "party": "ALP",
+     "state": "WA",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "David",
+     "surnname": "Littleproud",
+     "otherName": "",
+     "preferredName": "David",
+     "electorate": "Maranoa",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Richard",
+     "surnname": "Marles",
+     "otherName": "Donald",
+     "preferredName": "",
+     "electorate": "Corio",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Zaneta",
+     "surnname": "Mascarenhas",
+     "otherName": "Felice Antoinetta",
+     "preferredName": "Zaneta",
+     "electorate": "Swan",
+     "party": "ALP",
+     "state": "WA",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Kristy",
+     "surnname": "McBain",
+     "otherName": "Louise",
+     "preferredName": "Kristy",
+     "electorate": "Eden-Monaro",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Emma",
+     "surnname": "McBride",
+     "otherName": "Margaret",
+     "preferredName": "Emma",
+     "electorate": "Dobell",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Michael",
+     "surnname": "McCormack",
+     "otherName": "Francis",
+     "preferredName": "Michael",
+     "electorate": "Riverina",
+     "party": "NATS",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mrs",
+     "firstName": "Melissa",
+     "surnname": "McIntosh",
+     "otherName": "Iris",
+     "preferredName": "Melissa",
+     "electorate": "Lindsay",
+     "party": "LP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Zoe",
+     "surnname": "McKenzie",
+     "otherName": "Anne",
+     "preferredName": "Zoe",
+     "electorate": "Flinders",
+     "party": "LP",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Louise",
+     "surnname": "Miller-Frost",
+     "otherName": "Jane",
+     "preferredName": "Louise",
+     "electorate": "Boothby",
+     "party": "ALP",
+     "state": "SA",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Robert",
+     "surnname": "Mitchell",
+     "otherName": "George",
+     "preferredName": "Rob",
+     "electorate": "McEwen",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "David",
+     "surnname": "Moncrieff",
+     "otherName": "Sidney",
+     "preferredName": "David",
+     "electorate": "Hughes",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Dr",
+     "firstName": "Daniel",
+     "surnname": "Mulino",
+     "otherName": "",
+     "preferredName": "Daniel",
+     "electorate": "Fraser",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Shayne",
+     "surnname": "Neumann",
+     "otherName": "Kenneth",
+     "preferredName": "",
+     "electorate": "Blair",
+     "party": "ALP",
+     "state": "QLD",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Gabriel",
+     "surnname": "Ng",
+     "otherName": "James",
+     "preferredName": "Gabriel",
+     "electorate": "Menzies",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Edward",
+     "surnname": "O'Brien",
+     "otherName": "Lynam",
+     "preferredName": "Ted",
+     "electorate": "Fairfax",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Llewellyn",
+     "surnname": "O'Brien",
+     "otherName": "Stephen",
+     "preferredName": "Llew",
+     "electorate": "Wide Bay",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Clare",
+     "surnname": "O'Neil",
+     "otherName": "Ellen",
+     "preferredName": "",
+     "electorate": "Hotham",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Antony",
+     "surnname": "Pasin",
+     "otherName": "",
+     "preferredName": "Tony",
+     "electorate": "Barker",
+     "party": "LP",
+     "state": "SA",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Alicia",
+     "surnname": "Payne",
+     "otherName": "Emma",
+     "preferredName": "Alicia",
+     "electorate": "Canberra",
+     "party": "ALP",
+     "state": "ACT",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Alison",
+     "surnname": "Penfold",
+     "otherName": "Louise",
+     "preferredName": "Alison",
+     "electorate": "Lyne",
+     "party": "NATS",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mrs",
+     "firstName": "Fiona",
+     "surnname": "Phillips",
+     "otherName": "Evon",
+     "preferredName": "Fiona",
+     "electorate": "Gilmore",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Henry",
+     "surnname": "Pike",
+     "otherName": "Jon",
+     "preferredName": "Henry",
+     "electorate": "Bowman",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Tanya",
+     "surnname": "Plibersek",
+     "otherName": "Joan",
+     "preferredName": "",
+     "electorate": "Sydney",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Melissa",
+     "surnname": "Price",
+     "otherName": "Lee",
+     "preferredName": "",
+     "electorate": "Durack",
+     "party": "LP",
+     "state": "WA",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Sam",
+     "surnname": "Rae",
+     "otherName": "Thomas",
+     "preferredName": "Sam",
+     "electorate": "Hawke",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Leon",
+     "surnname": "Rebello",
+     "otherName": "Stefan",
+     "preferredName": "Leon",
+     "electorate": "McPherson",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Dr",
+     "firstName": "Gordon",
+     "surnname": "Reid",
+     "otherName": "James",
+     "preferredName": "Gordon",
+     "electorate": "Robertson",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Daniel",
+     "surnname": "Repacholi",
+     "otherName": "Peter",
+     "preferredName": "Dan",
+     "electorate": "Hunter",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Amanda",
+     "surnname": "Rishworth",
+     "otherName": "Louise",
+     "preferredName": "",
+     "electorate": "Kingston",
+     "party": "ALP",
+     "state": "SA",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Tracey",
+     "surnname": "Roberts",
+     "otherName": "Gardner",
+     "preferredName": "Tracey",
+     "electorate": "Pearce",
+     "party": "ALP",
+     "state": "WA",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Michelle",
+     "surnname": "Rowland",
+     "otherName": "Anne",
+     "preferredName": "Michelle",
+     "electorate": "Greenway",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Joanne",
+     "surnname": "Ryan",
+     "otherName": "Catherine",
+     "preferredName": "Joanne",
+     "electorate": "Lalor",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Dr",
+     "firstName": "Monique",
+     "surnname": "Ryan",
+     "otherName": "Marie",
+     "preferredName": "Monique",
+     "electorate": "Kooyong",
+     "party": "IND",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Dr",
+     "firstName": "Sophie",
+     "surnname": "Scamps",
+     "otherName": "Anna",
+     "preferredName": "Sophie",
+     "electorate": "Mackellar",
+     "party": "IND",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Marion",
+     "surnname": "Scrymgour",
+     "otherName": "Rose",
+     "preferredName": "Marion",
+     "electorate": "Lingiari",
+     "party": "ALP",
+     "state": "NT",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Rebekha",
+     "surnname": "Sharkie",
+     "otherName": "Carina Che",
+     "preferredName": "Rebekha",
+     "electorate": "Mayo",
+     "party": "CA",
+     "state": "SA",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Sally",
+     "surnname": "Sitou",
+     "otherName": "",
+     "preferredName": "Sally",
+     "electorate": "Reid",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Benjamin",
+     "surnname": "Small",
+     "otherName": "John",
+     "preferredName": "Ben",
+     "electorate": "Forrest",
+     "party": "LP",
+     "state": "WA",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "David",
+     "surnname": "Smith",
+     "otherName": "Philip Benedict",
+     "preferredName": "David",
+     "electorate": "Bean",
+     "party": "ALP",
+     "state": "ACT",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Matthew",
+     "surnname": "Smith",
+     "otherName": "John Howe",
+     "preferredName": "Matt",
+     "electorate": "Leichhardt",
+     "party": "ALP",
+     "state": "QLD",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Xian-Zhi",
+     "surnname": "Soon",
+     "otherName": "",
+     "preferredName": "Zhi",
+     "electorate": "Banks",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Allegra",
+     "surnname": "Spender",
+     "otherName": "May",
+     "preferredName": "Allegra",
+     "electorate": "Wentworth",
+     "party": "IND",
+     "state": "NSW",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Anne",
+     "surnname": "Stanley",
+     "otherName": "Maree",
+     "preferredName": "Anne",
+     "electorate": "Werriwa",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Zali",
+     "surnname": "Steggall",
+     "otherName": "",
+     "preferredName": "Zali",
+     "electorate": "Warringah",
+     "party": "IND",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Meryl",
+     "surnname": "Swanson",
+     "otherName": "Jane",
+     "preferredName": "",
+     "electorate": "Paterson",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Angus",
+     "surnname": "Taylor",
+     "otherName": "James",
+     "preferredName": "Angus",
+     "electorate": "Hume",
+     "party": "LP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Jessica",
+     "surnname": "Teesdale",
+     "otherName": "Ann",
+     "preferredName": "Jess",
+     "electorate": "Bass",
+     "party": "ALP",
+     "state": "TAS",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Daniel",
+     "surnname": "Tehan",
+     "otherName": "Thomas",
+     "preferredName": "Dan",
+     "electorate": "Wannon",
+     "party": "LP",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Susan",
+     "surnname": "Templeman",
+     "otherName": "Raye",
+     "preferredName": "Susan",
+     "electorate": "Macquarie",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Matthew",
+     "surnname": "Thistlethwaite",
+     "otherName": "James",
+     "preferredName": "Matt",
+     "electorate": "Kingsford Smith",
+     "party": "ALP",
+     "state": "NSW",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Phillip",
+     "surnname": "Thompson",
+     "otherName": "",
+     "preferredName": "Phillip",
+     "electorate": "Herbert",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Kate",
+     "surnname": "Thwaites",
+     "otherName": "Lynne",
+     "preferredName": "Kate",
+     "electorate": "Jagajaga",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Anne",
+     "surnname": "Urquhart",
+     "otherName": "Elizabeth",
+     "preferredName": "Anne",
+     "electorate": "Braddon",
+     "party": "ALP",
+     "state": "TAS",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Thomas",
+     "surnname": "Venning",
+     "otherName": "Howard",
+     "preferredName": "Tom",
+     "electorate": "Grey",
+     "party": "LP",
+     "state": "SA",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Aaron",
+     "surnname": "Violi",
+     "otherName": "Anthony",
+     "preferredName": "Aaron",
+     "electorate": "Casey",
+     "party": "LP",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Andrew",
+     "surnname": "Wallace",
+     "otherName": "Bruce",
+     "preferredName": "Andrew",
+     "electorate": "Fisher",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Elizabeth",
+     "surnname": "Watson-Brown",
+     "otherName": "",
+     "preferredName": "Elizabeth",
+     "electorate": "Ryan",
+     "party": "AG",
+     "state": "QLD",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Timothy",
+     "surnname": "Watts",
+     "otherName": "Graham",
+     "preferredName": "Tim",
+     "electorate": "Gellibrand",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Dr",
+     "firstName": "Anne",
+     "surnname": "Webster",
+     "otherName": "Elizabeth",
+     "preferredName": "Anne",
+     "electorate": "Mallee",
+     "party": "NATS",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Anika",
+     "surnname": "Wells",
+     "otherName": "Shay",
+     "preferredName": "Anika",
+     "electorate": "Lilley",
+     "party": "ALP",
+     "state": "QLD",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Rebecca",
+     "surnname": "White",
+     "otherName": "Peta",
+     "preferredName": "Rebecca",
+     "electorate": "Lyons",
+     "party": "ALP",
+     "state": "TAS",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Andrew",
+     "surnname": "Wilkie",
+     "otherName": "Damien",
+     "preferredName": "Andrew",
+     "electorate": "Clark",
+     "party": "IND",
+     "state": "TAS",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Andrew",
+     "surnname": "Willcox",
+     "otherName": "John",
+     "preferredName": "Andrew",
+     "electorate": "Dawson",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Joshua",
+     "surnname": "Wilson",
+     "otherName": "Hamilton",
+     "preferredName": "Josh",
+     "electorate": "Fremantle",
+     "party": "ALP",
+     "state": "WA",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Richard",
+     "surnname": "Wilson",
+     "otherName": "James",
+     "preferredName": "Rick",
+     "electorate": "O'Connor",
+     "party": "LP",
+     "state": "WA",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Timothy",
+     "surnname": "Wilson",
+     "otherName": "Robert",
+     "preferredName": "Tim",
+     "electorate": "Goldstein",
+     "party": "LP",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Ms",
+     "firstName": "Sarah",
+     "surnname": "Witty",
+     "otherName": "Jane",
+     "preferredName": "Sarah",
+     "electorate": "Melbourne",
+     "party": "ALP",
+     "state": "VIC",
+     "level": "Federal House of Representatives Member",
+     "domains": null
+   },
+   {
+     "honorific": "Hon",
+     "firstName": "Jason",
+     "surnname": "Wood",
+     "otherName": "Peter",
+     "preferredName": "Jason",
+     "electorate": "La Trobe",
+     "party": "LP",
+     "state": "VIC",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Terry",
+     "surnname": "Young",
+     "otherName": "James",
+     "preferredName": "Terry",
+     "electorate": "Longman",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "",
+     "domains": []
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Antonio",
+     "surnname": "Zappia",
+     "otherName": "",
+     "preferredName": "Tony",
+     "electorate": "Makin",
+     "party": "ALP",
+     "state": "SA",
+     "level": "",
+     "domains": []
    },
    {
      "honorific": "Mr",
@@ -363,75 +2788,6 @@
      ]
    },
    {
-     "honorific": "Ms",
-     "firstName": "Angie",
-     "surnname": "Bell",
-     "otherName": "Marion",
-     "preferredName": "Angie",
-     "electorate": "Moncrieff",
-     "party": "LNP",
-     "state": "QLD",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "angiebell.com.au",
-         "expiry": "",
-         "expired": false,
-         "alert": false,
-         "lastChecked": "2026-09-09T08:59:44.3999063+10:00",
-         "whois": {
-           "checkedAt": "2026-09-09T08:59:44.3999063+10:00",
-           "status": [
-             "serverrenewprohibited"
-           ],
-           "updated": "2026-08-15T21:36:26Z",
-           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
-           "nameServers": [
-             "aron.ns.cloudflare.com",
-             "graham.ns.cloudflare.com"
-           ]
-         },
-         "dns": {
-           "checkedAt": "2026-09-09T09:12:34.6525961+10:00",
-           "empty": false,
-           "outcome": "ok",
-           "a": [
-             "149.28.166.203"
-           ],
-           "ns": [
-             "graham.ns.cloudflare.com",
-             "aron.ns.cloudflare.com"
-           ],
-           "mx": [
-             "angiebell-com-au.mail.protection.outlook.com"
-           ],
-           "txt": [
-             "MS=ms78163494",
-             "v=spf1 +include:_spf.createsend.com +a +mx +include:mailgun.org +include:spf.protection.outlook.com -all"
-           ]
-         },
-         "https": {
-           "checkedAt": "2026-09-09T09:12:45.2787486+10:00",
-           "status": "enabled",
-           "notAfter": "2026-11-21T21:24:26Z",
-           "httpStatus": 200,
-           "apex": {
-             "hostname": "angiebell.com.au",
-             "status": "enabled",
-             "notAfter": "2026-11-21T21:24:26Z",
-             "httpStatus": 200
-           },
-           "www": {
-             "hostname": "www.angiebell.com.au",
-             "status": "enabled",
-             "notAfter": "2026-11-21T21:24:26Z",
-             "httpStatus": 200
-           }
-         }
-       }
-     ]
-   },
-   {
      "honorific": "Hon",
      "firstName": "Sharon",
      "surnname": "Bird",
@@ -505,76 +2861,6 @@
      ]
    },
    {
-     "honorific": "Hon",
-     "firstName": "Christopher",
-     "surnname": "Bowen",
-     "otherName": "Eyles",
-     "preferredName": "Chris",
-     "electorate": "McMahon",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "www.chrisbowen.net",
-         "expiry": "2027-08-07T03:48:55Z",
-         "expired": false,
-         "alert": false,
-         "lastChecked": "2026-09-09T08:59:47.8348244+10:00",
-         "whois": {
-           "checkedAt": "2026-09-09T08:59:47.8348244+10:00",
-           "status": [
-             "ok"
-           ],
-           "created": "2003-08-07T03:48:55Z",
-           "updated": "2026-08-11T03:21:44Z",
-           "expiry": "2027-08-07T03:48:55Z",
-           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
-           "nameServers": [
-             "cheryl.ns.cloudflare.com",
-             "gerald.ns.cloudflare.com"
-           ]
-         },
-         "dns": {
-           "checkedAt": "2026-09-09T09:12:36.8037287+10:00",
-           "empty": false,
-           "outcome": "ok",
-           "a": [
-             "104.21.43.124",
-             "172.67.179.20",
-             "2606:4700:3031::ac43:b314",
-             "2606:4700:3033::6815:2b7c"
-           ],
-           "ns": [
-             "cheryl.ns.cloudflare.com",
-             "gerald.ns.cloudflare.com"
-           ],
-           "txt": [
-             "v=spf1 include:jangomail.com a mx ~all"
-           ]
-         },
-         "https": {
-           "checkedAt": "2026-09-09T09:12:48.3935446+10:00",
-           "status": "enabled",
-           "notAfter": "2026-10-30T09:28:11Z",
-           "httpStatus": 200,
-           "apex": {
-             "hostname": "chrisbowen.net",
-             "status": "enabled",
-             "notAfter": "2026-10-30T09:28:11Z",
-             "httpStatus": 200
-           },
-           "www": {
-             "hostname": "www.chrisbowen.net",
-             "status": "enabled",
-             "notAfter": "2026-10-30T09:28:11Z",
-             "httpStatus": 200
-           }
-         }
-       }
-     ]
-   },
-   {
      "honorific": "Mr",
      "firstName": "Russell",
      "surnname": "Broadbent",
@@ -641,147 +2927,6 @@
    },
    {
      "honorific": "Hon",
-     "firstName": "Scott",
-     "surnname": "Buchholz",
-     "otherName": "",
-     "preferredName": "",
-     "electorate": "Wright",
-     "party": "LNP",
-     "state": "QLD",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "www.scottbuchholz.com.au",
-         "expiry": "",
-         "expired": false,
-         "alert": false,
-         "lastChecked": "2026-09-09T08:59:50.5748327+10:00",
-         "whois": {
-           "checkedAt": "2026-09-09T08:59:50.5748327+10:00",
-           "status": [
-             "serverrenewprohibited"
-           ],
-           "updated": "2026-08-15T18:39:45Z",
-           "registrar": "Domain Directors Pty Ltd trading as Instra",
-           "nameServers": [
-             "ns10.dnsmadeeasy.com",
-             "ns11.dnsmadeeasy.com",
-             "ns12.dnsmadeeasy.com",
-             "ns13.dnsmadeeasy.com",
-             "ns14.dnsmadeeasy.com"
-           ]
-         },
-         "dns": {
-           "checkedAt": "2026-09-09T09:12:38.9292612+10:00",
-           "empty": false,
-           "outcome": "ok",
-           "a": [
-             "43.250.142.59"
-           ],
-           "ns": [
-             "ns13.datasearch.com.au",
-             "ns15.datasearch.com.au",
-             "ns14.datasearch.com.au",
-             "ns10.datasearch.com.au",
-             "ns12.datasearch.com.au",
-             "ns11.datasearch.com.au"
-           ]
-         },
-         "https": {
-           "checkedAt": "2026-09-09T09:12:55.7835034+10:00",
-           "status": "enabled",
-           "notAfter": "2026-11-19T09:25:09Z",
-           "httpStatus": 200,
-           "apex": {
-             "hostname": "scottbuchholz.com.au",
-             "status": "enabled",
-             "notAfter": "2026-11-19T09:25:09Z",
-             "httpStatus": 200
-           },
-           "www": {
-             "hostname": "www.scottbuchholz.com.au",
-             "status": "enabled",
-             "notAfter": "2026-11-19T09:25:09Z",
-             "httpStatus": 200
-           }
-         }
-       }
-     ]
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Anthony",
-     "surnname": "Burke",
-     "otherName": "Stephen",
-     "preferredName": "Tony",
-     "electorate": "Watson",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "www.tonyburke.com.au",
-         "expiry": "",
-         "expired": false,
-         "alert": false,
-         "lastChecked": "2026-09-09T08:59:51.9173169+10:00",
-         "whois": {
-           "checkedAt": "2026-09-09T08:59:51.9173169+10:00",
-           "status": [
-             "serverrenewprohibited"
-           ],
-           "updated": "2026-08-15T21:00:05Z",
-           "registrar": "Tucows (Australia) Pty Ltd trading as OpenSRS",
-           "nameServers": [
-             "dns1.registrar-servers.com",
-             "dns2.registrar-servers.com"
-           ]
-         },
-         "dns": {
-           "checkedAt": "2026-09-09T09:12:39.9694734+10:00",
-           "empty": false,
-           "outcome": "ok",
-           "a": [
-             "198.185.159.145",
-             "198.185.159.144",
-             "198.49.23.144",
-             "198.49.23.145"
-           ],
-           "ns": [
-             "dns1.registrar-servers.com",
-             "dns2.registrar-servers.com"
-           ],
-           "mx": [
-             "aspmx.l.google.com",
-             "alt2.aspmx.l.google.com",
-             "alt1.aspmx.l.google.com",
-             "alt3.aspmx.l.google.com",
-             "alt4.aspmx.l.google.com"
-           ]
-         },
-         "https": {
-           "checkedAt": "2026-09-09T09:12:59.7025387+10:00",
-           "status": "enabled",
-           "notAfter": "2026-11-17T02:53:46Z",
-           "httpStatus": 200,
-           "apex": {
-             "hostname": "tonyburke.com.au",
-             "status": "enabled",
-             "notAfter": "2026-11-17T02:53:46Z",
-             "httpStatus": 200
-           },
-           "www": {
-             "hostname": "www.tonyburke.com.au",
-             "status": "enabled",
-             "notAfter": "2026-11-17T21:05:35Z",
-             "httpStatus": 200
-           }
-         }
-       }
-     ]
-   },
-   {
-     "honorific": "Hon",
      "firstName": "Linda",
      "surnname": "Burney",
      "otherName": "Jean",
@@ -798,7 +2943,7 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-09T09:14:21.1177142+10:00",
+           "checkedAt": "2026-09-09T09:38:36.8291642+10:00",
            "error": "Could not parse \u003cau.linkedin.com\u003e"
          },
          "dns": {
@@ -833,141 +2978,6 @@
      ]
    },
    {
-     "honorific": "Mr",
-     "firstName": "Josh",
-     "surnname": "Burns",
-     "otherName": "",
-     "preferredName": "Josh",
-     "electorate": "Macnamara",
-     "party": "ALP",
-     "state": "VIC",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "www.joshburns.com.au",
-         "expiry": "",
-         "expired": false,
-         "alert": false,
-         "lastChecked": "2026-09-09T08:59:55.0556163+10:00",
-         "whois": {
-           "checkedAt": "2026-09-09T08:59:55.0556163+10:00",
-           "status": [
-             "serverrenewprohibited"
-           ],
-           "updated": "2026-08-15T20:46:36Z",
-           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
-           "nameServers": [
-             "ns1.nameserver.net.au",
-             "ns2.nameserver.net.au",
-             "ns3.nameserver.net.au"
-           ]
-         },
-         "dns": {
-           "checkedAt": "2026-09-09T09:12:42.1314261+10:00",
-           "empty": false,
-           "outcome": "ok",
-           "a": [
-             "76.76.21.21"
-           ],
-           "ns": [
-             "ns1.nameserver.net.au",
-             "ns2.nameserver.net.au",
-             "ns3.nameserver.net.au"
-           ],
-           "mx": [
-             "smtp.google.com"
-           ]
-         },
-         "https": {
-           "checkedAt": "2026-09-09T09:13:02.5630541+10:00",
-           "status": "enabled",
-           "notAfter": "2026-11-02T03:19:14Z",
-           "httpStatus": 200,
-           "apex": {
-             "hostname": "joshburns.com.au",
-             "status": "enabled",
-             "notAfter": "2026-11-02T03:19:14Z",
-             "httpStatus": 200
-           },
-           "www": {
-             "hostname": "www.joshburns.com.au",
-             "status": "enabled",
-             "notAfter": "2026-11-02T03:22:22Z",
-             "httpStatus": 200
-           }
-         }
-       }
-     ]
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Mark",
-     "surnname": "Butler",
-     "otherName": "Christopher",
-     "preferredName": "",
-     "electorate": "Hindmarsh",
-     "party": "ALP",
-     "state": "SA",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "www.markbutler.net.au",
-         "expiry": "",
-         "expired": false,
-         "alert": false,
-         "lastChecked": "2026-09-09T08:59:56.5565503+10:00",
-         "whois": {
-           "checkedAt": "2026-09-09T08:59:56.5565503+10:00",
-           "status": [
-             "serverrenewprohibited"
-           ],
-           "updated": "2026-08-16T00:37:05Z",
-           "registrar": "Domain Directors Pty Ltd trading as Instra",
-           "nameServers": [
-             "ns2.idealtechnology.net.au",
-             "ns3.idealtechnology.net.au",
-             "ns1.idealtechnology.net.au"
-           ]
-         },
-         "dns": {
-           "checkedAt": "2026-09-09T09:12:48.1722579+10:00",
-           "empty": false,
-           "outcome": "ok",
-           "ns": [
-             "ns1.idealtechnology.net.au",
-             "ns3.idealtechnology.net.au",
-             "ns4.idealtechnology.net.au",
-             "ns2.idealtechnology.net.au"
-           ],
-           "mx": [
-             "markbutler.net.au"
-           ],
-           "txt": [
-             "v=spf1 ip4:111.67.20.9 +a +mx +ip4:111.67.20.120 ~all"
-           ]
-         },
-         "https": {
-           "checkedAt": "2026-09-09T09:13:06.0522971+10:00",
-           "status": "enabled",
-           "notAfter": "2026-10-20T06:32:53Z",
-           "httpStatus": 200,
-           "apex": {
-             "hostname": "markbutler.net.au",
-             "status": "enabled",
-             "notAfter": "2026-10-24T13:36:14Z",
-             "httpStatus": 200
-           },
-           "www": {
-             "hostname": "www.markbutler.net.au",
-             "status": "enabled",
-             "notAfter": "2026-10-20T06:32:53Z",
-             "httpStatus": 200
-           }
-         }
-       }
-     ]
-   },
-   {
      "honorific": "Hon",
      "firstName": "Anthony",
      "surnname": "Byrne",
@@ -980,72 +2990,6 @@
      "domains": null
    },
    {
-     "honorific": "Dr",
-     "firstName": "James",
-     "surnname": "Chalmers",
-     "otherName": "Edward",
-     "preferredName": "Jim",
-     "electorate": "Rankin",
-     "party": "ALP",
-     "state": "QLD",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "jimchalmers.org",
-         "expiry": "",
-         "expired": false,
-         "alert": false,
-         "lastChecked": "0001-01-01T00:00:00Z",
-         "whois": {
-           "checkedAt": "2026-09-09T09:14:22.8026594+10:00",
-           "error": "Could not get WHOIS for \u003cjimchalmers.org\u003e"
-         },
-         "dns": {
-           "checkedAt": "2026-09-09T09:12:49.2230612+10:00",
-           "empty": false,
-           "outcome": "ok",
-           "a": [
-             "104.21.44.211",
-             "172.67.203.233",
-             "2606:4700:3030::6815:2cd3",
-             "2606:4700:3037::ac43:cbe9"
-           ],
-           "ns": [
-             "cheryl.ns.cloudflare.com",
-             "gerald.ns.cloudflare.com"
-           ],
-           "mx": [
-             "mx.zoho.com.au",
-             "mx2.zoho.com.au",
-             "mx3.zoho.com.au"
-           ],
-           "txt": [
-             "zoho-verification=zb64886461.zmverify.zoho.com.au",
-             "v=spf1 include:zoho.com.au ~all"
-           ]
-         },
-         "https": {
-           "checkedAt": "2026-09-09T09:13:07.4372544+10:00",
-           "status": "enabled",
-           "notAfter": "2026-12-03T20:04:32Z",
-           "httpStatus": 200,
-           "apex": {
-             "hostname": "jimchalmers.org",
-             "status": "enabled",
-             "notAfter": "2026-12-03T20:04:32Z",
-             "httpStatus": 200
-           },
-           "www": {
-             "hostname": "www.jimchalmers.org",
-             "status": "enabled",
-             "notAfter": "2026-12-03T20:04:32Z",
-             "httpStatus": 200
-           }
-         }
-       }
-     ]
-   },
-   {
      "honorific": "Mr",
      "firstName": "Nicholas",
      "surnname": "Champion",
@@ -1056,188 +3000,6 @@
      "state": "SA",
      "level": "",
      "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Darren",
-     "surnname": "Chester",
-     "otherName": "Jeffrey",
-     "preferredName": "Darren",
-     "electorate": "Gippsland",
-     "party": "NATS",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Lisa",
-     "surnname": "Chesters",
-     "otherName": "Marie",
-     "preferredName": "Lisa",
-     "electorate": "Bendigo",
-     "party": "ALP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Jason",
-     "surnname": "Clare",
-     "otherName": "Dean",
-     "preferredName": "",
-     "electorate": "Blaxland",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Sharon",
-     "surnname": "Claydon",
-     "otherName": "Catherine",
-     "preferredName": "Sharon",
-     "electorate": "Newcastle",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "www.sharonclaydon.com",
-         "expiry": "2027-01-30T07:39:19Z",
-         "expired": false,
-         "alert": false,
-         "lastChecked": "2026-09-09T09:00:00.2936269+10:00",
-         "whois": {
-           "checkedAt": "2026-09-09T09:00:00.2936269+10:00",
-           "status": [
-             "ok"
-           ],
-           "created": "2013-01-30T07:39:19Z",
-           "updated": "2026-01-15T10:01:18Z",
-           "expiry": "2027-01-30T07:39:19Z",
-           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
-           "nameServers": [
-             "cheryl.ns.cloudflare.com",
-             "gerald.ns.cloudflare.com"
-           ]
-         },
-         "dns": {
-           "checkedAt": "2026-09-09T09:12:50.2252393+10:00",
-           "empty": false,
-           "outcome": "ok",
-           "a": [
-             "104.21.59.241",
-             "172.67.185.115",
-             "2606:4700:3036::ac43:b973",
-             "2606:4700:3034::6815:3bf1"
-           ],
-           "ns": [
-             "cheryl.ns.cloudflare.com",
-             "gerald.ns.cloudflare.com"
-           ],
-           "mx": [
-             "mx.emailnb.com"
-           ],
-           "txt": [
-             "v=spf1 a mx include:sendgrid.net ~all"
-           ]
-         },
-         "https": {
-           "checkedAt": "2026-09-09T09:13:09.1251638+10:00",
-           "status": "enabled",
-           "notAfter": "2026-11-26T18:40:44Z",
-           "httpStatus": 200,
-           "apex": {
-             "hostname": "sharonclaydon.com",
-             "status": "enabled",
-             "notAfter": "2026-11-26T18:40:44Z",
-             "httpStatus": 200
-           },
-           "www": {
-             "hostname": "www.sharonclaydon.com",
-             "status": "enabled",
-             "notAfter": "2026-11-26T18:40:44Z",
-             "httpStatus": 200
-           }
-         }
-       }
-     ]
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Elizabeth",
-     "surnname": "Coker",
-     "otherName": "Ann",
-     "preferredName": "Libby",
-     "electorate": "Corangamite",
-     "party": "ALP",
-     "state": "VIC",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "www.libbycoker.com.au",
-         "expiry": "",
-         "expired": false,
-         "alert": false,
-         "lastChecked": "2026-09-09T09:00:01.7879261+10:00",
-         "whois": {
-           "checkedAt": "2026-09-09T09:00:01.7879261+10:00",
-           "status": [
-             "serverrenewprohibited"
-           ],
-           "updated": "2026-08-17T00:57:14Z",
-           "registrar": "Web Address Registration Pty Ltd",
-           "nameServers": [
-             "cheryl.ns.cloudflare.com",
-             "gerald.ns.cloudflare.com"
-           ]
-         },
-         "dns": {
-           "checkedAt": "2026-09-09T09:12:51.304033+10:00",
-           "empty": false,
-           "outcome": "ok",
-           "a": [
-             "104.21.1.3",
-             "172.67.186.110",
-             "2606:4700:3035::ac43:ba6e",
-             "2606:4700:3030::6815:103"
-           ],
-           "ns": [
-             "gerald.ns.cloudflare.com",
-             "cheryl.ns.cloudflare.com"
-           ],
-           "mx": [
-             "route1.mx.cloudflare.net",
-             "route2.mx.cloudflare.net",
-             "route3.mx.cloudflare.net"
-           ],
-           "txt": [
-             "v=spf1 include:_spf.mx.cloudflare.net ~all"
-           ]
-         },
-         "https": {
-           "checkedAt": "2026-09-09T09:13:10.5111568+10:00",
-           "status": "enabled",
-           "notAfter": "2026-10-11T05:18:59Z",
-           "httpStatus": 200,
-           "apex": {
-             "hostname": "libbycoker.com.au",
-             "status": "enabled",
-             "notAfter": "2026-10-11T05:18:59Z",
-             "httpStatus": 200
-           },
-           "www": {
-             "hostname": "www.libbycoker.com.au",
-             "status": "enabled",
-             "notAfter": "2026-10-11T05:18:59Z",
-             "httpStatus": 200
-           }
-         }
-       }
-     ]
    },
    {
      "honorific": "Hon",
@@ -1308,30 +3070,6 @@
      ]
    },
    {
-     "honorific": "Hon",
-     "firstName": "Julie",
-     "surnname": "Collins",
-     "otherName": "Maree",
-     "preferredName": "",
-     "electorate": "Franklin",
-     "party": "ALP",
-     "state": "TAS",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Patrick",
-     "surnname": "Conaghan",
-     "otherName": "John",
-     "preferredName": "Pat",
-     "electorate": "Cowper",
-     "party": "NATS",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
      "honorific": "Mr",
      "firstName": "Vincent",
      "surnname": "Connelly",
@@ -1342,75 +3080,6 @@
      "state": "WA",
      "level": "",
      "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Patrick",
-     "surnname": "Conroy",
-     "otherName": "Martin",
-     "preferredName": "Pat",
-     "electorate": "Shortland",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "patconroy.com.au",
-         "expiry": "",
-         "expired": false,
-         "alert": false,
-         "lastChecked": "2026-09-09T09:00:04.7097907+10:00",
-         "whois": {
-           "checkedAt": "2026-09-09T09:00:04.7097907+10:00",
-           "status": [
-             "ok"
-           ],
-           "updated": "2026-09-05T01:09:44Z",
-           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
-           "nameServers": [
-             "cheryl.ns.cloudflare.com",
-             "gerald.ns.cloudflare.com"
-           ]
-         },
-         "dns": {
-           "checkedAt": "2026-09-09T09:12:53.4401644+10:00",
-           "empty": false,
-           "outcome": "ok",
-           "a": [
-             "172.67.161.173",
-             "104.21.34.141",
-             "2606:4700:3033::6815:228d",
-             "2606:4700:3032::ac43:a1ad"
-           ],
-           "ns": [
-             "cheryl.ns.cloudflare.com",
-             "gerald.ns.cloudflare.com"
-           ],
-           "mx": [
-             "mx3.netregistry.net",
-             "mx2.netregistry.net"
-           ]
-         },
-         "https": {
-           "checkedAt": "2026-09-09T09:13:13.1223001+10:00",
-           "status": "enabled",
-           "notAfter": "2026-11-09T06:18:25Z",
-           "httpStatus": 200,
-           "apex": {
-             "hostname": "patconroy.com.au",
-             "status": "enabled",
-             "notAfter": "2026-11-09T06:18:25Z",
-             "httpStatus": 200
-           },
-           "www": {
-             "hostname": "www.patconroy.com.au",
-             "status": "enabled",
-             "notAfter": "2026-11-09T06:18:25Z",
-             "httpStatus": 200
-           }
-         }
-       }
-     ]
    },
    {
      "honorific": "Hon",
@@ -1425,93 +3094,6 @@
      "domains": null
    },
    {
-     "honorific": "Mr",
-     "firstName": "Dugald",
-     "surnname": "Dick",
-     "otherName": "Milton",
-     "preferredName": "Milton",
-     "electorate": "Oxley",
-     "party": "ALP",
-     "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Mark",
-     "surnname": "Dreyfus",
-     "otherName": "Alfred",
-     "preferredName": "Mark",
-     "electorate": "Isaacs",
-     "party": "ALP",
-     "state": "VIC",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "www.markdreyfus.com",
-         "expiry": "2027-05-17T07:39:36Z",
-         "expired": false,
-         "alert": true,
-         "lastChecked": "2026-09-09T09:00:06.6994761+10:00",
-         "whois": {
-           "checkedAt": "2026-09-09T09:00:06.6994761+10:00",
-           "status": [
-             "ok"
-           ],
-           "created": "2006-05-17T07:39:36Z",
-           "updated": "2025-02-02T08:13:04Z",
-           "expiry": "2027-05-17T07:39:36Z",
-           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
-           "nameServers": [
-             "cheryl.ns.cloudflare.com",
-             "gerald.ns.cloudflare.com"
-           ]
-         },
-         "dns": {
-           "checkedAt": "2026-09-09T09:12:54.5304008+10:00",
-           "empty": false,
-           "outcome": "ok",
-           "a": [
-             "104.21.13.106",
-             "172.67.199.213",
-             "2606:4700:3030::6815:d6a",
-             "2606:4700:3034::ac43:c7d5"
-           ],
-           "ns": [
-             "cheryl.ns.cloudflare.com",
-             "gerald.ns.cloudflare.com"
-           ],
-           "mx": [
-             "smtp.secureserver.net",
-             "mailstore1.secureserver.net"
-           ],
-           "txt": [
-             "ca3-74463ae6e93a40c38ea64189e21ab5a9",
-             "google-site-verification=bv0qwuXwo6JOFKJVvic5KzhDAFYnkuL0XQxId0QxncA"
-           ]
-         },
-         "https": {
-           "checkedAt": "2026-09-09T09:13:14.4925721+10:00",
-           "status": "enabled",
-           "notAfter": "2026-11-05T15:35:58Z",
-           "httpStatus": 200,
-           "apex": {
-             "hostname": "markdreyfus.com",
-             "status": "enabled",
-             "notAfter": "2026-11-05T15:35:58Z",
-             "httpStatus": 200
-           },
-           "www": {
-             "hostname": "www.markdreyfus.com",
-             "status": "enabled",
-             "notAfter": "2026-11-05T15:35:58Z",
-             "httpStatus": 200
-           }
-         }
-       }
-     ]
-   },
-   {
      "honorific": "Hon",
      "firstName": "Damian",
      "surnname": "Drum",
@@ -1520,18 +3102,6 @@
      "electorate": "Nicholls",
      "party": "NATS",
      "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Maria",
-     "surnname": "Elliot",
-     "otherName": "Justine",
-     "preferredName": "Justine",
-     "electorate": "Richmond",
-     "party": "ALP",
-     "state": "NSW",
      "level": "",
      "domains": null
    },
@@ -1668,18 +3238,6 @@
      "domains": null
    },
    {
-     "honorific": "Dr",
-     "firstName": "Michael",
-     "surnname": "Freelander",
-     "otherName": "Randolph",
-     "preferredName": "Mike",
-     "electorate": "Macarthur",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
      "honorific": "Hon",
      "firstName": "Joshua",
      "surnname": "Frydenberg",
@@ -1687,42 +3245,6 @@
      "preferredName": "Josh",
      "electorate": "Kooyong",
      "party": "LP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Andrew",
-     "surnname": "Gee",
-     "otherName": "Robert",
-     "preferredName": "Andrew",
-     "electorate": "Calare",
-     "party": "NATS",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Steven",
-     "surnname": "Georganas",
-     "otherName": "",
-     "preferredName": "Steve",
-     "electorate": "Adelaide",
-     "party": "ALP",
-     "state": "SA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Andrew",
-     "surnname": "Giles",
-     "otherName": "James",
-     "preferredName": "Andrew",
-     "electorate": "Scullin",
-     "party": "ALP",
      "state": "VIC",
      "level": "",
      "domains": null
@@ -1752,54 +3274,6 @@
      "domains": null
    },
    {
-     "honorific": "Mr",
-     "firstName": "Patrick",
-     "surnname": "Gorman",
-     "otherName": "",
-     "preferredName": "Patrick",
-     "electorate": "Perth",
-     "party": "ALP",
-     "state": "WA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Luke",
-     "surnname": "Gosling",
-     "otherName": "John",
-     "preferredName": "Luke",
-     "electorate": "Solomon",
-     "party": "ALP",
-     "state": "NT",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Dr",
-     "firstName": "Helen",
-     "surnname": "Haines",
-     "otherName": "Mary",
-     "preferredName": "Helen",
-     "electorate": "Indi",
-     "party": "IND",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Garth",
-     "surnname": "Hamilton",
-     "otherName": "Russell",
-     "preferredName": "Garth",
-     "electorate": "Groom",
-     "party": "LNP",
-     "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
      "honorific": "Ms",
      "firstName": "Celia",
      "surnname": "Hammond",
@@ -1812,30 +3286,6 @@
      "domains": null
    },
    {
-     "honorific": "Hon",
-     "firstName": "Andrew",
-     "surnname": "Hastie",
-     "otherName": "William",
-     "preferredName": "Andrew",
-     "electorate": "Canning",
-     "party": "LP",
-     "state": "WA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Alexander",
-     "surnname": "Hawke",
-     "otherName": "George",
-     "preferredName": "Alex",
-     "electorate": "Mitchell",
-     "party": "LP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
      "honorific": "Mr",
      "firstName": "Christopher",
      "surnname": "Hayes",
@@ -1843,30 +3293,6 @@
      "preferredName": "Chris",
      "electorate": "Fowler",
      "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Julian",
-     "surnname": "Hill",
-     "otherName": "Christopher",
-     "preferredName": "Julian",
-     "electorate": "Bruce",
-     "party": "ALP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Kevin",
-     "surnname": "Hogan",
-     "otherName": "John",
-     "preferredName": "Kevin",
-     "electorate": "Page",
-     "party": "NATS",
      "state": "NSW",
      "level": "",
      "domains": null
@@ -1897,18 +3323,6 @@
    },
    {
      "honorific": "Hon",
-     "firstName": "Edham",
-     "surnname": "Husic",
-     "otherName": "Nurredin",
-     "preferredName": "Ed",
-     "electorate": "Chifley",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
      "firstName": "Stephen",
      "surnname": "Irons",
      "otherName": "James",
@@ -1932,95 +3346,6 @@
      "domains": null
    },
    {
-     "honorific": "Hon",
-     "firstName": "Barnaby",
-     "surnname": "Joyce",
-     "otherName": "Thomas Gerard",
-     "preferredName": "Barnaby",
-     "electorate": "New England",
-     "party": "NATS",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Robert",
-     "surnname": "Katter",
-     "otherName": "Carl",
-     "preferredName": "Bob",
-     "electorate": "Kennedy",
-     "party": "KAP",
-     "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Gerardine",
-     "surnname": "Kearney",
-     "otherName": "Mary",
-     "preferredName": "Ged",
-     "electorate": "Cooper",
-     "party": "ALP",
-     "state": "VIC",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "www.gedkearney.org.au",
-         "expiry": "",
-         "expired": false,
-         "alert": false,
-         "lastChecked": "2026-09-09T09:00:17.5608137+10:00",
-         "whois": {
-           "checkedAt": "2026-09-09T09:00:17.5608137+10:00",
-           "status": [
-             "serverrenewprohibited"
-           ],
-           "updated": "2026-08-15T21:29:09Z",
-           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
-           "nameServers": [
-             "cheryl.ns.cloudflare.com",
-             "gerald.ns.cloudflare.com"
-           ]
-         },
-         "dns": {
-           "checkedAt": "2026-09-09T09:12:56.6726605+10:00",
-           "empty": false,
-           "outcome": "ok",
-           "a": [
-             "104.21.40.239",
-             "172.67.140.55",
-             "2606:4700:3032::6815:28ef",
-             "2606:4700:3030::ac43:8c37"
-           ],
-           "ns": [
-             "cheryl.ns.cloudflare.com",
-             "gerald.ns.cloudflare.com"
-           ]
-         },
-         "https": {
-           "checkedAt": "2026-09-09T09:13:17.3439077+10:00",
-           "status": "enabled",
-           "notAfter": "2026-10-29T18:08:55Z",
-           "httpStatus": 200,
-           "apex": {
-             "hostname": "gedkearney.org.au",
-             "status": "enabled",
-             "notAfter": "2026-10-29T18:08:55Z",
-             "httpStatus": 200
-           },
-           "www": {
-             "hostname": "www.gedkearney.org.au",
-             "status": "enabled",
-             "notAfter": "2026-10-29T18:08:55Z",
-             "httpStatus": 200
-           }
-         }
-       }
-     ]
-   },
-   {
      "honorific": "Mr",
      "firstName": "Craig",
      "surnname": "Kelly",
@@ -2029,54 +3354,6 @@
      "electorate": "Hughes",
      "party": "UAP",
      "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Matt",
-     "surnname": "Keogh",
-     "otherName": "James",
-     "preferredName": "Matt",
-     "electorate": "Burt",
-     "party": "ALP",
-     "state": "WA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Peter",
-     "surnname": "Khalil",
-     "otherName": "",
-     "preferredName": "Peter",
-     "electorate": "Wills",
-     "party": "ALP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Catherine",
-     "surnname": "King",
-     "otherName": "Fiona",
-     "preferredName": "",
-     "electorate": "Ballarat",
-     "party": "ALP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Madeleine",
-     "surnname": "King",
-     "otherName": "Mary Harvie",
-     "preferredName": "Madeleine",
-     "electorate": "Brand",
-     "party": "ALP",
-     "state": "WA",
      "level": "",
      "domains": null
    },
@@ -2094,42 +3371,6 @@
    },
    {
      "honorific": "Hon",
-     "firstName": "Michelle",
-     "surnname": "Landry",
-     "otherName": "Leanne",
-     "preferredName": "Michelle",
-     "electorate": "Capricornia",
-     "party": "LNP",
-     "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Julian",
-     "surnname": "Leeser",
-     "otherName": "",
-     "preferredName": "Julian",
-     "electorate": "Berowra",
-     "party": "LP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon Dr",
-     "firstName": "Andrew",
-     "surnname": "Leigh",
-     "otherName": "Keith",
-     "preferredName": "",
-     "electorate": "Fenner",
-     "party": "ALP",
-     "state": "ACT",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
      "firstName": "Sussan",
      "surnname": "Ley",
      "otherName": "Penelope",
@@ -2137,18 +3378,6 @@
      "electorate": "Farrer",
      "party": "LP",
      "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "David",
-     "surnname": "Littleproud",
-     "otherName": "",
-     "preferredName": "David",
-     "electorate": "Maranoa",
-     "party": "LNP",
-     "state": "QLD",
      "level": "",
      "domains": null
    },
@@ -2177,72 +3406,12 @@
      "domains": null
    },
    {
-     "honorific": "Hon",
-     "firstName": "Richard",
-     "surnname": "Marles",
-     "otherName": "Donald",
-     "preferredName": "",
-     "electorate": "Corio",
-     "party": "ALP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
      "honorific": "Dr",
      "firstName": "Fiona",
      "surnname": "Martin",
      "otherName": "Barbouttis",
      "preferredName": "Fiona",
      "electorate": "Reid",
-     "party": "LP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Kristy",
-     "surnname": "McBain",
-     "otherName": "Louise",
-     "preferredName": "Kristy",
-     "electorate": "Eden-Monaro",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Emma",
-     "surnname": "McBride",
-     "otherName": "Margaret",
-     "preferredName": "Emma",
-     "electorate": "Dobell",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Michael",
-     "surnname": "McCormack",
-     "otherName": "Francis",
-     "preferredName": "Michael",
-     "electorate": "Riverina",
-     "party": "NATS",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mrs",
-     "firstName": "Melissa",
-     "surnname": "McIntosh",
-     "otherName": "Iris",
-     "preferredName": "Melissa",
-     "electorate": "Lindsay",
      "party": "LP",
      "state": "NSW",
      "level": "",
@@ -2257,18 +3426,6 @@
      "electorate": "Lyons",
      "party": "ALP",
      "state": "TAS",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Robert",
-     "surnname": "Mitchell",
-     "otherName": "George",
-     "preferredName": "Rob",
-     "electorate": "McEwen",
-     "party": "ALP",
-     "state": "VIC",
      "level": "",
      "domains": null
    },
@@ -2297,18 +3454,6 @@
      "domains": null
    },
    {
-     "honorific": "Dr",
-     "firstName": "Daniel",
-     "surnname": "Mulino",
-     "otherName": "",
-     "preferredName": "Daniel",
-     "electorate": "Fraser",
-     "party": "ALP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
      "honorific": "Ms",
      "firstName": "Peta",
      "surnname": "Murphy",
@@ -2317,42 +3462,6 @@
      "electorate": "Dunkley",
      "party": "ALP",
      "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Shayne",
-     "surnname": "Neumann",
-     "otherName": "Kenneth",
-     "preferredName": "",
-     "electorate": "Blair",
-     "party": "ALP",
-     "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Edward",
-     "surnname": "O'Brien",
-     "otherName": "Lynam",
-     "preferredName": "Ted",
-     "electorate": "Fairfax",
-     "party": "LNP",
-     "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Llewellyn",
-     "surnname": "O'Brien",
-     "otherName": "Stephen",
-     "preferredName": "Llew",
-     "electorate": "Wide Bay",
-     "party": "LNP",
-     "state": "QLD",
      "level": "",
      "domains": null
    },
@@ -2382,18 +3491,6 @@
    },
    {
      "honorific": "Ms",
-     "firstName": "Clare",
-     "surnname": "O'Neil",
-     "otherName": "Ellen",
-     "preferredName": "",
-     "electorate": "Hotham",
-     "party": "ALP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
      "firstName": "Julie",
      "surnname": "Owens",
      "otherName": "Ann",
@@ -2401,30 +3498,6 @@
      "electorate": "Parramatta",
      "party": "ALP",
      "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Antony",
-     "surnname": "Pasin",
-     "otherName": "",
-     "preferredName": "Tony",
-     "electorate": "Barker",
-     "party": "LP",
-     "state": "SA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Alicia",
-     "surnname": "Payne",
-     "otherName": "Emma",
-     "preferredName": "Alicia",
-     "electorate": "Canberra",
-     "party": "ALP",
-     "state": "ACT",
      "level": "",
      "domains": null
    },
@@ -2453,18 +3526,6 @@
      "domains": null
    },
    {
-     "honorific": "Mrs",
-     "firstName": "Fiona",
-     "surnname": "Phillips",
-     "otherName": "Evon",
-     "preferredName": "Fiona",
-     "electorate": "Gilmore",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
      "honorific": "Hon",
      "firstName": "Keith",
      "surnname": "Pitt",
@@ -2478,35 +3539,11 @@
    },
    {
      "honorific": "Hon",
-     "firstName": "Tanya",
-     "surnname": "Plibersek",
-     "otherName": "Joan",
-     "preferredName": "",
-     "electorate": "Sydney",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
      "firstName": "Charles",
      "surnname": "Porter",
      "otherName": "",
      "preferredName": "Christian",
      "electorate": "Pearce",
-     "party": "LP",
-     "state": "WA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Melissa",
-     "surnname": "Price",
-     "otherName": "Lee",
-     "preferredName": "",
-     "electorate": "Durack",
      "party": "LP",
      "state": "WA",
      "level": "",
@@ -2526,18 +3563,6 @@
    },
    {
      "honorific": "Hon",
-     "firstName": "Amanda",
-     "surnname": "Rishworth",
-     "otherName": "Louise",
-     "preferredName": "",
-     "electorate": "Kingston",
-     "party": "ALP",
-     "state": "SA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
      "firstName": "Stuart",
      "surnname": "Robert",
      "otherName": "Rowland",
@@ -2545,42 +3570,6 @@
      "electorate": "Fadden",
      "party": "LNP",
      "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Michelle",
-     "surnname": "Rowland",
-     "otherName": "Anne",
-     "preferredName": "Michelle",
-     "electorate": "Greenway",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Joanne",
-     "surnname": "Ryan",
-     "otherName": "Catherine",
-     "preferredName": "Joanne",
-     "electorate": "Lalor",
-     "party": "ALP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Rebekha",
-     "surnname": "Sharkie",
-     "otherName": "Carina Che",
-     "preferredName": "Rebekha",
-     "electorate": "Mayo",
-     "party": "CA",
-     "state": "SA",
      "level": "",
      "domains": null
    },
@@ -2633,18 +3622,6 @@
      "domains": null
    },
    {
-     "honorific": "Mr",
-     "firstName": "David",
-     "surnname": "Smith",
-     "otherName": "Philip Benedict",
-     "preferredName": "David",
-     "electorate": "Bean",
-     "party": "ALP",
-     "state": "ACT",
-     "level": "",
-     "domains": null
-   },
-   {
      "honorific": "Hon",
      "firstName": "Warren",
      "surnname": "Snowdon",
@@ -2653,30 +3630,6 @@
      "electorate": "Lingiari",
      "party": "ALP",
      "state": "NT",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Anne",
-     "surnname": "Stanley",
-     "otherName": "Maree",
-     "preferredName": "Anne",
-     "electorate": "Werriwa",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Zali",
-     "surnname": "Steggall",
-     "otherName": "",
-     "preferredName": "Zali",
-     "electorate": "Warringah",
-     "party": "IND",
-     "state": "NSW",
      "level": "",
      "domains": null
    },
@@ -2700,90 +3653,6 @@
      "preferredName": "Michael",
      "electorate": "Deakin",
      "party": "LP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Meryl",
-     "surnname": "Swanson",
-     "otherName": "Jane",
-     "preferredName": "",
-     "electorate": "Paterson",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Angus",
-     "surnname": "Taylor",
-     "otherName": "James",
-     "preferredName": "Angus",
-     "electorate": "Hume",
-     "party": "LP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Daniel",
-     "surnname": "Tehan",
-     "otherName": "Thomas",
-     "preferredName": "Dan",
-     "electorate": "Wannon",
-     "party": "LP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Susan",
-     "surnname": "Templeman",
-     "otherName": "Raye",
-     "preferredName": "Susan",
-     "electorate": "Macquarie",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Matthew",
-     "surnname": "Thistlethwaite",
-     "otherName": "James",
-     "preferredName": "Matt",
-     "electorate": "Kingsford Smith",
-     "party": "ALP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Phillip",
-     "surnname": "Thompson",
-     "otherName": "",
-     "preferredName": "Phillip",
-     "electorate": "Herbert",
-     "party": "LNP",
-     "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Kate",
-     "surnname": "Thwaites",
-     "otherName": "Lynne",
-     "preferredName": "Kate",
-     "electorate": "Jagajaga",
-     "party": "ALP",
      "state": "VIC",
      "level": "",
      "domains": null
@@ -2837,54 +3706,6 @@
      "domains": null
    },
    {
-     "honorific": "Mr",
-     "firstName": "Andrew",
-     "surnname": "Wallace",
-     "otherName": "Bruce",
-     "preferredName": "Andrew",
-     "electorate": "Fisher",
-     "party": "LNP",
-     "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Timothy",
-     "surnname": "Watts",
-     "otherName": "Graham",
-     "preferredName": "Tim",
-     "electorate": "Gellibrand",
-     "party": "ALP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Dr",
-     "firstName": "Anne",
-     "surnname": "Webster",
-     "otherName": "Elizabeth",
-     "preferredName": "Anne",
-     "electorate": "Mallee",
-     "party": "NATS",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Anika",
-     "surnname": "Wells",
-     "otherName": "Shay",
-     "preferredName": "Anika",
-     "electorate": "Lilley",
-     "party": "ALP",
-     "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
      "honorific": "Mrs",
      "firstName": "Lucy",
      "surnname": "Wicks",
@@ -2894,67 +3715,7 @@
      "party": "LP",
      "state": "NSW",
      "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Andrew",
-     "surnname": "Wilkie",
-     "otherName": "Damien",
-     "preferredName": "Andrew",
-     "electorate": "Clark",
-     "party": "IND",
-     "state": "TAS",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Joshua",
-     "surnname": "Wilson",
-     "otherName": "Hamilton",
-     "preferredName": "Josh",
-     "electorate": "Fremantle",
-     "party": "ALP",
-     "state": "WA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Richard",
-     "surnname": "Wilson",
-     "otherName": "James",
-     "preferredName": "Rick",
-     "electorate": "O'Connor",
-     "party": "LP",
-     "state": "WA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Timothy",
-     "surnname": "Wilson",
-     "otherName": "Robert",
-     "preferredName": "Tim",
-     "electorate": "Goldstein",
-     "party": "LP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Jason",
-     "surnname": "Wood",
-     "otherName": "Peter",
-     "preferredName": "Jason",
-     "electorate": "La Trobe",
-     "party": "LP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
+     "domains": []
    },
    {
      "honorific": "Hon",
@@ -2966,31 +3727,7 @@
      "party": "LP",
      "state": "WA",
      "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Terry",
-     "surnname": "Young",
-     "otherName": "James",
-     "preferredName": "Terry",
-     "electorate": "Longman",
-     "party": "LNP",
-     "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Antonio",
-     "surnname": "Zappia",
-     "otherName": "",
-     "preferredName": "Tony",
-     "electorate": "Makin",
-     "party": "ALP",
-     "state": "SA",
-     "level": "",
-     "domains": null
+     "domains": []
    },
    {
      "honorific": "Mr",
@@ -3002,282 +3739,6 @@
      "party": "LP",
      "state": "NSW",
      "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Andrew",
-     "surnname": "Wallace",
-     "otherName": "Bruce",
-     "preferredName": "Andrew",
-     "electorate": "Fisher",
-     "party": "LNP",
-     "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Timothy",
-     "surnname": "Watts",
-     "otherName": "Graham",
-     "preferredName": "Tim",
-     "electorate": "Gellibrand",
-     "party": "ALP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Dr",
-     "firstName": "Anne",
-     "surnname": "Webster",
-     "otherName": "Elizabeth",
-     "preferredName": "Anne",
-     "electorate": "Mallee",
-     "party": "NATS",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Ms",
-     "firstName": "Anika",
-     "surnname": "Wells",
-     "otherName": "Shay",
-     "preferredName": "Anika",
-     "electorate": "Lilley",
-     "party": "ALP",
-     "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mrs",
-     "firstName": "Lucy",
-     "surnname": "Wicks",
-     "otherName": "Elizabeth",
-     "preferredName": "",
-     "electorate": "Robertson",
-     "party": "LP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Andrew",
-     "surnname": "Wilkie",
-     "otherName": "Damien",
-     "preferredName": "Andrew",
-     "electorate": "Clark",
-     "party": "IND",
-     "state": "TAS",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Joshua",
-     "surnname": "Wilson",
-     "otherName": "Hamilton",
-     "preferredName": "Josh",
-     "electorate": "Fremantle",
-     "party": "ALP",
-     "state": "WA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Richard",
-     "surnname": "Wilson",
-     "otherName": "James",
-     "preferredName": "Rick",
-     "electorate": "O'Connor",
-     "party": "LP",
-     "state": "WA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Timothy",
-     "surnname": "Wilson",
-     "otherName": "Robert",
-     "preferredName": "Tim",
-     "electorate": "Goldstein",
-     "party": "LP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Jason",
-     "surnname": "Wood",
-     "otherName": "Peter",
-     "preferredName": "Jason",
-     "electorate": "La Trobe",
-     "party": "LP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Kenneth",
-     "surnname": "Wyatt",
-     "otherName": "George",
-     "preferredName": "Ken",
-     "electorate": "Hasluck",
-     "party": "LP",
-     "state": "WA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Terry",
-     "surnname": "Young",
-     "otherName": "James",
-     "preferredName": "Terry",
-     "electorate": "Longman",
-     "party": "LNP",
-     "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Antonio",
-     "surnname": "Zappia",
-     "otherName": "",
-     "preferredName": "Tony",
-     "electorate": "Makin",
-     "party": "ALP",
-     "state": "SA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Trent",
-     "surnname": "Zimmerman",
-     "otherName": "Moir",
-     "preferredName": "Trent",
-     "electorate": "North Sydney",
-     "party": "LP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Terry",
-     "surnname": "Young",
-     "otherName": "James",
-     "preferredName": "Terry",
-     "electorate": "Longman",
-     "party": "LNP",
-     "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Antonio",
-     "surnname": "Zappia",
-     "otherName": "",
-     "preferredName": "Tony",
-     "electorate": "Makin",
-     "party": "ALP",
-     "state": "SA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Trent",
-     "surnname": "Zimmerman",
-     "otherName": "Moir",
-     "preferredName": "Trent",
-     "electorate": "North Sydney",
-     "party": "LP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Timothy",
-     "surnname": "Wilson",
-     "otherName": "Robert",
-     "preferredName": "Tim",
-     "electorate": "Goldstein",
-     "party": "LP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Jason",
-     "surnname": "Wood",
-     "otherName": "Peter",
-     "preferredName": "Jason",
-     "electorate": "La Trobe",
-     "party": "LP",
-     "state": "VIC",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Kenneth",
-     "surnname": "Wyatt",
-     "otherName": "George",
-     "preferredName": "Ken",
-     "electorate": "Hasluck",
-     "party": "LP",
-     "state": "WA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Terry",
-     "surnname": "Young",
-     "otherName": "James",
-     "preferredName": "Terry",
-     "electorate": "Longman",
-     "party": "LNP",
-     "state": "QLD",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Antonio",
-     "surnname": "Zappia",
-     "otherName": "",
-     "preferredName": "Tony",
-     "electorate": "Makin",
-     "party": "ALP",
-     "state": "SA",
-     "level": "",
-     "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Trent",
-     "surnname": "Zimmerman",
-     "otherName": "Moir",
-     "preferredName": "Trent",
-     "electorate": "North Sydney",
-     "party": "LP",
-     "state": "NSW",
-     "level": "",
-     "domains": null
+     "domains": []
    }
  ]
