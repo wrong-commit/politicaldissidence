@@ -3,6 +3,7 @@ package data
 import (
 	"fmt"
 	"politicaldissidence/dnscheck"
+	"politicaldissidence/httpscheck"
 	"politicaldissidence/whois"
 	"strings"
 	"time"
@@ -14,14 +15,26 @@ const WhoisMaxAge = 10 * 24 * time.Hour
 // DnsMaxAge is the background DNS refresh throttle window.
 const DnsMaxAge = WhoisMaxAge
 
-// AlertSoonWindow is how far ahead an expiry counts as "soon" for sniping alerts.
+// HttpsMaxAge is the background HTTPS refresh throttle window.
+const HttpsMaxAge = WhoisMaxAge
+
+// AlertSoonWindow is how far ahead a WHOIS expiry counts as "soon" for sniping alerts.
 const AlertSoonWindow = 90 * 24 * time.Hour
+
+// HttpsSoonWindow is the default window for HTTPS status "soon" (cert NotAfter).
+// Let's Encrypt typically renews around 30 days before expiry, so 15 days is a
+// useful neglect signal (renewal should already have happened).
+// Override per call with Domain.UpdateHttpsWindow.
+const HttpsSoonWindow = 15 * 24 * time.Hour
 
 // Alert reason tokens (CLI report / tests); not persisted on Domain.
 const (
-	AlertReasonExpired  = "expired"
-	AlertReasonSoon     = "soon"
-	AlertReasonDNSEmpty = "dns-empty"
+	AlertReasonExpired      = "expired"
+	AlertReasonSoon         = "soon"
+	AlertReasonDNSEmpty     = "dns-empty"
+	AlertReasonHTTPSExpired = "https-expired"
+	AlertReasonHTTPSSoon    = "https-soon"
+	AlertReasonHTTPSMissing = "https-missing"
 )
 
 // lookupInfo is the WHOIS lookup function; overridden in tests.
@@ -59,6 +72,25 @@ type DnsRecord struct {
 	Error     string    `json:"error,omitempty"`
 }
 
+// HttpsHostRecord is the latest TLS probe result for one hostname form.
+type HttpsHostRecord struct {
+	Hostname string    `json:"hostname,omitempty"`
+	Status   string    `json:"status,omitempty"`
+	NotAfter time.Time `json:"notAfter,omitempty"`
+	Error    string    `json:"error,omitempty"`
+}
+
+// HttpsRecord is the latest dual-host HTTPS certificate check (only one kept).
+// Persisted under Domain.Https in mp_data.json.
+type HttpsRecord struct {
+	CheckedAt time.Time        `json:"checkedAt,omitempty"`
+	Status    string           `json:"status,omitempty"` // aggregated: enabled | expired | missing
+	NotAfter  time.Time        `json:"notAfter,omitempty"`
+	Error     string           `json:"error,omitempty"` // optional aggregate message
+	Apex      *HttpsHostRecord `json:"apex,omitempty"`
+	WWW       *HttpsHostRecord `json:"www,omitempty"`
+}
+
 type Domain struct {
 	/* Domain Hostname */
 	Hostname string `json:"hostname"`
@@ -73,6 +105,8 @@ type Domain struct {
 	Whois *WhoisRecord `json:"whois,omitempty"`
 	/* Latest DNS emptiness check; omitempty when never looked up */
 	DNS *DnsRecord `json:"dns,omitempty"`
+	/* Latest HTTPS certificate check; omitempty when never looked up */
+	Https *HttpsRecord `json:"https,omitempty"`
 }
 
 // NeedsWhois reports whether a WHOIS lookup should run for the background job.
@@ -92,6 +126,15 @@ func (d Domain) NeedsDns(at time.Time, maxAge time.Duration) bool {
 		return true
 	}
 	return !d.DNS.CheckedAt.After(at.Add(-maxAge))
+}
+
+// NeedsHttps reports whether an HTTPS lookup should run for the background job.
+// Never-checked domains and domains whose https.checkedAt is at least maxAge ago need HTTPS.
+func (d Domain) NeedsHttps(at time.Time, maxAge time.Duration) bool {
+	if d.Https == nil || d.Https.CheckedAt.IsZero() {
+		return true
+	}
+	return !d.Https.CheckedAt.After(at.Add(-maxAge))
 }
 
 // UpdateExpiry updates the expiry on a domain object via live WHOIS.
@@ -186,6 +229,67 @@ func (d *Domain) updateDns(lookup func(string) (dnscheck.Info, error)) (info dns
 	return info, nil
 }
 
+// UpdateHttps runs a dual-host HTTPS certificate check using HttpsSoonWindow.
+func (d *Domain) UpdateHttps() (httpscheck.Info, error) {
+	return d.UpdateHttpsWindow(HttpsSoonWindow)
+}
+
+// UpdateHttpsWindow is like UpdateHttps but uses the given soon window for StatusSoon.
+// soonWindow <= 0 falls back to HttpsSoonWindow.
+func (d *Domain) UpdateHttpsWindow(soonWindow time.Duration) (httpscheck.Info, error) {
+	if soonWindow <= 0 {
+		soonWindow = HttpsSoonWindow
+	}
+	return d.updateHttps(func(hostname string) (httpscheck.Info, error) {
+		return httpscheck.LookupWith(hostname, nil, 0, now, soonWindow)
+	})
+}
+
+func (d *Domain) updateHttps(lookup func(string) (httpscheck.Info, error)) (info httpscheck.Info, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("recovered in UpdateHttps: %v", r)
+		}
+	}()
+	info, err = lookup(d.Hostname)
+	checked := now()
+	if err != nil {
+		msg := info.Message
+		if msg == "" {
+			msg = err.Error()
+		}
+		d.Https = &HttpsRecord{
+			CheckedAt: checked,
+			Status:    string(httpscheck.StatusMissing),
+			Error:     msg,
+			Apex:      hostRecordFromInfo(info.Apex),
+			WWW:       hostRecordFromInfo(info.WWW),
+		}
+		d.RefreshAlert(checked, AlertSoonWindow)
+		return info, err
+	}
+	d.Https = &HttpsRecord{
+		CheckedAt: checked,
+		Status:    string(info.Status),
+		NotAfter:  info.NotAfter,
+		Error:     info.Message,
+		Apex:      hostRecordFromInfo(info.Apex),
+		WWW:       hostRecordFromInfo(info.WWW),
+	}
+	d.RefreshAlert(checked, AlertSoonWindow)
+	return info, nil
+}
+
+func hostRecordFromInfo(h httpscheck.HostInfo) *HttpsHostRecord {
+	rec := &HttpsHostRecord{
+		Hostname: h.Hostname,
+		Status:   string(h.Status),
+		NotAfter: h.NotAfter,
+		Error:    h.Message,
+	}
+	return rec
+}
+
 // expiryLayouts are tried in order when parsing Domain.Expiry for alerts.
 // Calendar dates without a zone are interpreted in local time.
 var expiryLayouts = []string{
@@ -240,6 +344,16 @@ func AlertReasons(d Domain, at time.Time, soonWindow time.Duration) []string {
 	if d.DNS != nil && d.DNS.Empty {
 		reasons = append(reasons, AlertReasonDNSEmpty)
 	}
+	if d.Https != nil {
+		switch d.Https.Status {
+		case string(httpscheck.StatusExpired):
+			reasons = append(reasons, AlertReasonHTTPSExpired)
+		case string(httpscheck.StatusSoon):
+			reasons = append(reasons, AlertReasonHTTPSSoon)
+		case string(httpscheck.StatusMissing):
+			reasons = append(reasons, AlertReasonHTTPSMissing)
+		}
+	}
 	return reasons
 }
 
@@ -248,7 +362,7 @@ func ComputeAlert(d Domain, at time.Time, soonWindow time.Duration) bool {
 	return len(AlertReasons(d, at, soonWindow)) > 0
 }
 
-// RefreshAlert sets Alert from current Expiry and DNS using the shared classifier.
+// RefreshAlert sets Alert from current Expiry, DNS, and HTTPS using the shared classifier.
 func (d *Domain) RefreshAlert(at time.Time, soonWindow time.Duration) {
 	d.Alert = ComputeAlert(*d, at, soonWindow)
 }

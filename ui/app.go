@@ -9,6 +9,7 @@ import (
 	"politicaldissidence/data"
 	"politicaldissidence/db"
 	"politicaldissidence/dnsrefresh"
+	"politicaldissidence/httpsrefresh"
 	"politicaldissidence/jobs"
 	"politicaldissidence/refresh"
 	"politicaldissidence/ui/panel"
@@ -32,6 +33,7 @@ func InitApp() {
 	ui.log(ui.startupLog, false)
 	go ui.startBackgroundWhois()
 	go ui.startBackgroundDns()
+	go ui.startBackgroundHttps()
 	ui.Loop()
 	defer func() { fmt.Println(ui.consoleLog) }()
 }
@@ -223,7 +225,7 @@ func (ui *UI) selectDomain(newIndex int) error {
 	return nil
 }
 
-// checkDomain will update WHOIS expiry and DNS for the selected domain in the buffer.
+// checkDomain will update WHOIS expiry, DNS, and HTTPS for the selected domain in the buffer.
 // Uses the same INFO/DEBUG/INFO log lines as the background refresh jobs (no 10-day skip).
 func (ui *UI) checkDomain() error {
 	if ui.state.domainState == nil || ui.state.domainState.domains == nil {
@@ -241,6 +243,7 @@ func (ui *UI) checkDomain() error {
 	one.Domains = (*ui.state.domainState.domains)[idx : idx+1]
 	_ = refresh.Run([]data.MP{one}, ui.whoisRefreshDeps(true, 0, false))
 	_ = dnsrefresh.Run([]data.MP{one}, ui.dnsRefreshDeps(true, 0, false))
+	_ = httpsrefresh.Run([]data.MP{one}, ui.httpsRefreshDeps(true, 0, false))
 	return ui.setPanelView(DOMAIN_PANEL)
 }
 

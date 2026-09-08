@@ -8,7 +8,6 @@ import (
 	"politicaldissidence/db"
 	"politicaldissidence/dnscheck"
 	"politicaldissidence/dnsrefresh"
-	"politicaldissidence/ui/panel"
 )
 
 func (ui *UI) dnsLogger() dnsrefresh.Logger {
@@ -80,22 +79,4 @@ func (ui *UI) refreshDomainDns(mpIndex, domainIdx int) {
 	_ = dnsrefresh.Run([]data.MP{one}, ui.dnsRefreshDeps(true, 0, false))
 	ui.refreshDomainPanel()
 	ui.refreshWhoisPanel()
-}
-
-// drawSelectedWhois renders WHOIS + DNS for the domain currently selected in Member Domains.
-func (ui *UI) drawSelectedWhois() string {
-	if !ui.hasDomains() {
-		return panel.DrawWhoisPanel("", "", nil, nil)
-	}
-	idx := ui.state.domainState.index
-	domains := *ui.state.domainState.domains
-	if idx < 0 || idx >= len(domains) {
-		return panel.DrawWhoisPanel("", "", nil, nil)
-	}
-	mpName := ""
-	if mp := ui.mpAt(ui.state.currentIndex); mp != nil {
-		mpName = mp.Name()
-	}
-	d := domains[idx]
-	return panel.DrawWhoisPanel(d.Hostname, mpName, d.Whois, d.DNS)
 }

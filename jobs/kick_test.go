@@ -113,3 +113,22 @@ func TestNewDnsOnAdd(t *testing.T) {
 		t.Fatalf("nil run: %v", err)
 	}
 }
+
+func TestNewHttpsOnAdd(t *testing.T) {
+	var mp, dom int
+	j := NewHttpsOnAdd(func(mpIndex, domainIdx int) {
+		mp, dom = mpIndex, domainIdx
+	})
+	if j.Name() != "https-on-add" {
+		t.Fatalf("Name = %q", j.Name())
+	}
+	if err := j.Run(Context{MPIndex: 4, DomainIdx: 5}); err != nil {
+		t.Fatal(err)
+	}
+	if mp != 4 || dom != 5 {
+		t.Fatalf("got mp=%d dom=%d", mp, dom)
+	}
+	if err := NewHttpsOnAdd(nil).Run(Context{}); err != nil {
+		t.Fatalf("nil run: %v", err)
+	}
+}

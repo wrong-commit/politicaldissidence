@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"politicaldissidence/dnscheck"
+	"politicaldissidence/httpscheck"
 )
 
 func TestDomain_UpdateExpiry_Success(t *testing.T) {
@@ -393,5 +394,202 @@ func TestRefreshAlert_AfterDnsOnly(t *testing.T) {
 	}
 	if !d.Alert {
 		t.Fatal("expected Alert after empty DNS")
+	}
+}
+
+func TestDomain_UpdateHttps_Success(t *testing.T) {
+	fixed := time.Date(2026, 3, 8, 12, 0, 0, 0, time.UTC)
+	prevNow := now
+	now = func() time.Time { return fixed }
+	defer func() { now = prevNow }()
+
+	notAfter := fixed.Add(30 * 24 * time.Hour)
+	d := Domain{Hostname: "example.com"}
+	info, err := d.updateHttps(func(hostname string) (httpscheck.Info, error) {
+		return httpscheck.Info{
+			Apex:     httpscheck.HostInfo{Hostname: "example.com", Status: httpscheck.StatusEnabled, NotAfter: notAfter},
+			WWW:      httpscheck.HostInfo{Hostname: "www.example.com", Status: httpscheck.StatusMissing, Message: "refused"},
+			Status:   httpscheck.StatusEnabled,
+			NotAfter: notAfter,
+		}, nil
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if info.Status != httpscheck.StatusEnabled || d.Https == nil || d.Https.Status != "enabled" {
+		t.Fatalf("Https=%+v info=%+v", d.Https, info)
+	}
+	if !d.Https.CheckedAt.Equal(fixed) || !d.Https.NotAfter.Equal(notAfter) {
+		t.Fatalf("Https=%+v", d.Https)
+	}
+	if d.Https.Apex == nil || d.Https.Apex.Hostname != "example.com" || d.Https.WWW == nil {
+		t.Fatalf("host records=%+v", d.Https)
+	}
+}
+
+func TestDomain_UpdateHttps_Missing(t *testing.T) {
+	fixed := time.Date(2026, 3, 8, 12, 0, 0, 0, time.UTC)
+	prevNow := now
+	now = func() time.Time { return fixed }
+	defer func() { now = prevNow }()
+
+	d := Domain{Hostname: "example.com"}
+	_, err := d.updateHttps(func(hostname string) (httpscheck.Info, error) {
+		return httpscheck.Info{
+			Apex:    httpscheck.HostInfo{Hostname: "example.com", Status: httpscheck.StatusMissing, Message: "timeout"},
+			WWW:     httpscheck.HostInfo{Hostname: "www.example.com", Status: httpscheck.StatusMissing, Message: "refused"},
+			Status:  httpscheck.StatusMissing,
+			Message: "timeout; refused",
+		}, nil
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if d.Https == nil || d.Https.Status != "missing" || d.Https.Error == "" {
+		t.Fatalf("Https=%+v", d.Https)
+	}
+	if !d.Https.NotAfter.IsZero() {
+		t.Fatalf("should not invent NotAfter: %v", d.Https.NotAfter)
+	}
+}
+
+func TestDomain_Https_JSONRoundTrip(t *testing.T) {
+	checked := time.Date(2026, 2, 1, 15, 4, 5, 0, time.UTC)
+	notAfter := time.Date(2026, 9, 9, 12, 0, 0, 0, time.UTC)
+	orig := Domain{
+		Hostname: "example.com.au",
+		Expiry:   "2027-01-01",
+		Https: &HttpsRecord{
+			CheckedAt: checked,
+			Status:    "enabled",
+			NotAfter:  notAfter,
+			Apex: &HttpsHostRecord{
+				Hostname: "example.com.au",
+				Status:   "enabled",
+				NotAfter: notAfter,
+			},
+			WWW: &HttpsHostRecord{
+				Hostname: "www.example.com.au",
+				Status:   "missing",
+				Error:    "refused",
+			},
+		},
+	}
+	b, err := json.Marshal(orig)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(b), `"https"`) || !strings.Contains(string(b), `"enabled"`) {
+		t.Fatalf("expected https in JSON: %s", b)
+	}
+	var got Domain
+	if err := json.Unmarshal(b, &got); err != nil {
+		t.Fatal(err)
+	}
+	if got.Https == nil || got.Https.Status != "enabled" || !got.Https.CheckedAt.Equal(checked) {
+		t.Fatalf("Https=%+v", got.Https)
+	}
+	if got.Https.Apex == nil || got.Https.WWW == nil || got.Https.WWW.Error != "refused" {
+		t.Fatalf("hosts=%+v", got.Https)
+	}
+
+	var missing Domain
+	if err := json.Unmarshal([]byte(`{"hostname":"x.com","expiry":"","expired":false}`), &missing); err != nil {
+		t.Fatal(err)
+	}
+	if missing.Https != nil {
+		t.Fatalf("missing https should be nil, got %+v", missing.Https)
+	}
+}
+
+func TestDomain_NeedsHttps(t *testing.T) {
+	at := time.Date(2026, 3, 15, 12, 0, 0, 0, time.UTC)
+	maxAge := HttpsMaxAge
+
+	tests := []struct {
+		name  string
+		https *HttpsRecord
+		want  bool
+	}{
+		{"never checked", nil, true},
+		{"zero checkedAt", &HttpsRecord{}, true},
+		{"fresh", &HttpsRecord{CheckedAt: at}, false},
+		{"fresh 9 days", &HttpsRecord{CheckedAt: at.Add(-9 * 24 * time.Hour)}, false},
+		{"exactly 10 days", &HttpsRecord{CheckedAt: at.Add(-10 * 24 * time.Hour)}, true},
+		{"far past", &HttpsRecord{CheckedAt: at.Add(-90 * 24 * time.Hour)}, true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			d := Domain{Https: tt.https}
+			if got := d.NeedsHttps(at, maxAge); got != tt.want {
+				t.Fatalf("NeedsHttps = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestAlertReasons_HTTPS(t *testing.T) {
+	at := time.Date(2026, 9, 8, 15, 0, 0, 0, time.Local)
+	soon := AlertSoonWindow
+	far := at.Add(120 * 24 * time.Hour).Format("2006-01-02")
+	near := at.Add(30 * 24 * time.Hour).Format("2006-01-02")
+
+	tests := []struct {
+		name string
+		d    Domain
+		want []string
+	}{
+		{"A1 https-expired", Domain{Expiry: far, Https: &HttpsRecord{Status: "expired"}}, []string{AlertReasonHTTPSExpired}},
+		{"A2 https-missing", Domain{Expiry: far, Https: &HttpsRecord{Status: "missing"}}, []string{AlertReasonHTTPSMissing}},
+		{"A2b https-soon", Domain{Expiry: far, Https: &HttpsRecord{Status: "soon"}}, []string{AlertReasonHTTPSSoon}},
+		{"A3 https-enabled", Domain{Expiry: far, Https: &HttpsRecord{Status: "enabled"}}, nil},
+		{"A4 https-nil", Domain{Expiry: far}, nil},
+		{"A6 soon+https-expired", Domain{Expiry: near, Https: &HttpsRecord{Status: "expired"}}, []string{AlertReasonSoon, AlertReasonHTTPSExpired}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := AlertReasons(tt.d, at, soon)
+			if len(got) != len(tt.want) {
+				t.Fatalf("got %v want %v", got, tt.want)
+			}
+			for i := range got {
+				if got[i] != tt.want[i] {
+					t.Fatalf("got %v want %v", got, tt.want)
+				}
+			}
+		})
+	}
+}
+
+func TestRefreshAlert_AfterHttpsClears(t *testing.T) {
+	at := time.Date(2026, 9, 8, 12, 0, 0, 0, time.Local)
+	prevNow := now
+	now = func() time.Time { return at }
+	defer func() { now = prevNow }()
+
+	far := at.Add(200 * 24 * time.Hour).Format("2006-01-02")
+	d := Domain{
+		Hostname: "fix.example",
+		Expiry:   far,
+		Alert:    true,
+		Https:    &HttpsRecord{Status: "missing"},
+	}
+	d.RefreshAlert(at, AlertSoonWindow)
+	if !d.Alert {
+		t.Fatal("expected Alert while https-missing")
+	}
+	_, err := d.updateHttps(func(hostname string) (httpscheck.Info, error) {
+		return httpscheck.Info{
+			Status:   httpscheck.StatusEnabled,
+			NotAfter: at.Add(30 * 24 * time.Hour),
+			Apex:     httpscheck.HostInfo{Hostname: "fix.example", Status: httpscheck.StatusEnabled, NotAfter: at.Add(30 * 24 * time.Hour)},
+			WWW:      httpscheck.HostInfo{Hostname: "www.fix.example", Status: httpscheck.StatusEnabled, NotAfter: at.Add(30 * 24 * time.Hour)},
+		}, nil
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if d.Alert {
+		t.Fatal("expected Alert cleared after https enabled")
 	}
 }

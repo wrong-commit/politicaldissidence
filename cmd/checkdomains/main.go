@@ -12,10 +12,10 @@ import (
 )
 
 func main() {
-	soonDays := flag.Int("soon-days", int(data.AlertSoonWindow/(24*time.Hour)), "days ahead that count as soon for alert")
-	delay := flag.Duration("delay", time.Second, "sleep between domain WHOIS+DNS checks")
+	soonDays := flag.Int("soon-days", int(data.AlertSoonWindow/(24*time.Hour)), "days ahead that count as soon for WHOIS alert")
+	delay := flag.Duration("delay", time.Second, "sleep between domain WHOIS+DNS+HTTPS checks")
 	dryRun := flag.Bool("dry-run", false, "classify from persisted data only; no network, no save")
-	save := flag.Bool("save", true, "persist WHOIS/DNS/alert after live run")
+	save := flag.Bool("save", true, "persist WHOIS/DNS/HTTPS/alert after live run")
 	verbose := flag.Bool("v", false, "debug logging per domain")
 	flag.Parse()
 
@@ -39,12 +39,15 @@ func main() {
 
 	now := time.Now()
 	var (
-		alertCount   int
-		expiredCount int
-		soonCount    int
-		emptyCount   int
-		errorCount   int
-		mutated      bool
+		alertCount        int
+		expiredCount      int
+		soonCount         int
+		emptyCount        int
+		httpsExpiredCount int
+		httpsSoonCount    int
+		httpsMissingCount int
+		errorCount        int
+		mutated           bool
 	)
 
 	domainIndex := 0
@@ -60,6 +63,10 @@ func main() {
 				}
 				if _, err := dom.UpdateDns(); err != nil {
 					fmt.Fprintf(os.Stderr, "ERROR checkdomains: domain %s for MP \"%s\" dns error: %v\n", dom.Hostname, mp.Name(), err)
+					errorCount++
+				}
+				if _, err := dom.UpdateHttps(); err != nil {
+					fmt.Fprintf(os.Stderr, "ERROR checkdomains: domain %s for MP \"%s\" https error: %v\n", dom.Hostname, mp.Name(), err)
 					errorCount++
 				}
 				mutated = true
@@ -88,6 +95,12 @@ func main() {
 					soonCount++
 				case data.AlertReasonDNSEmpty:
 					emptyCount++
+				case data.AlertReasonHTTPSExpired:
+					httpsExpiredCount++
+				case data.AlertReasonHTTPSSoon:
+					httpsSoonCount++
+				case data.AlertReasonHTTPSMissing:
+					httpsMissingCount++
 				}
 			}
 			dnsOutcome := "?"
@@ -100,8 +113,12 @@ func main() {
 					dnsOutcome = "ok"
 				}
 			}
-			fmt.Printf("%s\tmp=%s\talert=true\texpiry=%s\treasons=%s\tdns=%s\n",
-				dom.Hostname, mp.Name(), dom.Expiry, strings.Join(reasons, ","), dnsOutcome)
+			httpsStatus := "?"
+			if dom.Https != nil && dom.Https.Status != "" {
+				httpsStatus = dom.Https.Status
+			}
+			fmt.Printf("%s\tmp=%s\talert=true\texpiry=%s\treasons=%s\tdns=%s\thttps=%s\n",
+				dom.Hostname, mp.Name(), dom.Expiry, strings.Join(reasons, ","), dnsOutcome, httpsStatus)
 		}
 	}
 
@@ -119,6 +136,6 @@ func main() {
 		fmt.Println("# no alerts")
 	}
 	fmt.Fprintf(os.Stderr, "INFO checkdomains: done alert=%d errors=%d\n", alertCount, errorCount)
-	fmt.Printf("# checked=%d alert=%d expired=%d soon=%d dns-empty=%d errors=%d\n",
-		total, alertCount, expiredCount, soonCount, emptyCount, errorCount)
+	fmt.Printf("# checked=%d alert=%d expired=%d soon=%d dns-empty=%d https-expired=%d https-soon=%d https-missing=%d errors=%d\n",
+		total, alertCount, expiredCount, soonCount, emptyCount, httpsExpiredCount, httpsSoonCount, httpsMissingCount, errorCount)
 }
