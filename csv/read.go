@@ -18,17 +18,41 @@ import (
 )
 
 func ParseSenatorMps(url string) ([]data.MP, error) {
-	reader, err := os.Open("./allsenph.csv")
-	// reader, err := downloadCsv(url)
+	_ = url
+	return ParseSenatorFile("./allsenph.csv")
+}
+
+func ParseMemberMps(url string) ([]data.MP, error) {
+	_ = url
+	return ParseMemberFile("./FamilynameRepsCSV.csv")
+}
+
+// ParseSenatorFile reads a senators address-label CSV from path into MP rows.
+func ParseSenatorFile(path string) ([]data.MP, error) {
+	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
-	defer reader.Close()
+	defer f.Close()
+	return ParseSenatorReader(f)
+}
 
-	// open CSV
-	records, err := readCsv(reader, true, true)
+// ParseMemberFile reads a House of Reps address-label CSV from path into MP rows.
+func ParseMemberFile(path string) ([]data.MP, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	return ParseMemberReader(f)
+}
+
+// ParseSenatorReader converts a senators CSV reader into MP rows (Federal Senator).
+func ParseSenatorReader(r io.Reader) ([]data.MP, error) {
+	records, err := readCsv(r, true, true)
 	if err != nil {
 		fmt.Println("[-] Could not read CSV", err.Error())
+		return nil, err
 	}
 
 	mps, err := getMpRows(records,
@@ -37,24 +61,18 @@ func ParseSenatorMps(url string) ([]data.MP, error) {
 		return nil, err
 	}
 
-	for _, mp := range mps {
-		mp.Level = data.Level.FedSenator
+	for i := range mps {
+		mps[i].Level = data.Level.FedSenator
 	}
 	return mps, nil
 }
 
-func ParseMemberMps(url string) ([]data.MP, error) {
-	reader, err := os.Open("./FamilynameRepsCSV.csv")
-	// reader, err := downloadCsv(url)
-	if err != nil {
-		return nil, err
-	}
-	defer reader.Close()
-
-	// open CSV
-	records, err := readCsv(reader, true, true)
+// ParseMemberReader converts a HoR members CSV reader into MP rows (Federal Rep).
+func ParseMemberReader(r io.Reader) ([]data.MP, error) {
+	records, err := readCsv(r, true, true)
 	if err != nil {
 		fmt.Println("[-] Could not read CSV", err.Error())
+		return nil, err
 	}
 
 	mps, err := getMpRows(records,
@@ -63,8 +81,8 @@ func ParseMemberMps(url string) ([]data.MP, error) {
 		return nil, err
 	}
 
-	for _, mp := range mps {
-		mp.Level = data.Level.FedRep
+	for i := range mps {
+		mps[i].Level = data.Level.FedRep
 	}
 	return mps, nil
 }
@@ -163,7 +181,7 @@ func extractColumns(records [][]string, columns []string) ([][]string, error) {
 	return values, nil
 }
 
-func readCsv(reader io.ReadCloser, lazyQuotes bool, variableFields bool) ([][]string, error) {
+func readCsv(reader io.Reader, lazyQuotes bool, variableFields bool) ([][]string, error) {
 	r := csv.NewReader(reader)
 
 	r.LazyQuotes = lazyQuotes

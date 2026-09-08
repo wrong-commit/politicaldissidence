@@ -104,6 +104,11 @@ func WriteMps(mps []data.MP) error {
 	return write(mps, mpJsonFilename)
 }
 
+// WriteMpsTo writes MPs as validated indented JSON to path (atomic temp + replace).
+func WriteMpsTo(path string, mps []data.MP) error {
+	return write(mps, path)
+}
+
 // write encodes v as indented JSON to a uniquely named temp file next to
 // filename, revalidates that temp file can be reloaded, then replaces the
 // destination (delete + rename) so a failed write never corrupts the live DB.

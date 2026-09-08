@@ -35,6 +35,22 @@ go build -o checkdomains.exe ./cmd/checkdomains
 .\checkdomains.exe -save=false
 ```
 
+Import APH CSVs into MP JSON (writes `mps_from_csv.json` by default, not `mp_data.json`):
+
+```powershell
+go run ./cmd/csv2json -senators .\allsenph.csv -members .\FamilynameRepsCSV.csv
+go run ./cmd/csv2json -members .\FamilynameRepsCSV.csv -o .\mps_from_csv.json
+```
+
+Or build and run the executable:
+
+```powershell
+go build -o csv2json.exe ./cmd/csv2json
+.\csv2json.exe -senators .\allsenph.csv -members .\FamilynameRepsCSV.csv
+.\csv2json.exe -senators .\allsenph.csv -o .\senators.json
+.\csv2json.exe -members .\FamilynameRepsCSV.csv -o .\members.json
+```
+
 On macOS / Linux (or Git Bash), the `make` script builds then runs:
 
 ```sh
@@ -96,6 +112,8 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
     - [x] Add multiple engines/search terms to url lookup
     - [x] DNS Record Checks as well as WHOIS
         - [x] [SPEC_DNS_EMPTY.md](SPEC_DNS_EMPTY.md)
+    - [ ] Import files easily
+        - [ ] easy config for modifying for different files
 - [ ] Maintainence 
     - [ ] Detect when URL disappears
     - [ ] Alert when current list changes found/removed
