@@ -36,6 +36,7 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
 - [Atomic MP JSON save](SPEC_JSON_SAVE.md)
 - [Select a URL modal improvements](SPEC_SELECT_URL_MODAL.md)
 - [Select a URL search paging (v2)](SPEC_SELECT_URL_PAGING.md)
+- [Select a URL searcher controls (v3)](SPEC_SELECT_URL_SEARCHER_V3.md)
 
 ## TODO
 

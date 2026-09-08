@@ -23,14 +23,25 @@ func BingFirst(page int) int {
 	return page*BingPageSize + 1
 }
 
+// bingSearchURL builds a Bing HTML SERP URL.
+// Required paging knobs: q, first (1, 11, 21, …). count=10 matches ~one page.
+// FORM=PERE matches browser “page N” pagination (page >= 1); first page omits it.
+// Session chrome (cvid, FPIG, sp, pq, …) is intentionally omitted.
+func bingSearchURL(term string, page int) string {
+	v := url.Values{}
+	v.Set("q", term)
+	v.Set("count", fmt.Sprintf("%d", BingPageSize))
+	v.Set("first", fmt.Sprintf("%d", BingFirst(page)))
+	// if page > 0 {
+		// v.Set("FORM", "PERE")
+	// }
+	return "https://www.bing.com/search?" + v.Encode()
+}
+
 // Go searches Bing and returns result links for the given 0-based page.
 func (bing) Go(term string, page int) ([]Link, error) {
-	first := BingFirst(page)
-	endpoint := fmt.Sprintf(
-		"https://www.bing.com/search?q=%s&first=%d",
-		url.QueryEscape(term),
-		first,
-	)
+	endpoint := bingSearchURL(term, page)
+	debugLog("DEBUG searching bing %s", endpoint)
 	req, err := http.NewRequest(http.MethodGet, endpoint, nil)
 	if err != nil {
 		return nil, err

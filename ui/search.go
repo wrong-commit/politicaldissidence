@@ -63,6 +63,7 @@ func (ui *UI) changeURLSearchPage(g *gocui.Gui, delta int) error {
 
 // fetchBingPage runs SearchPage off the UI thread, then updates modals on the main loop.
 // On failure, priorLinks/priorPage (when priorLinks != nil) restore the previous Select a URL page.
+// Example: https://www.bing.com/search?q=test&sp=-1&lq=0&pq=&sc=10-0&qs=n&sk=&cvid=158ABE0FCF8142AEA09E9F8D72CC3D74&FPIG=552C578704CC4DE9B82EFBE65E87D5AC&first=11&FORM=PERE
 func (ui *UI) fetchBingPage(g *gocui.Gui, term string, page int, priorLinks *[]searching.Link, priorPage int, mpName string) {
 	links, err := searching.UrlSearcher{}.SearchPage(term, page)
 

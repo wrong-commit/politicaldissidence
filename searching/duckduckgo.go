@@ -111,6 +111,7 @@ func postDuckDuckGo(term string) (string, error) {
 	endpoint := "https://lite.duckduckgo.com/lite/"
 	values := url.Values{}
 	values.Set("q", term)
+	debugLog("DEBUG searching duckduckgo POST %s q=%s", endpoint, term)
 
 	req, err := http.NewRequest(http.MethodPost, endpoint, strings.NewReader(values.Encode()))
 	if err != nil {

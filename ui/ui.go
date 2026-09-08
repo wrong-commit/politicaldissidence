@@ -101,9 +101,24 @@ func (ui *UI) initGui(g *gocui.Gui) error {
 
 	ui.state.searchState = &SearchState{term: "", result: &[]searching.Link{}}
 
+	searching.DebugLog = func(msg string) {
+		ui.searchDebugLog(msg)
+	}
+
 	// Register keybindings
 	err := keyHandlers.ApplyKeyBindings(ui, g)
 	return err
+}
+
+// searchDebugLog writes a searching DEBUG line to the console (safe from worker goroutines).
+func (ui *UI) searchDebugLog(msg string) {
+	if ui.gui == nil || !ui.started {
+		_ = ui.logPlain(msg)
+		return
+	}
+	ui.gui.Update(func(g *gocui.Gui) error {
+		return ui.logPlain(msg)
+	})
 }
 
 // Loop starts the GUI loop.

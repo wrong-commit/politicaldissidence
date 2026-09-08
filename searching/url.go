@@ -22,6 +22,16 @@ type Link []string
 // httpClient is shared so search requests cannot hang forever.
 var httpClient = &http.Client{Timeout: 20 * time.Second}
 
+// DebugLog, when set, receives debug lines (e.g. request URLs) for the UI console.
+var DebugLog func(string)
+
+func debugLog(format string, args ...interface{}) {
+	if DebugLog == nil {
+		return
+	}
+	DebugLog(fmt.Sprintf(format, args...))
+}
+
 func (u UrlSearcher) Search(term string) ([]Link, error) {
 	found, err := duckduck{}.Go(term)
 	if err == nil && len(found) > 0 {
@@ -49,6 +59,7 @@ func (u UrlSearcher) Search(term string) ([]Link, error) {
 
 // SearchPage fetches one page of Bing results (0-based page). Used by Ctrl+G / ← / →.
 func (u UrlSearcher) SearchPage(term string, page int) ([]Link, error) {
+	// FIXME: add ddg and bing as fallback
 	return bing{}.Go(term, page)
 }
 

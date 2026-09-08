@@ -25,10 +25,18 @@ func (mp MP) Name() string {
 	return fmt.Sprintf("%s %s %s", mp.Honorific, mp.FirstName, mp.Surname)
 }
 
+func (mp MP) NameWithHonorific() string {
+	return fmt.Sprintf("%s %s %s", mp.Honorific, mp.FirstName, mp.Surname)
+}
+
 func (mp MP) ToString() string {
-	return fmt.Sprintf("(%s) %s - %s", mp.Party, mp.Name(), mp.Electorate)
+	return fmt.Sprintf("(%s) %s - %s", mp.Party, mp.NameWithHonorific(), mp.Electorate)
 }
 
 func (mp MP) SearchTerm() string {
+	return fmt.Sprintf("%s member for %s %s ", mp.NameWithHonorific(), mp.Electorate, mp.Party)
+}
+
+func (mp MP) SearchTerm2() string {
 	return fmt.Sprintf("%s member for %s %s ", mp.Name(), mp.Electorate, mp.Party)
 }

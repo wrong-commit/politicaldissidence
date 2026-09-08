@@ -60,7 +60,7 @@ var panelViews = map[string]panelProperties{
 		// left panel
 		x1:       0.0,
 		y1:       0.0,
-		x2:       0.3,
+		x2:       1.0 / 3.0,
 		y2:       0.6,
 		editable: false,
 		cursor:   true,
@@ -71,10 +71,10 @@ var panelViews = map[string]panelProperties{
 		title: "Member Domains",
 		text:  "", // TODO: update
 		// left panel
-		x1:       0.3,
+		x1:       1.0 / 3.0,
 		y1:       0.0,
-		x2:       0.6,
-		y2:       0.5,
+		x2:       2.0 / 3.0,
+		y2:       0.6,
 		editable: false,
 		cursor:   true,
 	},
@@ -83,10 +83,10 @@ var panelViews = map[string]panelProperties{
 		title: "Logo Panel",
 		text:  "Lol", // version.DrawLogo(),
 		// random box
-		x1:       0.7,
+		x1:       2.0 / 3.0,
 		y1:       0.0,
 		x2:       1.0,
-		y2:       0.5,
+		y2:       0.6,
 		editable: true,
 		cursor:   true,
 	},
@@ -104,7 +104,7 @@ var panelViews = map[string]panelProperties{
 	LIST_URLS_PANEL: {
 		title:    "List URL Panel",
 		text:     "tmp",
-		x1:       0.7,
+		x1:       2.0 / 3.0,
 		y1:       0.5,
 		x2:       1.0,
 		y2:       1.0,
@@ -233,6 +233,9 @@ func (ui *UI) createPanelView(name string, x1, y1, x2, y2 int) (*gocui.View, err
 
 	p := panelViews[name]
 	v.Title = p.title
+	if name == LIST_PANEL {
+		v.Title = fmt.Sprintf("%s [%s]", p.title, ui.state.filter)
+	}
 	v.Editable = p.editable
 
 	// generate content for panels
