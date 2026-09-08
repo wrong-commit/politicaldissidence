@@ -27,14 +27,23 @@ func (ui *UI) log(message string, isError bool) error {
 	} else {
 		message = decorate(message, "green")
 	}
+	return ui.appendLog(message)
+}
+
+// logPlain writes a log line without ANSI color codes.
+// Use for messages that already include level prefixes (INFO/DEBUG/ERROR);
+// gocui does not reliably render ESC sequences and can leak digits like "3INFO".
+func (ui *UI) logPlain(message string) error {
+	return ui.appendLog(message)
+}
+
+func (ui *UI) appendLog(message string) error {
 	if !ui.started {
 		ui.startupLog += time.Now().Format(timeFormat) + message + "\n"
 		return nil
 	}
 	ui.consoleLog += time.Now().Format(timeFormat) + message + "\n"
-	// ui.gui.Update(func(g *gocui.Gui) error {
 	ui.writeContent2(LOG_PANEL, strings.TrimSuffix(ui.consoleLog, "\n"), ui.gui)
-	// })
 	return nil
 }
 

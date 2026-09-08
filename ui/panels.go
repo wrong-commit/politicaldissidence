@@ -224,7 +224,7 @@ func (ui *UI) nextFilter() string {
 // createPanelView creates the panel view.
 func (ui *UI) createPanelView(name string, x1, y1, x2, y2 int) (*gocui.View, error) {
 	// FIXME: needed for any logs to be sent
-	ui.log(fmt.Sprintf("createPanelView(%s, %d,%d,%d,%d)", name, x1, y1, x2, y2), false)
+	// ui.log(fmt.Sprintf("DEBUG createPanelView(%s, %d,%d,%d,%d)", name, x1, y1, x2, y2), false)
 	v, err := ui.gui.SetView(name, x1, y1, x2, y2)
 	if err != gocui.ErrUnknownView && err != nil {
 		ui.log(fmt.Sprintf("Log that isn't unknown view %s", err), true)

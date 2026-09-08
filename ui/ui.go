@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"politicaldissidence/data"
+	"politicaldissidence/refresh"
 	"politicaldissidence/searching"
 
 	"github.com/jroimartin/gocui"
@@ -31,6 +32,8 @@ type UI struct {
 	mutex   *sync.Mutex
 	// UI/application state
 	state *State
+	// Single-flight background WHOIS refresh
+	whoisRunner refresh.Runner
 	// fontPath     string
 }
 

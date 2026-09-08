@@ -29,6 +29,10 @@ That script runs `go build` and, on success, `./politicaldissidence`.
 
 See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
 
+## Specs
+
+- [Background WHOIS refresh](SPEC_BACKGROUND_WHOIS.md)
+
 ## TODO
 
 - [ ] Automating MP detection
@@ -47,17 +51,21 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
     - [ ] Search engines
     -   [x] duckduckgo
     -   [ ] google
-    - [ ] bypass rate limit 
+    -   [ ] bing
+    - [ ] bypass google/ddg rate limit 
     - [x] Allow CRUD to set domain to MP
     - [x] WHOIS lookup to check domain
         - [x] Perform WHOIS and get expiry date
+        - [ ] Background WHOIS refresh (see [SPEC_BACKGROUND_WHOIS.md](SPEC_BACKGROUND_WHOIS.md))
+        - [x] Persist domain `lastChecked` on WHOIS
+        - [x] Show last-checked in domain panel
     - [ ] Fix UI bugginess, cursor gets out of whack 
 - [ ] Maintainence 
     - [ ] Detect when URL disappears
     - [ ] Alert when current list changes found/removed
 - [ ] Code
     - [ ] Figure out how and when to use `log` package, replace fmt.Println
-    - [ ] Cleanup CLI code base buginess / shit ness  
+    - [ ] Cleanup CLI code base buginess / shit ness 
 
 
 [0] https://www.aph.gov.au/Senators_and_Members/Guidelines_for_Contacting_Senators_and_Members/Address_labels_and_CSV_files

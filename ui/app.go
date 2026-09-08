@@ -9,6 +9,7 @@ import (
 	"log"
 	"politicaldissidence/data"
 	"politicaldissidence/db"
+	"politicaldissidence/refresh"
 	"politicaldissidence/ui/panel"
 	"strings"
 
@@ -28,6 +29,7 @@ func InitApp() {
 
 	ui.started = true
 	ui.log(ui.startupLog, false)
+	go ui.startBackgroundWhois()
 	ui.Loop()
 	defer func() { fmt.Println(ui.consoleLog) }()
 }
@@ -122,7 +124,7 @@ func (ui *UI) prevDomain(v *gocui.View) error {
 // selectMp updates the selected MP and updates the listed Domains.
 // If an MP is selected the DOMAIN_PANEL state is updated
 func (ui *UI) selectMp(newMpIndex int) error {
-	ui.log(fmt.Sprintf("selectMp(%d + 1 -> %d)", ui.state.currentIndex, newMpIndex), false)
+	// ui.log(fmt.Sprintf("DEBUG selectMp(%d + 1 -> %d)", ui.state.currentIndex, newMpIndex), false)
 
 	if newMpIndex < 0 || newMpIndex >= len(*ui.state.visible) {
 		ui.log(fmt.Sprintf("Invalid MP idx %d", newMpIndex), true)
@@ -152,7 +154,7 @@ func (ui *UI) selectMp(newMpIndex int) error {
 // selectMp updates the selected MP and updates the listed Domains.
 // If an MP is selected the DOMAIN_PANEL state is updated
 func (ui *UI) selectDomain(newIndex int) error {
-	ui.log(fmt.Sprintf("selectDomain(%d -> %d)", ui.state.domainState.index, newIndex), false)
+	// ui.log(fmt.Sprintf("DEBUG selectDomain(%d -> %d)", ui.state.domainState.index, newIndex), false)
 	if newIndex < 0 || newIndex > len(*ui.state.domainState.domains)-1 {
 		ui.log(fmt.Sprintf("Invalid Domain idx %d", newIndex), true)
 		return nil
@@ -169,28 +171,24 @@ func (ui *UI) selectDomain(newIndex int) error {
 	// return ui.updateView(domainView, ui.printDomains())
 }
 
-// checkDomain will update the expiry of the selected domain in the buffer
+// checkDomain will update the expiry of the selected domain in the buffer.
+// Uses the same INFO/DEBUG/INFO log lines as the background WHOIS refresh (no 10-day skip).
 func (ui *UI) checkDomain() error {
-	ui.log("checkDomain()", false)
-	_, cy := ui.cursors.Get(DOMAIN_PANEL)
-	if cy > len(*ui.state.domainState.domains) {
-		ui.log("Please select a domain !", true)
-		return nil
+	if ui.state.domainState == nil || ui.state.domainState.domains == nil {
+		return ui.log("Please select a domain !", true)
 	}
-	domain := (*ui.state.domainState.domains)[ui.state.domainState.index]
-	if msg, err := domain.UpdateExpiry(); err != nil {
-		errStr := msg
-		if err != nil {
-			errStr += "\n" + err.Error()
-		}
-		ui.log(fmt.Sprintf("Failed check domain <%s>%s", domain.Hostname, errStr), true)
-		return err
+	idx := ui.state.domainState.index
+	if idx < 0 || idx >= len(*ui.state.domainState.domains) {
+		return ui.log("Please select a domain !", true)
 	}
-	ui.log(fmt.Sprintf("Found domain %s expiry %s", domain.Hostname, domain.Expiry), false)
-	// update domain
-	(*ui.state.domainState.domains)[ui.state.domainState.index] = domain
-	//(*ui.state.domainState.domains)[ui.state.domainState.index] = domain
-	return nil
+	mp := (*ui.state.visible)[ui.state.currentIndex]
+	one := mp
+	one.Domains = (*ui.state.domainState.domains)[idx : idx+1]
+	_ = refresh.Run([]data.MP{one}, refresh.Deps{
+		Log:   ui.whoisLogger(),
+		Force: true,
+	})
+	return ui.setPanelView(DOMAIN_PANEL)
 }
 
 // addDomainModalTest tests the domain in the ADD_DOMAIN_PANEL

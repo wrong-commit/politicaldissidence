@@ -1,0 +1,11 @@
+Domain Name: EXAMPLE.COM
+Registry Domain ID: 123_DOMAIN_COM-VRSN
+Registrar WHOIS Server: whois.example.com
+Updated Date: 2024-01-01T00:00:00Z
+Creation Date: 2000-01-01T00:00:00Z
+Registry Expiry Date: 2027-06-15T00:00:00Z
+Registrar: Example Registrar
+Domain Status: clientTransferProhibited
+Name Server: NS1.EXAMPLE.COM
+Name Server: NS2.EXAMPLE.COM
+DNSSEC: unsigned
