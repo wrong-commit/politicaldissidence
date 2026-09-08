@@ -65,24 +65,47 @@ func (ui *UI) toggleListUrlsModal(g *gocui.Gui) error {
 		return ui.closeModal(ui.currentModal)
 	}
 
-	newBufferText, newBufferWidth, newBufferHeight, drawErr := panel.DrawListUrlPanel(g, *ui.state.searchState.result)
+	var existingHosts []string
+	if ui.state.visible != nil && ui.state.currentIndex >= 0 && ui.state.currentIndex < len(*ui.state.visible) {
+		for _, d := range (*ui.state.visible)[ui.state.currentIndex].Domains {
+			existingHosts = append(existingHosts, d.Hostname)
+		}
+	}
+
+	newBufferText, _, _, displayLinks, drawErr := panel.DrawListUrlPanel(g, *ui.state.searchState.result, existingHosts)
 	if drawErr != nil {
 		ui.log(fmt.Sprintf("Links that could not be converted to domain,\n%s", drawErr.Error()), true)
 	}
-
-	if strings.TrimSpace(newBufferText) == "" {
+	if len(displayLinks) == 0 || strings.TrimSpace(newBufferText) == "" {
 		return ui.log("No domains could be extracted from search results", true)
 	}
-	// Keep modal usable even when only a few short domains are returned.
-	if newBufferWidth < 20 {
-		newBufferWidth = 20
+	// Handlers index into this filtered list (same order as rendered items).
+	ui.state.searchState.result = &displayLinks
+
+	maxX, maxY := g.Size()
+	modalWidth := int(float64(maxX) * 0.8)
+	modalHeight := int(float64(maxY) * 0.8)
+	if modalWidth < 60 {
+		modalWidth = 60
 	}
-	if newBufferHeight < 1 {
-		newBufferHeight = 1
+	if modalHeight < 12 {
+		modalHeight = 12
+	}
+	if modalWidth > maxX-2 {
+		modalWidth = maxX - 2
+	}
+	if modalHeight > maxY-2 {
+		modalHeight = maxY - 2
+	}
+	if modalWidth < 20 {
+		modalWidth = 20
+	}
+	if modalHeight < 3 {
+		modalHeight = 3
 	}
 
-	ui.log(fmt.Sprintf("Opening list urls modal width size (%d,%d)", newBufferWidth, newBufferHeight), false)
-	v, err := ui.openModal(LIST_URLS_MODAL, newBufferWidth, newBufferHeight, false)
+	ui.log(fmt.Sprintf("Opening list urls modal width size (%d,%d)", modalWidth, modalHeight), false)
+	v, err := ui.openModal(LIST_URLS_MODAL, modalWidth, modalHeight, false)
 	if err != nil {
 		return ui.log(fmt.Sprintf("Could not open URL list modal: %v", err), true)
 	}
@@ -94,9 +117,10 @@ func (ui *UI) toggleListUrlsModal(g *gocui.Gui) error {
 	if err := ui.writeContent2(LIST_URLS_MODAL, newBufferText, g); err != nil {
 		return err
 	}
-	// Start selection at the first result (writeContent2 parks the cursor at EOL).
-	_ = v.SetCursor(0, 0)
-	ui.cursors.Set(LIST_URLS_MODAL, 0, 0)
+	// First selectable host line (below status bar).
+	cy := panel.URLListCursorY(0)
+	_ = v.SetCursor(0, cy)
+	ui.cursors.Set(LIST_URLS_MODAL, 0, cy)
 	return nil
 }
 

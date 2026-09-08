@@ -34,6 +34,7 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
 - [Background WHOIS refresh](SPEC_BACKGROUND_WHOIS.md)
 - [MP JSON validation on load / reload](SPEC_JSON_VALIDATION.md)
 - [Atomic MP JSON save](SPEC_JSON_SAVE.md)
+- [Select a URL modal improvements](SPEC_SELECT_URL_MODAL.md)
 
 ## TODO
 

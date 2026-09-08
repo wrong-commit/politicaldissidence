@@ -78,12 +78,15 @@ Opened with **Ctrl+A** from List or Domains. Type a domain, then confirm.
 
 Opened after **Ctrl+G** finishes searching. Lists candidate URLs/domains for the selected MP.
 
+Status line at the top of the modal: `enter: Add Domain, c: Copy Link`
+
 
 | Key        | Action                                                              |
 | ---------- | ------------------------------------------------------------------- |
 | **↑**      | Previous URL                                                        |
 | **↓**      | Next URL                                                            |
 | **Enter**  | Add the selected URL’s domain to the current MP and close the modal |
+| **c**      | Copy the selected full URL to the clipboard (modal stays open)      |
 | **Ctrl+C** | Close modal without quitting                                        |
 
 

@@ -261,7 +261,7 @@ func (ui *UI) createPanelView(name string, x1, y1, x2, y2 int) (*gocui.View, err
 		if ui.state.searchState != nil && ui.state.searchState.result != nil {
 			results := *ui.state.searchState.result
 			if ui.state.searchState.term != "" && results != nil {
-				newBufferText, _, _, _ := panel.DrawListUrlPanel(ui.gui, results)
+				newBufferText, _, _, _, _ := panel.DrawListUrlPanel(ui.gui, results, nil)
 				p.text = newBufferText
 			}
 		}

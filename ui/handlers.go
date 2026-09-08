@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"politicaldissidence/data"
+	"politicaldissidence/ui/panel"
 	"strings"
 	"text/tabwriter"
 
@@ -37,44 +38,43 @@ var keyHandlers = &handlers{
 	// up/down - keys to navigate URLs
 	// enter - choose URL
 	{listUrlView, gocui.KeyArrowDown, "<DOWN>", "Next Url", func(ui *UI, wrap bool) Fn {
-		// ui.log("[*] register LIST_URLS_PANEL:gocui.KeyArrowDown", false)
 		return func(g *gocui.Gui, v *gocui.View) error {
-			// do not move past last line
-			if _, cy := v.Cursor(); cy < len(v.BufferLines())-1 {
-				v.MoveCursor(0, 1, false)
-			}
-			return nil
+			return ui.moveURLListSelection(v, 1)
 		}
 	}},
 	{listUrlView, gocui.KeyArrowUp, "<UP>", "Prev Url", func(ui *UI, wrap bool) Fn {
-		// ui.log("[*] register LIST_URLS_PANEL:gocui.KeyArrowUp", false)
 		return func(g *gocui.Gui, v *gocui.View) error {
-			// do not move past first line
-			if _, cy := v.Cursor(); cy > 0 {
-				v.MoveCursor(0, -1, false)
-			}
-			return nil
+			return ui.moveURLListSelection(v, -1)
 		}
 	}},
-	/**
-	 * handler uses the current cursor position to select a URL
-	 */
-	{listUrlView, gocui.KeyEnter, "Enter", "Add URL", func(ui *UI, wrap bool) Fn {
-		// ui.log("[*] register LIST_URLS_PANEL:gocui.KeyEnter", false)
+	{listUrlView, gocui.KeyEnter, "Enter", "Add Domain", func(ui *UI, wrap bool) Fn {
 		return func(g *gocui.Gui, v *gocui.View) error {
-			_, cy := v.Cursor()
-			// get current line
-			if cy > len(v.BufferLines())-1 {
-				return ui.log(fmt.Sprintf("Cursor position %d greater than buffer lines", cy), true)
+			link, err := ui.selectedURLListLink(v)
+			if err != nil {
+				return ui.log(err.Error(), true)
 			}
-			line := v.BufferLines()[cy]
-
-			domain := strings.Split(line, " ")[2]
-			if strings.TrimSpace(domain) == "" {
-				return ui.log(fmt.Sprintf("Line <%s> not valid", line), true)
+			domain, ok := panel.HostFromURL(link[0])
+			if !ok || strings.TrimSpace(domain) == "" {
+				return ui.log(fmt.Sprintf("Could not parse domain from <%s>", link[0]), true)
 			}
 			defer ui.closeModal(LIST_URLS_MODAL)
 			return ui.addDomain(domain, ui.state.currentIndex, true)
+		}
+	}},
+	{listUrlView, 'c', "c", "Copy Link", func(ui *UI, wrap bool) Fn {
+		return func(g *gocui.Gui, v *gocui.View) error {
+			link, err := ui.selectedURLListLink(v)
+			if err != nil {
+				return ui.log(err.Error(), true)
+			}
+			url := strings.TrimSpace(link[0])
+			if url == "" {
+				return ui.log("Selected link has empty URL", true)
+			}
+			if err := copyToClipboard(url); err != nil {
+				return ui.log(fmt.Sprintf("Could not copy to clipboard: %v", err), true)
+			}
+			return ui.log(fmt.Sprintf("Copied to clipboard: %s", url), false)
 		}
 	}},
 	// LIST_PANEL:
