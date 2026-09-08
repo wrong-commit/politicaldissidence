@@ -4,22 +4,19 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"politicaldissidence/data"
 )
 
 func TestDrawWhoisPanel_Empty(t *testing.T) {
-	if got := DrawWhoisPanel(nil); got != "No WHOIS lookup yet" {
+	if got := DrawWhoisPanel("example.com", "", nil); got != "No WHOIS lookup yet" {
 		t.Fatalf("nil: %q", got)
-	}
-	if got := DrawWhoisPanel(&WhoisSnapshot{}); got != "No WHOIS lookup yet" {
-		t.Fatalf("zero: %q", got)
 	}
 }
 
 func TestDrawWhoisPanel_Success(t *testing.T) {
 	checked := time.Date(2026, 9, 8, 15, 4, 0, 0, time.UTC)
-	got := DrawWhoisPanel(&WhoisSnapshot{
-		Hostname:    "example.com.au",
-		MPName:      "Jane Doe",
+	got := DrawWhoisPanel("example.com.au", "Jane Doe", &data.WhoisRecord{
 		CheckedAt:   checked,
 		Status:      []string{"clientTransferProhibited"},
 		Created:     "2019-01-02",
@@ -28,10 +25,13 @@ func TestDrawWhoisPanel_Success(t *testing.T) {
 		Registrar:   "Example Registrar Pty Ltd",
 		NameServers: []string{"ns1.example.net", "ns2.example.net"},
 	})
+	lines := strings.Split(got, "\n")
+	if len(lines) == 0 || lines[0] != "Checked: 26-09-08 15:04" {
+		t.Fatalf("checked should be first line, got:\n%s", got)
+	}
 	for _, want := range []string{
 		"example.com.au",
 		"MP: Jane Doe",
-		"Checked: 26-09-08 15:04",
 		"Status: clientTransferProhibited",
 		"Created: 2019-01-02",
 		"Expiry: 2027-01-01",
@@ -45,8 +45,7 @@ func TestDrawWhoisPanel_Success(t *testing.T) {
 }
 
 func TestDrawWhoisPanel_OmitsBlankFields(t *testing.T) {
-	got := DrawWhoisPanel(&WhoisSnapshot{
-		Hostname:  "bare.example",
+	got := DrawWhoisPanel("bare.example", "", &data.WhoisRecord{
 		CheckedAt: time.Date(2026, 1, 2, 3, 4, 0, 0, time.UTC),
 		Expiry:    "2028-01-01",
 	})
@@ -59,12 +58,13 @@ func TestDrawWhoisPanel_OmitsBlankFields(t *testing.T) {
 }
 
 func TestDrawWhoisPanel_Failure(t *testing.T) {
-	got := DrawWhoisPanel(&WhoisSnapshot{
-		Hostname:  "broken.example",
-		MPName:    "Bad MP",
+	got := DrawWhoisPanel("broken.example", "Bad MP", &data.WhoisRecord{
 		CheckedAt: time.Date(2026, 9, 8, 12, 0, 0, 0, time.UTC),
 		Error:     "Could not get WHOIS for <broken.example>",
 	})
+	if !strings.HasPrefix(got, "Checked: 26-09-08 12:00\n") {
+		t.Fatalf("checked first:\n%s", got)
+	}
 	if !strings.Contains(got, "broken.example") {
 		t.Fatalf("missing host:\n%s", got)
 	}

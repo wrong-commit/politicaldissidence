@@ -15,6 +15,19 @@ var lookupInfo = whois.Lookup
 // now returns the current time; overridden in tests.
 var now = time.Now
 
+// WhoisRecord is the latest WHOIS lookup for a domain (only one kept).
+// Persisted under Domain.Whois in mp_data.json.
+type WhoisRecord struct {
+	CheckedAt   time.Time `json:"checkedAt,omitempty"`
+	Status      []string  `json:"status,omitempty"`
+	Created     string    `json:"created,omitempty"`
+	Updated     string    `json:"updated,omitempty"`
+	Expiry      string    `json:"expiry,omitempty"`
+	Registrar   string    `json:"registrar,omitempty"`
+	NameServers []string  `json:"nameServers,omitempty"`
+	Error       string    `json:"error,omitempty"`
+}
+
 type Domain struct {
 	/* Domain Hostname */
 	Hostname string `json:"hostname"`
@@ -23,6 +36,8 @@ type Domain struct {
 	Expired bool   `json:"expired"`
 	/* Zero time means never checked; omitempty keeps it out of JSON until set */
 	LastChecked time.Time `json:"lastChecked,omitempty"`
+	/* Latest WHOIS detail for the WHOIS panel; omitempty when never looked up */
+	Whois *WhoisRecord `json:"whois,omitempty"`
 }
 
 // NeedsWhois reports whether a WHOIS lookup should run for the background job.
@@ -44,8 +59,8 @@ func (d *Domain) UpdateExpiry() (string, error) {
 	return info.ExpirationDate, nil
 }
 
-// UpdateExpiryInfo runs WHOIS and updates Expiry / LastChecked on success.
-// The returned Info is for session display only and is never persisted on Domain.
+// UpdateExpiryInfo runs WHOIS, updates Expiry / LastChecked on success,
+// and always stores the latest WhoisRecord (success or failure).
 func (d *Domain) UpdateExpiryInfo() (whois.Info, error) {
 	return d.updateExpiryInfo(lookupInfo)
 }
@@ -58,11 +73,29 @@ func (d *Domain) updateExpiryInfo(lookup func(string) (whois.Info, error)) (info
 		}
 	}()
 	info, err = lookup(d.Hostname)
+	checked := now()
 	if err != nil {
+		msg := info.Message
+		if msg == "" {
+			msg = err.Error()
+		}
+		d.Whois = &WhoisRecord{
+			CheckedAt: checked,
+			Error:     msg,
+		}
 		return info, err
 	}
 	d.Expiry = info.ExpirationDate
-	d.LastChecked = now()
+	d.LastChecked = checked
+	d.Whois = &WhoisRecord{
+		CheckedAt:   checked,
+		Status:      append([]string(nil), info.Status...),
+		Created:     info.CreatedDate,
+		Updated:     info.UpdatedDate,
+		Expiry:      info.ExpirationDate,
+		Registrar:   info.Registrar,
+		NameServers: append([]string(nil), info.NameServers...),
+	}
 	// TODO: check if date is after current date
 	return info, nil
 }

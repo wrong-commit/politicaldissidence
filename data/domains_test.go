@@ -30,10 +30,21 @@ func TestDomain_UpdateExpiry_Success(t *testing.T) {
 	if !d.LastChecked.Equal(fixed) {
 		t.Fatalf("LastChecked = %v, want %v", d.LastChecked, fixed)
 	}
+	if d.Whois == nil || d.Whois.Expiry != "2027-06-15T00:00:00Z" {
+		t.Fatalf("Whois = %+v", d.Whois)
+	}
+	if !d.Whois.CheckedAt.Equal(fixed) {
+		t.Fatalf("Whois.CheckedAt = %v", d.Whois.CheckedAt)
+	}
 }
 
 func TestDomain_UpdateExpiry_FailureLeavesState(t *testing.T) {
 	prev := time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)
+	fixed := time.Date(2026, 3, 8, 12, 0, 0, 0, time.UTC)
+	prevNow := now
+	now = func() time.Time { return fixed }
+	defer func() { now = prevNow }()
+
 	d := Domain{Hostname: "example.com", Expiry: "keep-me", LastChecked: prev}
 	lookupErr := errors.New("whois failed")
 	msg, err := d.updateExpiry(func(hostname string) (string, error) {
@@ -50,6 +61,9 @@ func TestDomain_UpdateExpiry_FailureLeavesState(t *testing.T) {
 	}
 	if !strings.Contains(msg, "Could not get WHOIS") {
 		t.Fatalf("msg = %q", msg)
+	}
+	if d.Whois == nil || d.Whois.Error == "" || !d.Whois.CheckedAt.Equal(fixed) {
+		t.Fatalf("Whois should record failure: %+v", d.Whois)
 	}
 }
 
@@ -78,10 +92,19 @@ func TestDomain_JSONRoundTrip(t *testing.T) {
 		Expiry:      "2027-01-01",
 		Expired:     false,
 		LastChecked: checked,
+		Whois: &WhoisRecord{
+			CheckedAt: checked,
+			Expiry:    "2027-01-01",
+			Registrar: "Example Registrar",
+			Status:    []string{"ok"},
+		},
 	}
 	b, err := json.Marshal(orig)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !strings.Contains(string(b), `"whois"`) || !strings.Contains(string(b), `"registrar"`) {
+		t.Fatalf("expected whois in JSON: %s", b)
 	}
 	var got Domain
 	if err := json.Unmarshal(b, &got); err != nil {
@@ -93,6 +116,9 @@ func TestDomain_JSONRoundTrip(t *testing.T) {
 	if !got.LastChecked.Equal(orig.LastChecked) {
 		t.Fatalf("LastChecked %v != %v", got.LastChecked, orig.LastChecked)
 	}
+	if got.Whois == nil || got.Whois.Registrar != "Example Registrar" || !got.Whois.CheckedAt.Equal(checked) {
+		t.Fatalf("Whois %+v", got.Whois)
+	}
 
 	var missing Domain
 	if err := json.Unmarshal([]byte(`{"hostname":"x.com","expiry":"","expired":false}`), &missing); err != nil {
@@ -100,6 +126,9 @@ func TestDomain_JSONRoundTrip(t *testing.T) {
 	}
 	if !missing.LastChecked.IsZero() {
 		t.Fatalf("missing lastChecked should be zero, got %v", missing.LastChecked)
+	}
+	if missing.Whois != nil {
+		t.Fatalf("missing whois should be nil, got %+v", missing.Whois)
 	}
 }
 

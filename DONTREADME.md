@@ -68,7 +68,8 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
         - [x] Domain-added jobs kickoff (see [SPEC_DOMAIN_ADDED_JOBS.md](SPEC_DOMAIN_ADDED_JOBS.md))
         - [x] Persist domain `lastChecked` on WHOIS
         - [x] Show last-checked in domain panel
-        - [ ] Show full WHOIS response
+        - [x] Show full WHOIS response
+        - [ ] Add script for running WHOIS checks against all MP domains and outputting expired domains
     - [x] Validate `mp_data.json` on load / reload (see [SPEC_JSON_VALIDATION.md](SPEC_JSON_VALIDATION.md))
     - [x] Fix UI bugginess, cursor gets out of whack 
     - [x] Add multiple engines/search terms to url lookup

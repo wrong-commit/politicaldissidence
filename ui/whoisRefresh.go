@@ -52,27 +52,12 @@ func (ui *UI) whoisRefreshDeps(force bool, delay time.Duration, save bool) refre
 	return deps
 }
 
+// onWhoisLookup refreshes the WHOIS panel after a lookup is stored on the domain.
+// The panel always reflects the currently selected Member Domains row.
 func (ui *UI) onWhoisLookup(mpName string, info whois.Info, err error) {
-	snap := &panel.WhoisSnapshot{
-		Hostname:    info.Hostname,
-		MPName:      mpName,
-		CheckedAt:   time.Now(),
-		Status:      append([]string(nil), info.Status...),
-		Created:     info.CreatedDate,
-		Updated:     info.UpdatedDate,
-		Expiry:      info.ExpirationDate,
-		Registrar:   info.Registrar,
-		NameServers: append([]string(nil), info.NameServers...),
-	}
-	if err != nil {
-		snap.Error = info.Message
-		if snap.Error == "" {
-			snap.Error = err.Error()
-		}
-	}
-	ui.mutex.Lock()
-	ui.state.whoisSnapshot = snap
-	ui.mutex.Unlock()
+	_ = mpName
+	_ = info
+	_ = err
 	ui.refreshWhoisPanel()
 }
 
@@ -85,6 +70,7 @@ func (ui *UI) startBackgroundWhois() {
 	deps := ui.whoisRefreshDeps(false, refresh.DefaultLookupDelay, true)
 	_, _ = ui.whoisRunner.TryRun(*ui.state.all, deps)
 	ui.refreshDomainPanel()
+	ui.refreshWhoisPanel()
 }
 
 // refreshDomainWhois runs a forced WHOIS lookup for one domain off the UI thread,
@@ -101,6 +87,7 @@ func (ui *UI) refreshDomainWhois(mpIndex, domainIdx int) {
 	one.Domains = (*ui.state.visible)[mpIndex].Domains[domainIdx : domainIdx+1]
 	_ = refresh.Run([]data.MP{one}, ui.whoisRefreshDeps(true, 0, false))
 	ui.refreshDomainPanel()
+	ui.refreshWhoisPanel()
 }
 
 func (ui *UI) refreshDomainPanel() {
@@ -131,4 +118,22 @@ func (ui *UI) refreshWhoisPanel() {
 		_, err := ui.initPanelView(WHOIS_PANEL)
 		return err
 	})
+}
+
+// drawSelectedWhois renders WHOIS for the domain currently selected in Member Domains.
+func (ui *UI) drawSelectedWhois() string {
+	if !ui.hasDomains() {
+		return panel.DrawWhoisPanel("", "", nil)
+	}
+	idx := ui.state.domainState.index
+	domains := *ui.state.domainState.domains
+	if idx < 0 || idx >= len(domains) {
+		return panel.DrawWhoisPanel("", "", nil)
+	}
+	mpName := ""
+	if ui.state.visible != nil && ui.state.currentIndex >= 0 && ui.state.currentIndex < len(*ui.state.visible) {
+		mpName = (*ui.state.visible)[ui.state.currentIndex].Name()
+	}
+	d := domains[idx]
+	return panel.DrawWhoisPanel(d.Hostname, mpName, d.Whois)
 }

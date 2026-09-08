@@ -4,14 +4,12 @@ import (
 	// 	"fmt"
 	"fmt"
 	"log"
-	"sync"
 	"time"
 
 	"politicaldissidence/data"
 	"politicaldissidence/jobs"
 	"politicaldissidence/refresh"
 	"politicaldissidence/searching"
-	"politicaldissidence/ui/panel"
 
 	"github.com/jroimartin/gocui"
 )
@@ -31,7 +29,6 @@ type UI struct {
 	logTimer   *time.Timer
 	// True when application has started
 	started bool
-	mutex   *sync.Mutex
 	// UI/application state
 	state *State
 	// Single-flight background WHOIS refresh
@@ -54,8 +51,6 @@ type State struct {
 	searchState *SearchState
 	// session search prefs (engine / term); survive closing Select a URL
 	searchPrefs SearchPrefs
-	// session-only latest WHOIS detail for WHOIS_PANEL (not persisted)
-	whoisSnapshot *panel.WhoisSnapshot
 }
 
 // State for the Domain list
@@ -80,7 +75,6 @@ func NewUI() *UI {
 		ui.log("NewUI() -> "+fmt.Sprint(err.Error()), true)
 	}
 	ui.cursors = NewCursors()
-	ui.mutex = &sync.Mutex{}
 	ui.domainAddedJobs = []jobs.Job{
 		jobs.NewWhoisOnAdd(ui.refreshDomainWhois),
 		// jobs.NewCalcDemo(),

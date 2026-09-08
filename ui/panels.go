@@ -255,10 +255,7 @@ func (ui *UI) createPanelView(name string, x1, y1, x2, y2 int) (*gocui.View, err
 			p.text = panel.DrawListDomainPanel(ui.gui, ui.state.domainState.domains)
 		}
 	case WHOIS_PANEL:
-		ui.mutex.Lock()
-		snap := ui.state.whoisSnapshot
-		ui.mutex.Unlock()
-		p.text = panel.DrawWhoisPanel(snap)
+		p.text = ui.drawSelectedWhois()
 	case LIST_URLS_PANEL:
 		if ui.state.searchState != nil && ui.state.searchState.result != nil {
 			results := *ui.state.searchState.result

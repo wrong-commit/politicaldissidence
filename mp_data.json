@@ -9,7 +9,44 @@
      "party": "ALP",
      "state": "NSW",
      "level": "",
-     "domains": []
+     "domains": [
+       {
+         "hostname": "anthonyalbanese.com.au",
+         "expiry": "",
+         "expired": false,
+         "lastChecked": "2026-09-08T15:17:10.1567561+10:00",
+         "whois": {
+           "checkedAt": "2026-09-08T15:17:10.1567561+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-15T23:13:50Z",
+           "registrar": "Web Address Registration Pty Ltd",
+           "nameServers": [
+             "magali.ns.cloudflare.com",
+             "sid.ns.cloudflare.com"
+           ]
+         }
+       },
+       {
+         "hostname": "anthonyalbanese.com.au",
+         "expiry": "",
+         "expired": false,
+         "lastChecked": "2026-09-08T15:16:15.7503381+10:00",
+         "whois": {
+           "checkedAt": "2026-09-08T15:16:15.7503381+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-15T23:13:50Z",
+           "registrar": "Web Address Registration Pty Ltd",
+           "nameServers": [
+             "magali.ns.cloudflare.com",
+             "sid.ns.cloudflare.com"
+           ]
+         }
+       }
+     ]
    },
    {
      "honorific": "Mr",
@@ -148,7 +185,11 @@
          "hostname": "au.linkedin.com",
          "expiry": "",
          "expired": false,
-         "lastChecked": "0001-01-01T00:00:00Z"
+         "lastChecked": "0001-01-01T00:00:00Z",
+         "whois": {
+           "checkedAt": "2026-09-08T15:15:52.5966807+10:00",
+           "error": "Could not parse \u003cau.linkedin.com\u003e"
+         }
        }
      ]
    },

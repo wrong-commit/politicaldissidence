@@ -184,17 +184,15 @@ func (ui *UI) selectMp(newMpIndex int) error {
 		ui.state.domainState = &DomainState{&(*ui.state.visible)[newMpIndex].Domains, 0}
 	}
 
-	var err error
-	// update DOMAIN_PANEL, create if missing
-	var domainView *gocui.View
-	if domainView, err = ui.gui.View(DOMAIN_PANEL); err != nil {
-		// create DOMAIN_PANEL
-		domainView, err = ui.initPanelView(DOMAIN_PANEL)
-		if err != nil {
-			return err
-		}
+	domainView, err := ui.initPanelView(DOMAIN_PANEL)
+	if err != nil {
+		return err
 	}
-	return domainView.SetCursor(0, ui.state.domainState.index)
+	if err := setListCursor(domainView, ui.state.domainState.index); err != nil {
+		return err
+	}
+	_, _ = ui.initPanelView(WHOIS_PANEL)
+	return nil
 }
 
 // selectMp updates the selected MP and updates the listed Domains.
@@ -209,15 +207,15 @@ func (ui *UI) selectDomain(newIndex int) error {
 		return nil
 	}
 	ui.state.domainState.index = newIndex
-	// update DOMAIN_PANEL, create if missing
-	var domainView *gocui.View
-	var err error
-	if domainView, err = ui.gui.View(DOMAIN_PANEL); err != nil {
+	domainView, err := ui.initPanelView(DOMAIN_PANEL)
+	if err != nil {
 		return err
 	}
-	return domainView.SetCursor(0, ui.state.domainState.index)
-	//ui.log(fmt.Sprintf("[%s] domains tracked: %d", mp.ToString(), len(*ui.state.domainState.domains)), false)
-	// return ui.updateView(domainView, ui.printDomains())
+	if err := setListCursor(domainView, ui.state.domainState.index); err != nil {
+		return err
+	}
+	_, _ = ui.initPanelView(WHOIS_PANEL)
+	return nil
 }
 
 // checkDomain will update the expiry of the selected domain in the buffer.
@@ -254,6 +252,12 @@ func (ui *UI) addDomain(domain string, mpIndex int, showDomain bool) error {
 		return ui.log(fmt.Sprintf("No MP with index <%d>", mpIndex), true)
 	}
 	mp := (*ui.state.visible)[mpIndex]
+	want := strings.ToLower(strings.TrimSpace(domain))
+	for _, existing := range mp.Domains {
+		if strings.ToLower(strings.TrimSpace(existing.Hostname)) == want {
+			return ui.log(fmt.Sprintf("Domain <%s> already exists for MP <%s>", domain, mp.Name()), true)
+		}
+	}
 	newDomain := data.Domain{
 		Hostname: domain,
 		Expiry:   "",
