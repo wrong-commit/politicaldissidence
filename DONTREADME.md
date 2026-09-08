@@ -3,28 +3,29 @@
 ## TODO
 
 - [ ] Automating MP detection
-    - [ ] Get APH list of Senators and Reps
+    - [ ] Get list of Senators and Reps
         - [x] Parse HTML [0] 
         - [x] Fetch CSV files 
     - [ ] Get list of territory and state Members and Senators
         - [ ] Find sites 
         - [ ] Parse HTML 
         - [ ] Fetch CSV files 
-    - [ ] From CSV files extract (Honorific) (Full Name + Prefered Name) (Party) (Electorate) into database
-        - [ ] Alert when new MP found
+    - [x] From CSV files extract (Honorific) (Full Name + Prefered Name) (Party) (Electorate) into database
+    - [ ] Alert when new MP found
 - [ ] CLI 
     - [x] Linking MP and domain
     - [x] Display list of MPs requiring linkage
-    - [ ] Generate google search terms for MP homepage
-        - [x] Automate using non-G search engine (?)
+    - [ ] Search engines
+    -   [x] duckduckgo
+    -   [ ] google
+    - [ ] bypass rate limit 
     - [x] Allow CRUD to set domain to MP
     - [x] WHOIS lookup to check domain
         - [x] Perform WHOIS and get expiry date
-    - [ ] Display list of MP/domains that will soon be expiring
     - [ ] Fix UI bugginess, cursor gets out of whack 
 - [ ] Maintainence 
     - [ ] Detect when URL disappears
-    - [ ] Alert when new MP found/removed
+    - [ ] Alert when current list changes found/removed
 - [ ] Code
     - [ ] Figure out how and when to use `log` package, replace fmt.Println
     - [ ] Cleanup CLI code base buginess / shit ness  

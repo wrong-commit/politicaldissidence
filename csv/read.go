@@ -2,6 +2,7 @@
  * Convert different CSV formats into the politicaldissidence/data MP struct.
  * TODO: exported methods should take a reader directly, allows for easier switching between CSV and Response Body when
  * developing.
+ * TODO: deduplicate ParseSenatorMps and ParseMemberMps. level should be simplified
  */
 package csv
 
@@ -16,7 +17,7 @@ import (
 )
 
 func ParseSenatorMps(url string) ([]data.MP, error) {
-	reader, err := os.Open("/Users/quinn/Downloads/allsenph.csv")
+	reader, err := os.Open("./allsenph.csv")
 	// reader, err := downloadCsv(url)
 	if err != nil {
 		return nil, err
@@ -42,7 +43,7 @@ func ParseSenatorMps(url string) ([]data.MP, error) {
 }
 
 func ParseMemberMps(url string) ([]data.MP, error) {
-	reader, err := os.Open("/Users/quinn/Downloads/FamilynameRepsCSV.csv")
+	reader, err := os.Open("./FamilynameRepsCSV.csv")
 	// reader, err := downloadCsv(url)
 	if err != nil {
 		return nil, err

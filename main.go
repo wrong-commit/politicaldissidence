@@ -6,8 +6,8 @@ import (
 	"politicaldissidence/data"
 	"politicaldissidence/db"
 	"politicaldissidence/fetcher"
+	"politicaldissidence/searching"
 	"politicaldissidence/ui"
-	"politicaldissidence/ui/searching"
 	"politicaldissidence/whois"
 	"strings"
 )
@@ -22,9 +22,9 @@ func mainUrlSearcher() {
 	if err != nil {
 		return
 	}
-	fmt.Println("Loaded MPs, searching terms for MP 69", allMps[sixtynine].GoogleSearchTerm())
+	fmt.Println("Loaded MPs, searching terms for MP 69", allMps[sixtynine].SearchTerm())
 	searcher := searching.UrlSearcher{}
-	resp, err := searcher.Search(allMps[sixtynine].GoogleSearchTerm())
+	resp, err := searcher.Search(allMps[sixtynine].SearchTerm())
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -107,7 +107,7 @@ func addFirstDomains(mps *[]data.MP) {
 			continue
 		}
 
-		fmt.Println((*mps)[i].GoogleSearchTerm())
+		fmt.Println((*mps)[i].SearchTerm())
 		fmt.Print("Enter domain name: ")
 		var input string
 		fmt.Scanln(&input)

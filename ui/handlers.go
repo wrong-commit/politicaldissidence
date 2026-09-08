@@ -35,6 +35,7 @@ var listUrlView = []string{LIST_URLS_MODAL}
 var keyHandlers = &handlers{
 	// LIST_URLS_PANEL :
 	// up/down - keys to navigate URLs
+	// enter - choose URL
 	{listUrlView, gocui.KeyArrowDown, "<DOWN>", "Next Url", func(ui *UI, wrap bool) Fn {
 		ui.log("[*] register LIST_URLS_PANEL:gocui.KeyArrowDown", false)
 		return func(g *gocui.Gui, v *gocui.View) error {
@@ -55,8 +56,11 @@ var keyHandlers = &handlers{
 			return nil
 		}
 	}},
+	/**
+	 * handler uses the current cursor position to select a URL
+	 */
 	{listUrlView, gocui.KeyEnter, "Enter", "Add URL", func(ui *UI, wrap bool) Fn {
-		ui.log("[*] register LIST_URLS_PANEL:gocui.Enter", false)
+		ui.log("[*] register LIST_URLS_PANEL:gocui.KeyEnter", false)
 		return func(g *gocui.Gui, v *gocui.View) error {
 			_, cy := v.Cursor()
 			// get current line

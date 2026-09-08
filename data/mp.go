@@ -29,6 +29,6 @@ func (mp MP) ToString() string {
 	return fmt.Sprintf("(%s) %s - %s", mp.Party, mp.Name(), mp.Electorate)
 }
 
-func (mp MP) GoogleSearchTerm() string {
+func (mp MP) SearchTerm() string {
 	return fmt.Sprintf("%s member for %s %s ", mp.Name(), mp.Electorate, mp.Party)
 }

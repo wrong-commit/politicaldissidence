@@ -32,7 +32,10 @@ func (ui *UI) log(message string, isError bool) error {
 		return nil
 	}
 	ui.consoleLog += time.Now().Format(timeFormat) + message + "\n"
-	return ui.writeContent(LOG_PANEL, strings.TrimSuffix(ui.consoleLog, "\n"))
+	// ui.gui.Update(func(g *gocui.Gui) error {
+	ui.writeContent2(LOG_PANEL, strings.TrimSuffix(ui.consoleLog, "\n"), ui.gui)
+	// })
+	return nil
 }
 
 // clearLog clears the log message.
