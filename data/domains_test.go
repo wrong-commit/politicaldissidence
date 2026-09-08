@@ -407,10 +407,11 @@ func TestDomain_UpdateHttps_Success(t *testing.T) {
 	d := Domain{Hostname: "example.com"}
 	info, err := d.updateHttps(func(hostname string) (httpscheck.Info, error) {
 		return httpscheck.Info{
-			Apex:     httpscheck.HostInfo{Hostname: "example.com", Status: httpscheck.StatusEnabled, NotAfter: notAfter},
-			WWW:      httpscheck.HostInfo{Hostname: "www.example.com", Status: httpscheck.StatusMissing, Message: "refused"},
-			Status:   httpscheck.StatusEnabled,
-			NotAfter: notAfter,
+			Apex:       httpscheck.HostInfo{Hostname: "example.com", Status: httpscheck.StatusEnabled, NotAfter: notAfter, HTTPStatus: 200},
+			WWW:        httpscheck.HostInfo{Hostname: "www.example.com", Status: httpscheck.StatusMissing, Message: "refused", HTTPStatus: 404},
+			Status:     httpscheck.StatusEnabled,
+			NotAfter:   notAfter,
+			HTTPStatus: 404,
 		}, nil
 	})
 	if err != nil {
@@ -422,8 +423,14 @@ func TestDomain_UpdateHttps_Success(t *testing.T) {
 	if !d.Https.CheckedAt.Equal(fixed) || !d.Https.NotAfter.Equal(notAfter) {
 		t.Fatalf("Https=%+v", d.Https)
 	}
+	if d.Https.HTTPStatus != 404 {
+		t.Fatalf("HTTPStatus=%d", d.Https.HTTPStatus)
+	}
 	if d.Https.Apex == nil || d.Https.Apex.Hostname != "example.com" || d.Https.WWW == nil {
 		t.Fatalf("host records=%+v", d.Https)
+	}
+	if d.Https.Apex.HTTPStatus != 200 || d.Https.WWW.HTTPStatus != 404 {
+		t.Fatalf("host HTTP=%+v", d.Https)
 	}
 }
 
@@ -460,18 +467,21 @@ func TestDomain_Https_JSONRoundTrip(t *testing.T) {
 		Hostname: "example.com.au",
 		Expiry:   "2027-01-01",
 		Https: &HttpsRecord{
-			CheckedAt: checked,
-			Status:    "enabled",
-			NotAfter:  notAfter,
+			CheckedAt:  checked,
+			Status:     "enabled",
+			NotAfter:   notAfter,
+			HTTPStatus: 404,
 			Apex: &HttpsHostRecord{
-				Hostname: "example.com.au",
-				Status:   "enabled",
-				NotAfter: notAfter,
+				Hostname:   "example.com.au",
+				Status:     "enabled",
+				NotAfter:   notAfter,
+				HTTPStatus: 200,
 			},
 			WWW: &HttpsHostRecord{
-				Hostname: "www.example.com.au",
-				Status:   "missing",
-				Error:    "refused",
+				Hostname:   "www.example.com.au",
+				Status:     "missing",
+				Error:      "refused",
+				HTTPStatus: 404,
 			},
 		},
 	}
@@ -482,12 +492,18 @@ func TestDomain_Https_JSONRoundTrip(t *testing.T) {
 	if !strings.Contains(string(b), `"https"`) || !strings.Contains(string(b), `"enabled"`) {
 		t.Fatalf("expected https in JSON: %s", b)
 	}
+	if !strings.Contains(string(b), `"httpStatus":404`) {
+		t.Fatalf("expected httpStatus in JSON: %s", b)
+	}
 	var got Domain
 	if err := json.Unmarshal(b, &got); err != nil {
 		t.Fatal(err)
 	}
 	if got.Https == nil || got.Https.Status != "enabled" || !got.Https.CheckedAt.Equal(checked) {
 		t.Fatalf("Https=%+v", got.Https)
+	}
+	if got.Https.HTTPStatus != 404 {
+		t.Fatalf("HTTPStatus=%d", got.Https.HTTPStatus)
 	}
 	if got.Https.Apex == nil || got.Https.WWW == nil || got.Https.WWW.Error != "refused" {
 		t.Fatalf("hosts=%+v", got.Https)
@@ -544,7 +560,11 @@ func TestAlertReasons_HTTPS(t *testing.T) {
 		{"A2b https-soon", Domain{Expiry: far, Https: &HttpsRecord{Status: "soon"}}, []string{AlertReasonHTTPSSoon}},
 		{"A3 https-enabled", Domain{Expiry: far, Https: &HttpsRecord{Status: "enabled"}}, nil},
 		{"A4 https-nil", Domain{Expiry: far}, nil},
+		{"A5 http-404", Domain{Expiry: far, Https: &HttpsRecord{Status: "enabled", HTTPStatus: 404}}, []string{AlertReasonHTTP404}},
+		{"A5b http-500", Domain{Expiry: far, Https: &HttpsRecord{Status: "enabled", HTTPStatus: 500}}, []string{AlertReasonHTTP500}},
+		{"A5c http-200", Domain{Expiry: far, Https: &HttpsRecord{Status: "enabled", HTTPStatus: 200}}, nil},
 		{"A6 soon+https-expired", Domain{Expiry: near, Https: &HttpsRecord{Status: "expired"}}, []string{AlertReasonSoon, AlertReasonHTTPSExpired}},
+		{"A7 missing+http-404", Domain{Expiry: far, Https: &HttpsRecord{Status: "missing", HTTPStatus: 404}}, []string{AlertReasonHTTPSMissing, AlertReasonHTTP404}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

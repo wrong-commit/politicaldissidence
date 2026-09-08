@@ -115,7 +115,8 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
         - [x] [SPEC_DNS_EMPTY.md](SPEC_DNS_EMPTY.md)
     - [ ] Import files easily
         - [ ] easy config for modifying for different files
-    - [x] HTTPS Certificate Checks (see [SPEC_HTTPS_CERT.md](SPEC_HTTPS_CERT.md))
+        - [x] HTTPS Certificate Checks (see [SPEC_HTTPS_CERT.md](SPEC_HTTPS_CERT.md))
+        - [x] Add HTTP Status Checks
 - [ ] Maintainence 
     - [ ] Detect when URL disappears
     - [ ] Alert when current list changes found/removed

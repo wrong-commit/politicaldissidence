@@ -3,13 +3,15 @@ package httpscheck
 import (
 	"crypto/tls"
 	"fmt"
+	"io"
 	"net"
+	"net/http"
 	"strings"
 	"time"
 )
 
 const (
-	// DefaultTimeout bounds each TLS dial.
+	// DefaultTimeout bounds each TLS dial and HTTP page fetch.
 	DefaultTimeout = 5 * time.Second
 	// DefaultSoonWindow is how far ahead a leaf NotAfter counts as StatusSoon.
 	// Let's Encrypt typically renews around 30 days before expiry, so 15 days is a
@@ -27,21 +29,23 @@ const (
 	StatusMissing Status = "missing"
 )
 
-// HostInfo is the TLS result for one hostname (apex or www).
+// HostInfo is the TLS + HTTP page result for one hostname (apex or www).
 type HostInfo struct {
-	Hostname string
-	Status   Status
-	NotAfter time.Time // zero when missing / unknown
-	Message  string    // dial / hard failure for this host
+	Hostname   string
+	Status     Status
+	NotAfter   time.Time // zero when missing / unknown
+	Message    string    // dial / hard failure for this host
+	HTTPStatus int       // response status from GET /; 0 when fetch failed
 }
 
 // Info holds dual-host HTTPS probe results and the aggregate.
 type Info struct {
-	Apex     HostInfo
-	WWW      HostInfo
-	Status   Status    // aggregated (best of Apex, WWW)
-	NotAfter time.Time // from winning host; zero when overall missing
-	Message  string    // optional roll-up when overall missing
+	Apex       HostInfo
+	WWW        HostInfo
+	Status     Status    // aggregated (best of Apex, WWW)
+	NotAfter   time.Time // from winning host; zero when overall missing
+	Message    string    // optional roll-up when overall missing
+	HTTPStatus int       // aggregated page status; 0 when neither host returned a code
 }
 
 // Dialer performs a TLS dial for a hostname (injectable for tests).
@@ -51,17 +55,25 @@ type Dialer interface {
 	Dial(hostname string, timeout time.Duration) (tls.ConnectionState, error)
 }
 
-// Lookup probes apex and www.+apex on :443 using the default dialer and DefaultSoonWindow.
-func Lookup(hostname string) (Info, error) {
-	return LookupWith(hostname, defaultDialer(), DefaultTimeout, time.Now, DefaultSoonWindow)
+// PageFetcher GETs https://hostname/ and returns the HTTP status code (injectable for tests).
+type PageFetcher interface {
+	Fetch(hostname string, timeout time.Duration) (statusCode int, err error)
 }
 
-// LookupWith probes apex and www using the provided dialer (for tests).
+// Lookup probes apex and www.+apex on :443 using the default dialer/fetcher and DefaultSoonWindow.
+func Lookup(hostname string) (Info, error) {
+	return LookupWith(hostname, defaultDialer(), defaultPageFetcher(), DefaultTimeout, time.Now, DefaultSoonWindow)
+}
+
+// LookupWith probes apex and www using the provided dialer and page fetcher (for tests).
 // soonWindow controls StatusSoon vs StatusEnabled; <=0 uses DefaultSoonWindow.
 // Transport outcomes always yield Info; err is reserved for unexpected failures.
-func LookupWith(hostname string, d Dialer, timeout time.Duration, now func() time.Time, soonWindow time.Duration) (Info, error) {
+func LookupWith(hostname string, d Dialer, pf PageFetcher, timeout time.Duration, now func() time.Time, soonWindow time.Duration) (Info, error) {
 	if d == nil {
 		d = defaultDialer()
+	}
+	if pf == nil {
+		pf = defaultPageFetcher()
 	}
 	if timeout <= 0 {
 		timeout = DefaultTimeout
@@ -77,34 +89,42 @@ func LookupWith(hostname string, d Dialer, timeout time.Duration, now func() tim
 	wwwHost := "www." + apex
 	at := now()
 
-	apexInfo := probeHost(d, apex, timeout, at, soonWindow)
-	wwwInfo := probeHost(d, wwwHost, timeout, at, soonWindow)
+	apexInfo := probeHost(d, pf, apex, timeout, at, soonWindow)
+	wwwInfo := probeHost(d, pf, wwwHost, timeout, at, soonWindow)
 
 	info := Info{
 		Apex: apexInfo,
 		WWW:  wwwInfo,
 	}
 	info.Status, info.NotAfter = aggregate(apexInfo, wwwInfo)
+	info.HTTPStatus = aggregateHTTP(apexInfo, wwwInfo)
 	if info.Status == StatusMissing {
 		info.Message = joinMessages(apexInfo.Message, wwwInfo.Message)
 	}
 	return info, nil
 }
 
-func probeHost(d Dialer, hostname string, timeout time.Duration, at time.Time, soonWindow time.Duration) HostInfo {
+func probeHost(d Dialer, pf PageFetcher, hostname string, timeout time.Duration, at time.Time, soonWindow time.Duration) HostInfo {
 	h := HostInfo{Hostname: hostname, Status: StatusMissing}
 	state, err := d.Dial(hostname, timeout)
 	if err != nil {
 		h.Message = err.Error()
-		return h
-	}
-	if len(state.PeerCertificates) == 0 {
+	} else if len(state.PeerCertificates) == 0 {
 		h.Message = "no peer certificates"
+	} else {
+		leaf := state.PeerCertificates[0]
+		h.NotAfter = leaf.NotAfter
+		h.Status = classifyNotAfter(leaf.NotAfter, at, soonWindow)
+	}
+
+	code, ferr := pf.Fetch(hostname, timeout)
+	if ferr != nil {
+		if h.Message == "" {
+			h.Message = ferr.Error()
+		}
 		return h
 	}
-	leaf := state.PeerCertificates[0]
-	h.NotAfter = leaf.NotAfter
-	h.Status = classifyNotAfter(leaf.NotAfter, at, soonWindow)
+	h.HTTPStatus = code
 	return h
 }
 
@@ -133,6 +153,24 @@ func aggregate(apex, www HostInfo) (Status, time.Time) {
 		return StatusMissing, time.Time{}
 	}
 	return best.Status, best.NotAfter
+}
+
+// aggregateHTTP prefers 500 then 404 (abandonment signals), else any non-zero code.
+func aggregateHTTP(apex, www HostInfo) int {
+	for _, h := range []HostInfo{apex, www} {
+		if h.HTTPStatus == http.StatusInternalServerError {
+			return http.StatusInternalServerError
+		}
+	}
+	for _, h := range []HostInfo{apex, www} {
+		if h.HTTPStatus == http.StatusNotFound {
+			return http.StatusNotFound
+		}
+	}
+	if apex.HTTPStatus != 0 {
+		return apex.HTTPStatus
+	}
+	return www.HTTPStatus
 }
 
 func statusRank(s Status) int {
@@ -189,4 +227,33 @@ func (tlsDialer) Dial(hostname string, timeout time.Duration) (tls.ConnectionSta
 	}
 	defer conn.Close()
 	return conn.ConnectionState(), nil
+}
+
+type httpPageFetcher struct{}
+
+func defaultPageFetcher() PageFetcher {
+	return httpPageFetcher{}
+}
+
+func (httpPageFetcher) Fetch(hostname string, timeout time.Duration) (int, error) {
+	if timeout <= 0 {
+		timeout = DefaultTimeout
+	}
+	client := &http.Client{
+		Timeout: timeout,
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: true,
+				MinVersion:         tls.VersionTLS12,
+			},
+		},
+	}
+	url := "https://" + hostname + "/"
+	resp, err := client.Get(url)
+	if err != nil {
+		return 0, fmt.Errorf("http get %s: %w", hostname, err)
+	}
+	defer resp.Body.Close()
+	_, _ = io.Copy(io.Discard, io.LimitReader(resp.Body, 1024))
+	return resp.StatusCode, nil
 }

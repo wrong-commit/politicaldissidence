@@ -38,6 +38,7 @@ func TestDrawWhoisPanel_Success(t *testing.T) {
 		"Registrar: Example Registrar Pty Ltd",
 		"  ns1.example.net",
 		"HTTPS Status: not checked yet",
+		"HTTP Status: -",
 		"Certificate Expiry: -",
 		"DNS: not checked yet",
 	} {
@@ -60,8 +61,9 @@ func TestDrawWhoisPanel_WithHttpsAndDns(t *testing.T) {
 		CheckedAt: whoisChecked,
 		Expiry:    "2027-01-01",
 	}, &data.HttpsRecord{
-		Status:   "enabled",
-		NotAfter: certExpiry,
+		Status:     "enabled",
+		NotAfter:   certExpiry,
+		HTTPStatus: 200,
 	}, &data.DnsRecord{
 		CheckedAt: dnsChecked,
 		Empty:     true,
@@ -70,16 +72,24 @@ func TestDrawWhoisPanel_WithHttpsAndDns(t *testing.T) {
 	if !strings.Contains(got, "HTTPS Status: enabled") {
 		t.Fatalf("missing HTTPS status:\n%s", got)
 	}
+	if !strings.Contains(got, "HTTP Status: 200") {
+		t.Fatalf("missing HTTP status:\n%s", got)
+	}
 	if !strings.Contains(got, "Certificate Expiry: 2026-09-09") {
 		t.Fatalf("missing cert expiry:\n%s", got)
+	}
+	httpsIdx := strings.Index(got, "HTTPS Status:")
+	httpIdx := strings.Index(got, "HTTP Status:")
+	certIdx := strings.Index(got, "Certificate Expiry:")
+	if httpsIdx < 0 || httpIdx < 0 || certIdx < 0 || !(httpsIdx < httpIdx && httpIdx < certIdx) {
+		t.Fatalf("expected HTTPS Status then HTTP Status then Certificate Expiry:\n%s", got)
 	}
 	if !strings.Contains(got, "DNS (26-09-08 15:05): empty") {
 		t.Fatalf("missing DNS header:\n%s", got)
 	}
-	httpsIdx := strings.Index(got, "HTTPS Status:")
 	dnsIdx := strings.Index(got, "DNS (")
 	nsIdx := strings.Index(got, "Expiry: 2027-01-01")
-	if nsIdx < 0 || httpsIdx < 0 || dnsIdx < 0 || !(nsIdx < httpsIdx && httpsIdx < dnsIdx) {
+	if nsIdx < 0 || dnsIdx < 0 || !(nsIdx < httpsIdx && httpsIdx < dnsIdx) {
 		t.Fatalf("expected WHOIS then HTTPS then DNS:\n%s", got)
 	}
 }
@@ -88,20 +98,26 @@ func TestDrawWhoisPanel_HttpsStatuses(t *testing.T) {
 	cases := []struct {
 		status     string
 		notAfter   time.Time
+		httpStatus int
+		wantHTTP   string
 		wantExpiry string
 	}{
-		{"enabled", time.Date(2026, 9, 9, 0, 0, 0, 0, time.UTC), "2026-09-09"},
-		{"soon", time.Date(2026, 10, 1, 0, 0, 0, 0, time.UTC), "2026-10-01"},
-		{"expired", time.Date(2025, 1, 2, 0, 0, 0, 0, time.UTC), "2025-01-02"},
-		{"missing", time.Time{}, "-"},
+		{"enabled", time.Date(2026, 9, 9, 0, 0, 0, 0, time.UTC), 200, "200", "2026-09-09"},
+		{"soon", time.Date(2026, 10, 1, 0, 0, 0, 0, time.UTC), 404, "404", "2026-10-01"},
+		{"expired", time.Date(2025, 1, 2, 0, 0, 0, 0, time.UTC), 500, "500", "2025-01-02"},
+		{"missing", time.Time{}, 0, "-", "-"},
 	}
 	for _, tt := range cases {
 		got := DrawWhoisPanel("x.example", "", &data.WhoisRecord{Expiry: "2028-01-01"}, &data.HttpsRecord{
-			Status:   tt.status,
-			NotAfter: tt.notAfter,
+			Status:     tt.status,
+			NotAfter:   tt.notAfter,
+			HTTPStatus: tt.httpStatus,
 		}, nil)
 		if !strings.Contains(got, "HTTPS Status: "+tt.status) {
 			t.Fatalf("status %s missing in:\n%s", tt.status, got)
+		}
+		if !strings.Contains(got, "HTTP Status: "+tt.wantHTTP) {
+			t.Fatalf("http for %s: want %s in:\n%s", tt.status, tt.wantHTTP, got)
 		}
 		if !strings.Contains(got, "Certificate Expiry: "+tt.wantExpiry) {
 			t.Fatalf("expiry for %s: want %s in:\n%s", tt.status, tt.wantExpiry, got)
@@ -116,6 +132,9 @@ func TestDrawWhoisPanel_HttpsNotChecked(t *testing.T) {
 	}, nil, nil)
 	if !strings.Contains(got, "HTTPS Status: not checked yet") {
 		t.Fatalf("got:\n%s", got)
+	}
+	if !strings.Contains(got, "HTTP Status: -") {
+		t.Fatalf("missing HTTP placeholder:\n%s", got)
 	}
 	if strings.Contains(got, "HTTPS Status: enabled") {
 		t.Fatalf("should not invent enabled:\n%s", got)

@@ -85,6 +85,7 @@ func appendHttpsSection(b *strings.Builder, https *data.HttpsRecord) {
 	b.WriteByte('\n')
 	if https == nil {
 		b.WriteString("HTTPS Status: not checked yet\n")
+		b.WriteString("HTTP Status: -\n")
 		b.WriteString("Certificate Expiry: -\n")
 		return
 	}
@@ -94,6 +95,11 @@ func appendHttpsSection(b *strings.Builder, https *data.HttpsRecord) {
 		status = "missing"
 	}
 	fmt.Fprintf(b, "HTTPS Status: %s\n", status)
+	if https.HTTPStatus == 0 {
+		b.WriteString("HTTP Status: -\n")
+	} else {
+		fmt.Fprintf(b, "HTTP Status: %d\n", https.HTTPStatus)
+	}
 	if status == "missing" || https.NotAfter.IsZero() {
 		b.WriteString("Certificate Expiry: -\n")
 		return

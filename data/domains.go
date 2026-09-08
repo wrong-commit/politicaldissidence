@@ -35,6 +35,8 @@ const (
 	AlertReasonHTTPSExpired = "https-expired"
 	AlertReasonHTTPSSoon    = "https-soon"
 	AlertReasonHTTPSMissing = "https-missing"
+	AlertReasonHTTP404      = "http-404"
+	AlertReasonHTTP500      = "http-500"
 )
 
 // lookupInfo is the WHOIS lookup function; overridden in tests.
@@ -74,21 +76,23 @@ type DnsRecord struct {
 
 // HttpsHostRecord is the latest TLS probe result for one hostname form.
 type HttpsHostRecord struct {
-	Hostname string    `json:"hostname,omitempty"`
-	Status   string    `json:"status,omitempty"`
-	NotAfter time.Time `json:"notAfter,omitempty"`
-	Error    string    `json:"error,omitempty"`
+	Hostname   string    `json:"hostname,omitempty"`
+	Status     string    `json:"status,omitempty"`
+	NotAfter   time.Time `json:"notAfter,omitempty"`
+	Error      string    `json:"error,omitempty"`
+	HTTPStatus int       `json:"httpStatus,omitempty"` // GET / status; 0 when fetch failed
 }
 
 // HttpsRecord is the latest dual-host HTTPS certificate check (only one kept).
 // Persisted under Domain.Https in mp_data.json.
 type HttpsRecord struct {
-	CheckedAt time.Time        `json:"checkedAt,omitempty"`
-	Status    string           `json:"status,omitempty"` // aggregated: enabled | expired | missing
-	NotAfter  time.Time        `json:"notAfter,omitempty"`
-	Error     string           `json:"error,omitempty"` // optional aggregate message
-	Apex      *HttpsHostRecord `json:"apex,omitempty"`
-	WWW       *HttpsHostRecord `json:"www,omitempty"`
+	CheckedAt  time.Time        `json:"checkedAt,omitempty"`
+	Status     string           `json:"status,omitempty"` // aggregated: enabled | expired | missing
+	NotAfter   time.Time        `json:"notAfter,omitempty"`
+	Error      string           `json:"error,omitempty"` // optional aggregate message
+	HTTPStatus int              `json:"httpStatus,omitempty"` // aggregated page status; 0 when unknown
+	Apex       *HttpsHostRecord `json:"apex,omitempty"`
+	WWW        *HttpsHostRecord `json:"www,omitempty"`
 }
 
 type Domain struct {
@@ -241,7 +245,7 @@ func (d *Domain) UpdateHttpsWindow(soonWindow time.Duration) (httpscheck.Info, e
 		soonWindow = HttpsSoonWindow
 	}
 	return d.updateHttps(func(hostname string) (httpscheck.Info, error) {
-		return httpscheck.LookupWith(hostname, nil, 0, now, soonWindow)
+		return httpscheck.LookupWith(hostname, nil, nil, 0, now, soonWindow)
 	})
 }
 
@@ -259,22 +263,24 @@ func (d *Domain) updateHttps(lookup func(string) (httpscheck.Info, error)) (info
 			msg = err.Error()
 		}
 		d.Https = &HttpsRecord{
-			CheckedAt: checked,
-			Status:    string(httpscheck.StatusMissing),
-			Error:     msg,
-			Apex:      hostRecordFromInfo(info.Apex),
-			WWW:       hostRecordFromInfo(info.WWW),
+			CheckedAt:  checked,
+			Status:     string(httpscheck.StatusMissing),
+			Error:      msg,
+			HTTPStatus: info.HTTPStatus,
+			Apex:       hostRecordFromInfo(info.Apex),
+			WWW:        hostRecordFromInfo(info.WWW),
 		}
 		d.RefreshAlert(checked, AlertSoonWindow)
 		return info, err
 	}
 	d.Https = &HttpsRecord{
-		CheckedAt: checked,
-		Status:    string(info.Status),
-		NotAfter:  info.NotAfter,
-		Error:     info.Message,
-		Apex:      hostRecordFromInfo(info.Apex),
-		WWW:       hostRecordFromInfo(info.WWW),
+		CheckedAt:  checked,
+		Status:     string(info.Status),
+		NotAfter:   info.NotAfter,
+		Error:      info.Message,
+		HTTPStatus: info.HTTPStatus,
+		Apex:       hostRecordFromInfo(info.Apex),
+		WWW:        hostRecordFromInfo(info.WWW),
 	}
 	d.RefreshAlert(checked, AlertSoonWindow)
 	return info, nil
@@ -282,10 +288,11 @@ func (d *Domain) updateHttps(lookup func(string) (httpscheck.Info, error)) (info
 
 func hostRecordFromInfo(h httpscheck.HostInfo) *HttpsHostRecord {
 	rec := &HttpsHostRecord{
-		Hostname: h.Hostname,
-		Status:   string(h.Status),
-		NotAfter: h.NotAfter,
-		Error:    h.Message,
+		Hostname:   h.Hostname,
+		Status:     string(h.Status),
+		NotAfter:   h.NotAfter,
+		Error:      h.Message,
+		HTTPStatus: h.HTTPStatus,
 	}
 	return rec
 }
@@ -352,6 +359,12 @@ func AlertReasons(d Domain, at time.Time, soonWindow time.Duration) []string {
 			reasons = append(reasons, AlertReasonHTTPSSoon)
 		case string(httpscheck.StatusMissing):
 			reasons = append(reasons, AlertReasonHTTPSMissing)
+		}
+		switch d.Https.HTTPStatus {
+		case 404:
+			reasons = append(reasons, AlertReasonHTTP404)
+		case 500:
+			reasons = append(reasons, AlertReasonHTTP500)
 		}
 	}
 	return reasons

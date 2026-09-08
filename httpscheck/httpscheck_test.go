@@ -30,6 +30,37 @@ func (s *stubDialer) Dial(hostname string, timeout time.Duration) (tls.Connectio
 	return r.state, r.err
 }
 
+type stubPageFetcher struct {
+	byHost map[string]struct {
+		code int
+		err  error
+	}
+	seen []string
+}
+
+func (s *stubPageFetcher) Fetch(hostname string, timeout time.Duration) (int, error) {
+	s.seen = append(s.seen, hostname)
+	if s.byHost == nil {
+		return 0, nil
+	}
+	r, ok := s.byHost[hostname]
+	if !ok {
+		return 0, errors.New("unexpected host: " + hostname)
+	}
+	return r.code, r.err
+}
+
+// okPages returns 200 for apex and www of example.com (common test host).
+func okPages() *stubPageFetcher {
+	return &stubPageFetcher{byHost: map[string]struct {
+		code int
+		err  error
+	}{
+		"example.com":     {code: 200},
+		"www.example.com": {code: 200},
+	}}
+}
+
 func leafCert(notAfter time.Time) *x509.Certificate {
 	return &x509.Certificate{
 		SerialNumber: big.NewInt(1),
@@ -44,7 +75,11 @@ func stateWithLeaf(notAfter time.Time) tls.ConnectionState {
 }
 
 func lookup(hostname string, d Dialer, at time.Time, soon time.Duration) (Info, error) {
-	return LookupWith(hostname, d, time.Second, func() time.Time { return at }, soon)
+	return LookupWith(hostname, d, okPages(), time.Second, func() time.Time { return at }, soon)
+}
+
+func lookupHTTP(hostname string, d Dialer, pf PageFetcher, at time.Time, soon time.Duration) (Info, error) {
+	return LookupWith(hostname, d, pf, time.Second, func() time.Time { return at }, soon)
 }
 
 func TestLookupWith_EnabledSoonExpiredMissing(t *testing.T) {
@@ -405,4 +440,95 @@ func TestClean(t *testing.T) {
 	if got := clean("WWW.Example.COM"); got != "example.com" {
 		t.Fatalf("got %q", got)
 	}
+}
+
+func TestLookupWith_HTTPStatus(t *testing.T) {
+	now := time.Date(2026, 9, 9, 12, 0, 0, 0, time.UTC)
+	far := now.Add(120 * 24 * time.Hour)
+	d := &stubDialer{byHost: map[string]struct {
+		state tls.ConnectionState
+		err   error
+	}{
+		"example.com":     {state: stateWithLeaf(far)},
+		"www.example.com": {state: stateWithLeaf(far)},
+	}}
+
+	t.Run("prefers 500 over 200", func(t *testing.T) {
+		pf := &stubPageFetcher{byHost: map[string]struct {
+			code int
+			err  error
+		}{
+			"example.com":     {code: 200},
+			"www.example.com": {code: 500},
+		}}
+		info, err := lookupHTTP("example.com", d, pf, now, DefaultSoonWindow)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if info.HTTPStatus != 500 || info.WWW.HTTPStatus != 500 || info.Apex.HTTPStatus != 200 {
+			t.Fatalf("got %+v", info)
+		}
+	})
+
+	t.Run("prefers 404 over 200", func(t *testing.T) {
+		pf := &stubPageFetcher{byHost: map[string]struct {
+			code int
+			err  error
+		}{
+			"example.com":     {code: 404},
+			"www.example.com": {code: 200},
+		}}
+		info, err := lookupHTTP("example.com", d, pf, now, DefaultSoonWindow)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if info.HTTPStatus != 404 {
+			t.Fatalf("HTTPStatus=%d", info.HTTPStatus)
+		}
+	})
+
+	t.Run("prefers 500 over 404", func(t *testing.T) {
+		pf := &stubPageFetcher{byHost: map[string]struct {
+			code int
+			err  error
+		}{
+			"example.com":     {code: 404},
+			"www.example.com": {code: 500},
+		}}
+		info, err := lookupHTTP("example.com", d, pf, now, DefaultSoonWindow)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if info.HTTPStatus != 500 {
+			t.Fatalf("HTTPStatus=%d", info.HTTPStatus)
+		}
+	})
+
+	t.Run("fetch error yields zero", func(t *testing.T) {
+		pf := &stubPageFetcher{byHost: map[string]struct {
+			code int
+			err  error
+		}{
+			"example.com":     {err: errors.New("timeout")},
+			"www.example.com": {err: errors.New("refused")},
+		}}
+		info, err := lookupHTTP("example.com", d, pf, now, DefaultSoonWindow)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if info.HTTPStatus != 0 || info.Apex.HTTPStatus != 0 {
+			t.Fatalf("got %+v", info)
+		}
+	})
+
+	t.Run("both hosts fetched", func(t *testing.T) {
+		pf := okPages()
+		_, err := lookupHTTP("example.com", d, pf, now, DefaultSoonWindow)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(pf.seen) != 2 {
+			t.Fatalf("seen=%v", pf.seen)
+		}
+	})
 }
