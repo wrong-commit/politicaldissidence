@@ -798,7 +798,7 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-09T09:01:50.8537709+10:00",
+           "checkedAt": "2026-09-09T09:05:13.0749731+10:00",
            "error": "Could not parse \u003cau.linkedin.com\u003e"
          },
          "dns": {
@@ -998,7 +998,7 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-09T09:01:52.5542702+10:00",
+           "checkedAt": "2026-09-09T09:05:14.8685754+10:00",
            "error": "Could not get WHOIS for \u003cjimchalmers.org\u003e"
          },
          "dns": {

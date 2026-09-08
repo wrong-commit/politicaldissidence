@@ -30,6 +30,13 @@ func formatLastChecked(t time.Time) string {
 	return t.Format(lastCheckedLayout)
 }
 
+func AlertMarker(alert bool) string {
+	if alert {
+		return "alert: true"
+	}
+	return ""
+}
+
 func DrawListDomainPanel(g *gocui.Gui, domains *[]data.Domain) string {
 	var sb string
 	for i, domain := range *domains {
@@ -43,7 +50,12 @@ func DrawListDomainPanel(g *gocui.Gui, domains *[]data.Domain) string {
 		if domain.Alert {
 			expiry += "[x]"
 		}
-		sb += fmt.Sprintf("\t%d. %s %s  checked %s  %s\n", i+1, domain.Hostname, expiry, formatLastChecked(domain.LastChecked), DnsMarker(domain.DNS))
+		alert := AlertMarker(domain.Alert)
+		if alert != "" {
+			sb += fmt.Sprintf("\t%d. %s %s  checked %s  %s\n", i+1, domain.Hostname, expiry, formatLastChecked(domain.LastChecked), alert)
+		} else {
+			sb += fmt.Sprintf("\t%d. %s %s  checked %s\n", i+1, domain.Hostname, expiry, formatLastChecked(domain.LastChecked))
+		}
 	}
 	return sb
 }

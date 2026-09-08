@@ -63,7 +63,7 @@ func (ui *UI) Load() error {
 	mps := status.MPs
 	ui.state.all = &mps
 	ui.applyFilter(ui.state.filter)
-	ui.log(fmt.Sprintf("Loaded %d MPs ", len(*ui.state.all)), false)
+	ui.log(fmt.Sprintf(" Loaded %d MPs ", len(*ui.state.all)), false)
 
 	if v, ok := panelViews[LIST_PANEL]; ok {
 		v.text = panel.DrawListMpPanel(ui.gui, ui.state.visible)

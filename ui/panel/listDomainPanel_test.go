@@ -20,22 +20,34 @@ func TestDrawListDomainPanel_LastChecked(t *testing.T) {
 	}
 	got := DrawListDomainPanel(nil, &domains)
 
-	if !strings.Contains(got, "a.example 2027-01-01  checked 26-03-01  dns:ok") {
+	if !strings.Contains(got, "a.example 2027-01-01  checked 26-03-01\n") {
 		t.Fatalf("missing ok row:\n%s", got)
 	}
-	if !strings.Contains(got, "b.example <?>  checked never  dns:?") {
+	if !strings.Contains(got, "b.example <?>  checked never\n") {
 		t.Fatalf("missing never row:\n%s", got)
 	}
-	if !strings.Contains(got, "c.example 2026-01-01[!]  checked 26-03-01  dns:empty") {
+	if !strings.Contains(got, "c.example 2026-01-01[!]  checked 26-03-01\n") {
 		t.Fatalf("missing empty row:\n%s", got)
 	}
-	if !strings.Contains(got, "d.example 2027-01-01  checked 26-03-01  dns:err") {
+	if !strings.Contains(got, "d.example 2027-01-01  checked 26-03-01\n") {
 		t.Fatalf("missing err row:\n%s", got)
 	}
-	if !strings.Contains(got, "e.example 2027-01-01[x]  checked 26-03-01  dns:ok") {
+	if !strings.Contains(got, "e.example 2027-01-01[x]  checked 26-03-01  alert: true\n") {
 		t.Fatalf("missing alert [x] row:\n%s", got)
 	}
-	if !strings.Contains(got, "f.example 2025-01-01[!][x]  checked 26-03-01  dns:ok") {
+	if !strings.Contains(got, "f.example 2025-01-01[!][x]  checked 26-03-01  alert: true\n") {
 		t.Fatalf("missing [!][x] row:\n%s", got)
+	}
+	if strings.Contains(got, "dns:") {
+		t.Fatalf("unexpected dns marker:\n%s", got)
+	}
+}
+
+func TestAlertMarker(t *testing.T) {
+	if got := AlertMarker(true); got != "alert: true" {
+		t.Fatalf("true: got %q", got)
+	}
+	if got := AlertMarker(false); got != "" {
+		t.Fatalf("false: got %q", got)
 	}
 }
