@@ -72,7 +72,11 @@ func (ui *UI) toggleListUrlsModal(g *gocui.Gui) error {
 		}
 	}
 
-	newBufferText, _, _, displayLinks, drawErr := panel.DrawListUrlPanel(g, *ui.state.searchState.result, existingHosts)
+	term := ""
+	if ui.state.searchState != nil {
+		term = ui.state.searchState.term
+	}
+	newBufferText, _, _, displayLinks, drawErr := panel.DrawListUrlPanel(g, *ui.state.searchState.result, existingHosts, term)
 	if drawErr != nil {
 		ui.log(fmt.Sprintf("Links that could not be converted to domain,\n%s", drawErr.Error()), true)
 	}
@@ -122,7 +126,7 @@ func (ui *UI) toggleListUrlsModal(g *gocui.Gui) error {
 	if err := ui.writeContent2(LIST_URLS_MODAL, newBufferText, g); err != nil {
 		return err
 	}
-	// First selectable host line (below status bar).
+	// First selectable host line (below keybinding + search term).
 	cy := panel.URLListCursorY(0)
 	_ = v.SetCursor(0, cy)
 	ui.cursors.Set(LIST_URLS_MODAL, 0, cy)

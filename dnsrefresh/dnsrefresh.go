@@ -140,6 +140,7 @@ func Run(mps []data.MP, deps Deps) Result {
 
 	checkedMPs := 0
 	updated := 0
+	attempted := 0
 
 	for i := range mps {
 		mpAttempted := false
@@ -156,6 +157,8 @@ func Run(mps []data.MP, deps Deps) Result {
 			mpName := mps[i].Name()
 			deps.Log.Debug(FormatDebug(mpName, dom.Hostname))
 			info, err := deps.UpdateDns(dom)
+			attempted++
+			dom.RefreshAlert(deps.Now(), data.AlertSoonWindow)
 			if deps.OnLookup != nil {
 				deps.OnLookup(mpName, info, err)
 			}
@@ -170,7 +173,7 @@ func Run(mps []data.MP, deps Deps) Result {
 		}
 	}
 
-	if updated > 0 && deps.Save != nil {
+	if attempted > 0 && deps.Save != nil {
 		_ = deps.Save(mps)
 	}
 

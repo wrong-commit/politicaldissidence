@@ -17,6 +17,13 @@ Or in one step without writing a binary:
 go run .
 ```
 
+Batch watchlist (WHOIS + DNS, print / persist `alert` domains):
+
+```powershell
+go run ./cmd/checkdomains
+go run ./cmd/checkdomains -dry-run
+```
+
 On macOS / Linux (or Git Bash), the `make` script builds then runs:
 
 ```sh
@@ -72,7 +79,7 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
         - [x] Show last-checked in domain panel
         - [x] Show full WHOIS response
         - [x] DNS emptiness check (see [SPEC_DNS_EMPTY.md](SPEC_DNS_EMPTY.md))
-        - [ ] Add script for running WHOIS checks against all MP domains and outputting expired domains (see [SPEC_CLI_EXPIRED_DOMAINS.md](SPEC_CLI_EXPIRED_DOMAINS.md))
+        - [x] Add script for running WHOIS checks against all MP domains and outputting expired domains (see [SPEC_CLI_EXPIRED_DOMAINS.md](SPEC_CLI_EXPIRED_DOMAINS.md))
     - [x] Validate `mp_data.json` on load / reload (see [SPEC_JSON_VALIDATION.md](SPEC_JSON_VALIDATION.md))
     - [x] Fix UI bugginess, cursor gets out of whack 
     - [x] Add multiple engines/search terms to url lookup

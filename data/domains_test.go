@@ -288,3 +288,110 @@ func TestDomain_NeedsDns(t *testing.T) {
 		})
 	}
 }
+
+func TestAlertReasons(t *testing.T) {
+	at := time.Date(2026, 9, 8, 15, 0, 0, 0, time.Local)
+	soon := AlertSoonWindow
+	far := at.Add(120 * 24 * time.Hour).Format("2006-01-02")
+	near := at.Add(30 * 24 * time.Hour).Format("2006-01-02")
+	yesterday := at.Add(-24 * time.Hour).Format("2006-01-02")
+
+	tests := []struct {
+		name string
+		d    Domain
+		want []string
+	}{
+		{"A1 expired", Domain{Expiry: yesterday}, []string{AlertReasonExpired}},
+		{"A2 soon", Domain{Expiry: near}, []string{AlertReasonSoon}},
+		{"A3 far ok", Domain{Expiry: far, DNS: &DnsRecord{Outcome: "ok"}}, nil},
+		{"A4 dns empty", Domain{Expiry: far, DNS: &DnsRecord{Empty: true, Outcome: "empty"}}, []string{AlertReasonDNSEmpty}},
+		{"A5 empty expiry", Domain{Expiry: "", DNS: &DnsRecord{Outcome: "ok"}}, nil},
+		{"A5b unparseable", Domain{Expiry: "not-a-date", DNS: &DnsRecord{Outcome: "ok"}}, nil},
+		{"A6 soon+empty", Domain{Expiry: near, DNS: &DnsRecord{Empty: true}}, []string{AlertReasonSoon, AlertReasonDNSEmpty}},
+		{"A7 dns error", Domain{Expiry: far, DNS: &DnsRecord{Empty: false, Outcome: "error", Error: "timeout"}}, nil},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := AlertReasons(tt.d, at, soon)
+			if len(got) != len(tt.want) {
+				t.Fatalf("got %v want %v", got, tt.want)
+			}
+			for i := range got {
+				if got[i] != tt.want[i] {
+					t.Fatalf("got %v want %v", got, tt.want)
+				}
+			}
+		})
+	}
+}
+
+func TestRefreshAlert_Clears(t *testing.T) {
+	at := time.Date(2026, 9, 8, 15, 0, 0, 0, time.Local)
+	far := at.Add(120 * 24 * time.Hour).Format("2006-01-02")
+	d := Domain{Expiry: far, Alert: true, DNS: &DnsRecord{Outcome: "ok"}}
+	d.RefreshAlert(at, AlertSoonWindow)
+	if d.Alert {
+		t.Fatal("expected Alert cleared")
+	}
+}
+
+func TestRefreshAlert_JSONRoundTrip(t *testing.T) {
+	orig := Domain{Hostname: "x.com", Expiry: "2027-01-01", Alert: true}
+	b, err := json.Marshal(orig)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(b), `"alert":true`) {
+		t.Fatalf("json=%s", b)
+	}
+	var got Domain
+	if err := json.Unmarshal(b, &got); err != nil {
+		t.Fatal(err)
+	}
+	if !got.Alert {
+		t.Fatal("Alert not preserved")
+	}
+	var missing Domain
+	if err := json.Unmarshal([]byte(`{"hostname":"x.com","expiry":"","expired":false}`), &missing); err != nil {
+		t.Fatal(err)
+	}
+	if missing.Alert {
+		t.Fatal("missing alert should be false")
+	}
+}
+
+func TestRefreshAlert_AfterWhoisOnly(t *testing.T) {
+	at := time.Date(2026, 9, 8, 12, 0, 0, 0, time.Local)
+	prevNow := now
+	now = func() time.Time { return at }
+	defer func() { now = prevNow }()
+
+	near := at.Add(30 * 24 * time.Hour).Format("2006-01-02")
+	d := Domain{Hostname: "soon.example"}
+	_, err := d.updateExpiry(func(string) (string, error) { return near, nil })
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !d.Alert {
+		t.Fatal("expected Alert after soon WHOIS")
+	}
+}
+
+func TestRefreshAlert_AfterDnsOnly(t *testing.T) {
+	at := time.Date(2026, 9, 8, 12, 0, 0, 0, time.Local)
+	prevNow := now
+	now = func() time.Time { return at }
+	defer func() { now = prevNow }()
+
+	far := at.Add(200 * 24 * time.Hour).Format("2006-01-02")
+	d := Domain{Hostname: "empty.example", Expiry: far}
+	_, err := d.updateDns(func(hostname string) (dnscheck.Info, error) {
+		return dnscheck.Info{Hostname: hostname, Outcome: dnscheck.OutcomeEmpty, Empty: true}, nil
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !d.Alert {
+		t.Fatal("expected Alert after empty DNS")
+	}
+}

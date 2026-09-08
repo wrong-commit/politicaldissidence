@@ -40,6 +40,9 @@ func DrawListDomainPanel(g *gocui.Gui, domains *[]data.Domain) string {
 		if domain.Expired {
 			expiry += "[!]"
 		}
+		if domain.Alert {
+			expiry += "[x]"
+		}
 		sb += fmt.Sprintf("\t%d. %s %s  checked %s  %s\n", i+1, domain.Hostname, expiry, formatLastChecked(domain.LastChecked), DnsMarker(domain.DNS))
 	}
 	return sb

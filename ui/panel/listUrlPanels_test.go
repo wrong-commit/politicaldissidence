@@ -11,23 +11,26 @@ func TestURLListItemIndex(t *testing.T) {
 	if got := URLListItemIndex(0); got != -1 {
 		t.Fatalf("status line: got %d want -1", got)
 	}
-	if got := URLListItemIndex(1); got != 0 {
-		t.Fatalf("item0 host: got %d want 0", got)
+	if got := URLListItemIndex(1); got != -1 {
+		t.Fatalf("search term line: got %d want -1", got)
 	}
 	if got := URLListItemIndex(2); got != 0 {
-		t.Fatalf("item0 path: got %d want 0", got)
+		t.Fatalf("item0 host: got %d want 0", got)
 	}
 	if got := URLListItemIndex(3); got != 0 {
+		t.Fatalf("item0 path: got %d want 0", got)
+	}
+	if got := URLListItemIndex(4); got != 0 {
 		t.Fatalf("item0 blank: got %d want 0", got)
 	}
-	if got := URLListItemIndex(4); got != 1 {
+	if got := URLListItemIndex(5); got != 1 {
 		t.Fatalf("item1 host: got %d want 1", got)
 	}
-	if got := URLListCursorY(0); got != 1 {
-		t.Fatalf("cursor0: got %d want 1", got)
+	if got := URLListCursorY(0); got != 2 {
+		t.Fatalf("cursor0: got %d want 2", got)
 	}
-	if got := URLListCursorY(2); got != 7 {
-		t.Fatalf("cursor2: got %d want 7", got)
+	if got := URLListCursorY(2); got != 8 {
+		t.Fatalf("cursor2: got %d want 8", got)
 	}
 }
 
@@ -52,7 +55,7 @@ func TestDrawListUrlPanel(t *testing.T) {
 		{"https://already.example/path", "d2"},
 		{"", "bad"},
 	}
-	text, _, _, display, err := DrawListUrlPanel(nil, links, []string{"Already.Example"})
+	text, _, _, display, err := DrawListUrlPanel(nil, links, []string{"Already.Example"}, "jane doe mp")
 	if err == nil {
 		t.Fatal("expected error for empty link")
 	}
@@ -61,6 +64,9 @@ func TestDrawListUrlPanel(t *testing.T) {
 	}
 	if !strings.Contains(text, urlListStatusText) {
 		t.Fatalf("missing status:\n%s", text)
+	}
+	if !strings.Contains(text, "Search: jane doe mp") {
+		t.Fatalf("missing search term:\n%s", text)
 	}
 	if !strings.Contains(text, "1. foobar.com.au") {
 		t.Fatalf("missing host line:\n%s", text)
@@ -72,11 +78,17 @@ func TestDrawListUrlPanel(t *testing.T) {
 		t.Fatalf("expected muted already-added domain:\n%s", text)
 	}
 	lines := strings.Split(strings.TrimSuffix(text, "\n"), "\n")
-	// status + 2 items × (host, path, blank) = 7 lines
-	if len(lines) < 7 {
-		t.Fatalf("want status + 2×3-line items, got %d:\n%s", len(lines), text)
+	// status + term + 2 items × (host, path, blank) = 8 lines
+	if len(lines) < 8 {
+		t.Fatalf("want status + term + 2×3-line items, got %d:\n%s", len(lines), text)
 	}
-	if lines[3] != "" {
-		t.Fatalf("expected blank after first path, got %q", lines[3])
+	if lines[0] != urlListStatusText {
+		t.Fatalf("expected status first, got %q", lines[0])
+	}
+	if lines[1] != "Search: jane doe mp" {
+		t.Fatalf("expected search term second, got %q", lines[1])
+	}
+	if lines[4] != "" {
+		t.Fatalf("expected blank after first path, got %q", lines[4])
 	}
 }

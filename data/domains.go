@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"politicaldissidence/dnscheck"
 	"politicaldissidence/whois"
+	"strings"
 	"time"
 )
 
@@ -12,6 +13,16 @@ const WhoisMaxAge = 10 * 24 * time.Hour
 
 // DnsMaxAge is the background DNS refresh throttle window.
 const DnsMaxAge = WhoisMaxAge
+
+// AlertSoonWindow is how far ahead an expiry counts as "soon" for sniping alerts.
+const AlertSoonWindow = 90 * 24 * time.Hour
+
+// Alert reason tokens (CLI report / tests); not persisted on Domain.
+const (
+	AlertReasonExpired  = "expired"
+	AlertReasonSoon     = "soon"
+	AlertReasonDNSEmpty = "dns-empty"
+)
 
 // lookupInfo is the WHOIS lookup function; overridden in tests.
 var lookupInfo = whois.Lookup
@@ -54,6 +65,8 @@ type Domain struct {
 	/* Empty string indicates domain expiry cannot be determined */
 	Expiry  string `json:"expiry"`
 	Expired bool   `json:"expired"`
+	/* Alert is true when a human should review this domain for sniping */
+	Alert bool `json:"alert"`
 	/* Zero time means never checked; omitempty keeps it out of JSON until set */
 	LastChecked time.Time `json:"lastChecked,omitempty"`
 	/* Latest WHOIS detail for the WHOIS panel; omitempty when never looked up */
@@ -114,6 +127,7 @@ func (d *Domain) updateExpiryInfo(lookup func(string) (whois.Info, error)) (info
 			CheckedAt: checked,
 			Error:     msg,
 		}
+		d.RefreshAlert(checked, AlertSoonWindow)
 		return info, err
 	}
 	d.Expiry = info.ExpirationDate
@@ -127,6 +141,7 @@ func (d *Domain) updateExpiryInfo(lookup func(string) (whois.Info, error)) (info
 		Registrar:   info.Registrar,
 		NameServers: append([]string(nil), info.NameServers...),
 	}
+	d.RefreshAlert(checked, AlertSoonWindow)
 	// TODO: check if date is after current date
 	return info, nil
 }
@@ -155,6 +170,7 @@ func (d *Domain) updateDns(lookup func(string) (dnscheck.Info, error)) (info dns
 			Outcome:   string(dnscheck.OutcomeError),
 			Error:     msg,
 		}
+		d.RefreshAlert(checked, AlertSoonWindow)
 		return info, err
 	}
 	d.DNS = &DnsRecord{
@@ -166,7 +182,75 @@ func (d *Domain) updateDns(lookup func(string) (dnscheck.Info, error)) (info dns
 		MX:        append([]string(nil), info.MX...),
 		TXT:       append([]string(nil), info.TXT...),
 	}
+	d.RefreshAlert(checked, AlertSoonWindow)
 	return info, nil
+}
+
+// expiryLayouts are tried in order when parsing Domain.Expiry for alerts.
+// Calendar dates without a zone are interpreted in local time.
+var expiryLayouts = []string{
+	time.RFC3339,
+	"2006-01-02T15:04:05Z07:00",
+	"2006-01-02T15:04:05Z",
+	"2006-01-02 15:04:05",
+	"2006-01-02",
+	"02-Jan-2006",
+	"2006.01.02",
+}
+
+// ParseExpiryDate parses a WHOIS expiry string. ok is false when empty or unparseable.
+func ParseExpiryDate(s string) (time.Time, bool) {
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return time.Time{}, false
+	}
+	for _, layout := range expiryLayouts {
+		if t, err := time.ParseInLocation(layout, s, time.Local); err == nil {
+			return t, true
+		}
+	}
+	// RFC3339 in UTC when zone present but ParseInLocation failed on Local-only forms.
+	if t, err := time.Parse(time.RFC3339, s); err == nil {
+		return t, true
+	}
+	return time.Time{}, false
+}
+
+func startOfLocalDay(t time.Time) time.Time {
+	y, m, d := t.In(time.Local).Date()
+	return time.Date(y, m, d, 0, 0, 0, 0, time.Local)
+}
+
+// AlertReasons returns sniping reasons for d at time at with the given soon window.
+// Missing/unparseable expiry contributes nothing; DNS errors are not dns-empty.
+func AlertReasons(d Domain, at time.Time, soonWindow time.Duration) []string {
+	if soonWindow <= 0 {
+		soonWindow = AlertSoonWindow
+	}
+	var reasons []string
+	if exp, ok := ParseExpiryDate(d.Expiry); ok {
+		today := startOfLocalDay(at)
+		expDay := startOfLocalDay(exp)
+		if expDay.Before(today) {
+			reasons = append(reasons, AlertReasonExpired)
+		} else if !expDay.After(today.Add(soonWindow)) {
+			reasons = append(reasons, AlertReasonSoon)
+		}
+	}
+	if d.DNS != nil && d.DNS.Empty {
+		reasons = append(reasons, AlertReasonDNSEmpty)
+	}
+	return reasons
+}
+
+// ComputeAlert reports whether d should be flagged for sniping review.
+func ComputeAlert(d Domain, at time.Time, soonWindow time.Duration) bool {
+	return len(AlertReasons(d, at, soonWindow)) > 0
+}
+
+// RefreshAlert sets Alert from current Expiry and DNS using the shared classifier.
+func (d *Domain) RefreshAlert(at time.Time, soonWindow time.Duration) {
+	d.Alert = ComputeAlert(*d, at, soonWindow)
 }
 
 // updateExpiry is kept for tests that inject a string-only lookup.

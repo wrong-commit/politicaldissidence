@@ -104,7 +104,7 @@ var keyHandlers = &handlers{
 	// 	ctrl f - 	change filters
 	{listView, gocui.KeyCtrlF, "Ctrl+F", "Change filter of visible MPs (all/with domains/no domains)", func(ui *UI, wrap bool) Fn {
 		// ui.log("[*] register LIST_URLS_PANEL:gocui.KeyCtrlF", false)
-		onFilter := func(*gocui.Gui, *gocui.View) error {
+		onFilter := func(_ *gocui.Gui, v *gocui.View) error {
 			nextFilter := ui.nextFilter()
 			nextVisi := make([]data.MP, 0)
 			switch nextFilter {
@@ -125,8 +125,15 @@ var keyHandlers = &handlers{
 			}
 			ui.state.visible = &nextVisi
 			ui.state.filter = nextFilter
-			ui.selectMp(0)
-			return nil
+			// Force selectMp to refresh domainState for the new filtered list.
+			ui.state.currentIndex = -1
+			if _, err := ui.initPanelView(LIST_PANEL); err != nil {
+				return err
+			}
+			if err := setListCursor(v, 0); err != nil {
+				return err
+			}
+			return ui.selectMp(0)
 		}
 		return onFilter
 	}},

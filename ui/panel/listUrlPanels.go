@@ -10,16 +10,17 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
-// URL list layout: one status line, then three lines per result (host + path + blank).
+// URL list layout: keybinding status + search term, then three lines per result
+// (host + path + blank).
 const (
-	URLListStatusLines  = 1
+	URLListStatusLines  = 2
 	URLListLinesPerItem = 3
 )
 
 const urlListStatusText = "↑/↓: Move, enter: Add Domain, c: Copy Link, ←/→: Page, e: Engine, t: Term"
 
 // URLListItemIndex maps a view cursor Y to a selectable result index.
-// Returns -1 if the cursor is on the status bar or otherwise invalid.
+// Returns -1 if the cursor is on the status/term header or otherwise invalid.
 func URLListItemIndex(cursorY int) int {
 	if cursorY < URLListStatusLines {
 		return -1
@@ -37,8 +38,9 @@ func URLListCursorY(itemIndex int) int {
 
 // DrawListUrlPanel returns the modal buffer, preferred content size, and the
 // display-ordered links (invalid URLs omitted). existingHosts marks already-added
-// domains with gray foreground (case-insensitive).
-func DrawListUrlPanel(g *gocui.Gui, links []searching.Link, existingHosts []string) (string, int, int, []searching.Link, error) {
+// domains with gray foreground (case-insensitive). searchTerm is shown under the
+// keybinding status line.
+func DrawListUrlPanel(g *gocui.Gui, links []searching.Link, existingHosts []string, searchTerm string) (string, int, int, []searching.Link, error) {
 	_ = g
 	existing := hostSet(existingHosts)
 	var (
@@ -52,6 +54,12 @@ func DrawListUrlPanel(g *gocui.Gui, links []searching.Link, existingHosts []stri
 	b.WriteString(status)
 	if len(status) > width {
 		width = len(status)
+	}
+
+	termLine := "Search: " + strings.TrimSpace(searchTerm) + "\n"
+	b.WriteString(termLine)
+	if visibleLen(termLine) > width {
+		width = visibleLen(termLine)
 	}
 
 	for _, link := range links {

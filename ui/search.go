@@ -29,7 +29,7 @@ func (p SearchPrefs) TermIndex() int {
 type SearchState struct {
 	// term should be cleared once the results are consumed
 	term string
-	// page is 0-based; UI title shows Page (page+1)
+	// page is 0-based (←/→ paging); not shown in the modal title
 	page   int
 	result *[]searching.Link
 }
@@ -226,16 +226,10 @@ func (ui *UI) closeListUrlsModal() error {
 	return ui.closeModal(LIST_URLS_MODAL)
 }
 
-// urlListModalTitle builds the Select a URL title with page, engine, and term index.
+// urlListModalTitle builds the Select a URL title with engine and term index
+// (no pagination; the active search string is shown in the modal body).
 func (ui *UI) urlListModalTitle() string {
 	ui.ensureSearchPrefs()
-	page := 1
-	if ui.state.searchState != nil {
-		page = ui.state.searchState.page + 1
-		if page < 1 {
-			page = 1
-		}
-	}
-	return fmt.Sprintf("Select a URL (Page %d · %s · T%d)",
-		page, ui.state.searchPrefs.Engine().Short(), ui.state.searchPrefs.TermIndex())
+	return fmt.Sprintf("Select a URL (%s · T%d)",
+		ui.state.searchPrefs.Engine().Short(), ui.state.searchPrefs.TermIndex())
 }
