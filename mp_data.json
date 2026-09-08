@@ -15,9 +15,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-08T16:02:36.0024787+10:00",
+         "lastChecked": "2026-09-08T16:27:53.5743984+10:00",
          "whois": {
-           "checkedAt": "2026-09-08T16:02:36.0024787+10:00",
+           "checkedAt": "2026-09-08T16:27:53.5743984+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -29,50 +29,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-08T16:02:36.045962+10:00",
-           "empty": false,
-           "outcome": "ok",
-           "a": [
-             "76.76.21.21"
-           ],
-           "ns": [
-             "sid.ns.cloudflare.com",
-             "magali.ns.cloudflare.com"
-           ],
-           "mx": [
-             "aspmx.l.google.com",
-             "alt1.aspmx.l.google.com",
-             "alt2.aspmx.l.google.com",
-             "alt3.aspmx.l.google.com",
-             "alt4.aspmx.l.google.com"
-           ],
-           "txt": [
-             "v=spf1 include:_spf.google.com -all",
-             "google-site-verification=SEnocELh184pXdqukEpwIdXtwPDUnV3Cr4jyJ3DIeqA",
-             "google-site-verification=9oUKLuBnaYKBSH2p0uQ9QUIgUe0xMz1dQjQcD03JPt0"
-           ]
-         }
-       },
-       {
-         "hostname": "anthonyalbanese.com.au",
-         "expiry": "",
-         "expired": false,
-         "alert": false,
-         "lastChecked": "2026-09-08T16:02:37.5152789+10:00",
-         "whois": {
-           "checkedAt": "2026-09-08T16:02:37.5152789+10:00",
-           "status": [
-             "serverrenewprohibited"
-           ],
-           "updated": "2026-08-15T23:13:50Z",
-           "registrar": "Web Address Registration Pty Ltd",
-           "nameServers": [
-             "magali.ns.cloudflare.com",
-             "sid.ns.cloudflare.com"
-           ]
-         },
-         "dns": {
-           "checkedAt": "2026-09-08T16:02:37.5163879+10:00",
+           "checkedAt": "2026-09-08T16:27:53.5874892+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -88,6 +45,49 @@
              "alt1.aspmx.l.google.com",
              "alt4.aspmx.l.google.com",
              "alt3.aspmx.l.google.com"
+           ],
+           "txt": [
+             "v=spf1 include:_spf.google.com -all",
+             "google-site-verification=SEnocELh184pXdqukEpwIdXtwPDUnV3Cr4jyJ3DIeqA",
+             "google-site-verification=9oUKLuBnaYKBSH2p0uQ9QUIgUe0xMz1dQjQcD03JPt0"
+           ]
+         }
+       },
+       {
+         "hostname": "anthonyalbanese.com.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-08T16:27:55.0427062+10:00",
+         "whois": {
+           "checkedAt": "2026-09-08T16:27:55.0427062+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-15T23:13:50Z",
+           "registrar": "Web Address Registration Pty Ltd",
+           "nameServers": [
+             "magali.ns.cloudflare.com",
+             "sid.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-08T16:27:55.0444382+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "76.76.21.21"
+           ],
+           "ns": [
+             "sid.ns.cloudflare.com",
+             "magali.ns.cloudflare.com"
+           ],
+           "mx": [
+             "aspmx.l.google.com",
+             "alt1.aspmx.l.google.com",
+             "alt2.aspmx.l.google.com",
+             "alt3.aspmx.l.google.com",
+             "alt4.aspmx.l.google.com"
            ],
            "txt": [
              "v=spf1 include:_spf.google.com -all",
@@ -126,9 +126,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-08T16:02:38.9791166+10:00",
+         "lastChecked": "2026-09-08T16:27:56.5350037+10:00",
          "whois": {
-           "checkedAt": "2026-09-08T16:02:38.9791166+10:00",
+           "checkedAt": "2026-09-08T16:27:56.5350037+10:00",
            "status": [
              "clientdeleteprohibited",
              "serverdeleteprohibited",
@@ -145,7 +145,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-08T16:02:39.0519954+10:00",
+           "checkedAt": "2026-09-08T16:27:56.6166327+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -159,20 +159,20 @@
              "aph-gov-au.mail.protection.outlook.com"
            ],
            "txt": [
-             "QdGEas65yCOdUNoSTeDyjHFIb6kyiHs+MaQX9SUZhigviXnVPDCve8HeAcb7SomejRVPXN/UDNSj0wdxc3rROA==",
-             "google-site-verification=oS-6VFCIfpBKGSFW1no0kZxHp002yjoENM7X_r00KOU",
-             "MS=ms70069192",
-             "atlassian-domain-verification=9728cuQsps/RZhxfVrtIdWu0/hGK2ina9JYPW0GB74RPrq136sPsLEML0zgf9bKn",
-             "adobe-idp-site-verification=5f928dec816fc641e5afbce25eb31d26709c5acb18d940bc9047fb3d517cac07",
              "cisco-ci-domain-verification=75b1dfc8ee3cb24798f1924af4560a65d634baa7164c856bb97e8ff3f391dc7",
-             "6m6sxr0jg15qfh8cc3wt50t9w8thrh7z",
-             "teamviewer-sso-verification=a63b23e3fed048599a0e832696cc4fa3",
+             "MS=ms70069192",
              "google-site-verification=EuJOHUtljnfXXhQfkAbUPR2YtXdknHsJ5QB1ou3Mpz8",
+             "QdGEas65yCOdUNoSTeDyjHFIb6kyiHs+MaQX9SUZhigviXnVPDCve8HeAcb7SomejRVPXN/UDNSj0wdxc3rROA==",
+             "adobe-idp-site-verification=5f928dec816fc641e5afbce25eb31d26709c5acb18d940bc9047fb3d517cac07",
+             "ms-domain-verification=1c4384b6-0fb4-434e-8284-2bd557921546",
+             "ms-domain-verification=11cbfb81-faa4-43d2-b1a9-902c19bc411e",
              "atlassian-domain-verification=9zwW0iT1isl7DjKsVZIZukkSCzeP6xOFpp9YZFSMCXk4dUqhV5eytHlpTpso/lWa",
              "v=spf1 ip4:202.14.81.0/24 ip4:20.5.80.155 ip4:20.5.82.25 ip4:12.129.29.143 ip4:54.252.177.62 ip4:54.252.156.126 ip4:164.75.66.253 ip4:164.75.112.1 ip4:164.75.112.2 ip4:164.75.66.25 ip4:164.75.66.26 include:service-now.com include:spf.protection.outlo",
-             "ms-domain-verification=11cbfb81-faa4-43d2-b1a9-902c19bc411e",
              "_globalsign-domain-verification=QQxayo9PM33iKO4YsK8NoezfVXSJgqX13IteVvPJqJ",
-             "ms-domain-verification=1c4384b6-0fb4-434e-8284-2bd557921546"
+             "atlassian-domain-verification=9728cuQsps/RZhxfVrtIdWu0/hGK2ina9JYPW0GB74RPrq136sPsLEML0zgf9bKn",
+             "google-site-verification=oS-6VFCIfpBKGSFW1no0kZxHp002yjoENM7X_r00KOU",
+             "teamviewer-sso-verification=a63b23e3fed048599a0e832696cc4fa3",
+             "6m6sxr0jg15qfh8cc3wt50t9w8thrh7z"
            ]
          }
        }
@@ -194,9 +194,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-08T16:02:40.5167235+10:00",
+         "lastChecked": "2026-09-08T16:27:58.0821015+10:00",
          "whois": {
-           "checkedAt": "2026-09-08T16:02:40.5167235+10:00",
+           "checkedAt": "2026-09-08T16:27:58.0821015+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -209,7 +209,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-08T16:02:40.5733848+10:00",
+           "checkedAt": "2026-09-08T16:27:58.1923735+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -243,9 +243,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-08T16:02:42.0390034+10:00",
+         "lastChecked": "2026-09-08T16:27:59.6572348+10:00",
          "whois": {
-           "checkedAt": "2026-09-08T16:02:42.0390034+10:00",
+           "checkedAt": "2026-09-08T16:27:59.6572348+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -257,7 +257,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-08T16:02:42.0801704+10:00",
+           "checkedAt": "2026-09-08T16:27:59.700758+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -294,9 +294,9 @@
          "expiry": "2027-01-30T07:39:19Z",
          "expired": false,
          "alert": true,
-         "lastChecked": "2026-09-08T16:02:43.8693288+10:00",
+         "lastChecked": "2026-09-08T16:28:01.5600223+10:00",
          "whois": {
-           "checkedAt": "2026-09-08T16:02:43.8693288+10:00",
+           "checkedAt": "2026-09-08T16:28:01.5600223+10:00",
            "status": [
              "ok"
            ],
@@ -310,7 +310,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-08T16:02:43.9305912+10:00",
+           "checkedAt": "2026-09-08T16:28:01.5611775+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -349,9 +349,9 @@
          "expiry": "2027-08-07T03:48:55Z",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-08T16:02:45.7382391+10:00",
+         "lastChecked": "2026-09-08T16:28:03.4042993+10:00",
          "whois": {
-           "checkedAt": "2026-09-08T16:02:45.7382391+10:00",
+           "checkedAt": "2026-09-08T16:28:03.4042993+10:00",
            "status": [
              "ok"
            ],
@@ -365,7 +365,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-08T16:02:45.7953571+10:00",
+           "checkedAt": "2026-09-08T16:28:03.4915748+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -401,9 +401,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-08T16:02:47.2524611+10:00",
+         "lastChecked": "2026-09-08T16:28:04.9499454+10:00",
          "whois": {
-           "checkedAt": "2026-09-08T16:02:47.2524611+10:00",
+           "checkedAt": "2026-09-08T16:28:04.9499454+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -415,7 +415,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-08T16:02:47.3449753+10:00",
+           "checkedAt": "2026-09-08T16:28:05.0527032+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -448,9 +448,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-08T16:02:48.8120472+10:00",
+         "lastChecked": "2026-09-08T16:28:06.5282534+10:00",
          "whois": {
-           "checkedAt": "2026-09-08T16:02:48.8120472+10:00",
+           "checkedAt": "2026-09-08T16:28:06.5282534+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -465,7 +465,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-08T16:02:48.8623873+10:00",
+           "checkedAt": "2026-09-08T16:28:06.5742173+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -499,9 +499,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-08T16:02:50.3244034+10:00",
+         "lastChecked": "2026-09-08T16:28:08.0365318+10:00",
          "whois": {
-           "checkedAt": "2026-09-08T16:02:50.3244034+10:00",
+           "checkedAt": "2026-09-08T16:28:08.0365318+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -513,7 +513,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-08T16:02:50.397273+10:00",
+           "checkedAt": "2026-09-08T16:28:08.0730186+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -528,10 +528,10 @@
            ],
            "mx": [
              "aspmx.l.google.com",
-             "alt1.aspmx.l.google.com",
              "alt2.aspmx.l.google.com",
-             "alt3.aspmx.l.google.com",
-             "alt4.aspmx.l.google.com"
+             "alt1.aspmx.l.google.com",
+             "alt4.aspmx.l.google.com",
+             "alt3.aspmx.l.google.com"
            ]
          }
        }
@@ -555,16 +555,15 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-08T16:25:09.3633612+10:00",
+           "checkedAt": "2026-09-08T16:35:01.1392095+10:00",
            "error": "Could not parse \u003cau.linkedin.com\u003e"
          },
          "dns": {
-           "checkedAt": "2026-09-08T16:02:52.1372479+10:00",
+           "checkedAt": "2026-09-08T16:28:09.9987466+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
-             "172.64.146.215",
-             "104.18.41.41",
+             "150.171.109.18",
              "2a06:98c1:310b::ac40:92d7",
              "2a06:98c1:3109::6812:2929"
            ]
@@ -588,9 +587,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-08T16:02:53.597538+10:00",
+         "lastChecked": "2026-09-08T16:28:11.5286662+10:00",
          "whois": {
-           "checkedAt": "2026-09-08T16:02:53.597538+10:00",
+           "checkedAt": "2026-09-08T16:28:11.5286662+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -603,7 +602,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-08T16:02:53.6518547+10:00",
+           "checkedAt": "2026-09-08T16:28:11.6461242+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -637,9 +636,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-08T16:02:55.1125368+10:00",
+         "lastChecked": "2026-09-08T16:28:13.1054919+10:00",
          "whois": {
-           "checkedAt": "2026-09-08T16:02:55.1125368+10:00",
+           "checkedAt": "2026-09-08T16:28:13.1054919+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -652,14 +651,14 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-08T16:02:55.1408626+10:00",
+           "checkedAt": "2026-09-08T16:28:13.170557+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
+             "198.49.23.144",
              "198.49.23.145",
-             "198.185.159.144",
              "198.185.159.145",
-             "198.49.23.144"
+             "198.185.159.144"
            ],
            "ns": [
              "ns4.idealtechnology.net.au",
@@ -699,7 +698,43 @@
      "party": "ALP",
      "state": "QLD",
      "level": "",
-     "domains": null
+     "domains": [
+       {
+         "hostname": "jimchalmers.org",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "0001-01-01T00:00:00Z",
+         "whois": {
+           "checkedAt": "2026-09-08T16:35:02.9236875+10:00",
+           "error": "Could not get WHOIS for \u003cjimchalmers.org\u003e"
+         },
+         "dns": {
+           "checkedAt": "2026-09-08T16:34:26.8104118+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "172.67.203.233",
+             "104.21.44.211",
+             "2606:4700:3037::ac43:cbe9",
+             "2606:4700:3030::6815:2cd3"
+           ],
+           "ns": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ],
+           "mx": [
+             "mx.zoho.com.au",
+             "mx2.zoho.com.au",
+             "mx3.zoho.com.au"
+           ],
+           "txt": [
+             "zoho-verification=zb64886461.zmverify.zoho.com.au",
+             "v=spf1 include:zoho.com.au ~all"
+           ]
+         }
+       }
+     ]
    },
    {
      "honorific": "Mr",
@@ -771,7 +806,50 @@
      "party": "ALP",
      "state": "VIC",
      "level": "",
-     "domains": null
+     "domains": [
+       {
+         "hostname": "www.libbycoker.com.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-08T16:35:05.3936986+10:00",
+         "whois": {
+           "checkedAt": "2026-09-08T16:35:05.3936986+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-17T00:57:14Z",
+           "registrar": "Web Address Registration Pty Ltd",
+           "nameServers": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-08T16:34:48.4954335+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "104.21.1.3",
+             "172.67.186.110",
+             "2606:4700:3035::ac43:ba6e",
+             "2606:4700:3030::6815:103"
+           ],
+           "ns": [
+             "gerald.ns.cloudflare.com",
+             "cheryl.ns.cloudflare.com"
+           ],
+           "mx": [
+             "route1.mx.cloudflare.net",
+             "route2.mx.cloudflare.net",
+             "route3.mx.cloudflare.net"
+           ],
+           "txt": [
+             "v=spf1 include:_spf.mx.cloudflare.net ~all"
+           ]
+         }
+       }
+     ]
    },
    {
      "honorific": "Hon",
@@ -783,7 +861,45 @@
      "party": "LP",
      "state": "NSW",
      "level": "",
-     "domains": null
+     "domains": [
+       {
+         "hostname": "www.davidcoleman.com.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-08T16:34:54.8445506+10:00",
+         "whois": {
+           "checkedAt": "2026-09-08T16:34:54.8445506+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-15T19:08:05Z",
+           "registrar": "Web Address Registration Pty Ltd",
+           "nameServers": [
+             "ns1.crazydomains.com",
+             "ns2.crazydomains.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-08T16:34:54.5775784+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "74.91.195.84"
+           ],
+           "ns": [
+             "ns2.crazydomains.com",
+             "ns1.crazydomains.com"
+           ],
+           "mx": [
+             "mail.davidcoleman.com.au"
+           ],
+           "txt": [
+             "v=spf1 +a +mx include:all._spf.ds.network ~all"
+           ]
+         }
+       }
+     ]
    },
    {
      "honorific": "Hon",
@@ -837,9 +953,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-08T16:17:27.3187414+10:00",
+         "lastChecked": "2026-09-08T16:28:14.6456597+10:00",
          "whois": {
-           "checkedAt": "2026-09-08T16:17:27.3187414+10:00",
+           "checkedAt": "2026-09-08T16:28:14.6456597+10:00",
            "status": [
              "ok"
            ],
@@ -851,14 +967,14 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-08T16:17:27.0085661+10:00",
+           "checkedAt": "2026-09-08T16:28:14.7042731+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
              "104.21.34.141",
              "172.67.161.173",
-             "2606:4700:3033::6815:228d",
-             "2606:4700:3032::ac43:a1ad"
+             "2606:4700:3032::ac43:a1ad",
+             "2606:4700:3033::6815:228d"
            ],
            "ns": [
              "cheryl.ns.cloudflare.com",
@@ -912,9 +1028,9 @@
          "expiry": "2027-05-17T07:39:36Z",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-08T16:05:09.394016+10:00",
+         "lastChecked": "2026-09-08T16:28:16.5403109+10:00",
          "whois": {
-           "checkedAt": "2026-09-08T16:05:09.394016+10:00",
+           "checkedAt": "2026-09-08T16:28:16.5403109+10:00",
            "status": [
              "ok"
            ],
@@ -928,14 +1044,14 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-08T16:05:08.6519571+10:00",
+           "checkedAt": "2026-09-08T16:28:16.6484119+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
              "172.67.199.213",
              "104.21.13.106",
-             "2606:4700:3034::ac43:c7d5",
-             "2606:4700:3030::6815:d6a"
+             "2606:4700:3030::6815:d6a",
+             "2606:4700:3034::ac43:c7d5"
            ],
            "ns": [
              "cheryl.ns.cloudflare.com",
@@ -1353,9 +1469,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-08T16:02:56.6041855+10:00",
+         "lastChecked": "2026-09-08T16:28:18.0997682+10:00",
          "whois": {
-           "checkedAt": "2026-09-08T16:02:56.6041855+10:00",
+           "checkedAt": "2026-09-08T16:28:18.0997682+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -1367,14 +1483,14 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-08T16:02:56.6694878+10:00",
+           "checkedAt": "2026-09-08T16:28:18.1886081+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
-             "172.67.140.55",
              "104.21.40.239",
-             "2606:4700:3030::ac43:8c37",
-             "2606:4700:3032::6815:28ef"
+             "172.67.140.55",
+             "2606:4700:3032::6815:28ef",
+             "2606:4700:3030::ac43:8c37"
            ],
            "ns": [
              "gerald.ns.cloudflare.com",

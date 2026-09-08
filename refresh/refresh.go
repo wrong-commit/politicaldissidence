@@ -155,7 +155,7 @@ func Run(mps []data.MP, deps Deps) Result {
 		for j := range mps[i].Domains {
 			dom := &mps[i].Domains[j]
 			if !deps.Force && !dom.NeedsWhois(deps.Now(), deps.MaxAge) {
-				deps.Log.Debug(FormatSkipped(dom.Hostname))
+				// deps.Log.Debug(FormatSkipped(dom.Hostname))
 				continue
 			}
 			mpAttempted = true
