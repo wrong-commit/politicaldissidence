@@ -31,10 +31,10 @@ While the TUI is running, a background job refreshes WHOIS expiry for every load
 1. Count all MP domains, then log start.
 2. For each MP → each domain:
   - **Skip** WHOIS if `LastChecked` is set and `now - LastChecked < 10 days` (do not re-check fresh lookups).
-  - **Run** WHOIS via `Domain.UpdateExpiry()` if never checked or last check is **≥ 10 days** ago.
-  - On success: update in-memory domain (`Expiry` / `Expired` / `LastChecked`) and **save immediately** with `db.WriteMps` (same path as `Ctrl+S` / `UI.Save`).
+  - **Wait 1 second**, then **run** WHOIS via `Domain.UpdateExpiry()` if never checked or last check is **≥ 10 days** ago.
+  - On success: update in-memory domain (`Expiry` / `Expired` / `LastChecked`). Do **not** save after each lookup.
   - On failure: log an error for that domain; continue (do not abort the run).
-3. Log a summary when finished.
+3. If any domain was updated, **save once** at the end via `db.WriteMps`. Log a summary when finished.
 
 **UI thread safety:** WHOIS and disk I/O stay off the gocui main loop. Console updates and domain-panel redraw go through `g.Update(...)` (same pattern as `SearchAndDisplay`).
 
@@ -63,7 +63,7 @@ Skipped (fresh) domains on the background job do not emit DEBUG. Failed lookups 
 - [ ] `Domain` stores and JSON-persists `lastChecked`
 - [ ] Successful WHOIS (any path) updates `lastChecked`
 - [ ] Domain panel rows show last-checked (or `never`)
-- [ ] Background job walks all MPs/domains, skips if checked within 10 days, WHOIS + save otherwise
+- [ ] Background job walks all MPs/domains, skips if checked within 10 days, WHOIS with 1s delay between lookups, save once at end if any updates
 - [ ] `SKIP_BACKGROUND_WHOIS_LOOKUP=true` prevents the background job from running (Ctrl+U still works)
 - [ ] Log panel shows the INFO / DEBUG / INFO messages above for the background job **and** for Ctrl+U
 - [ ] TUI remains usable while the job runs
@@ -143,12 +143,13 @@ Target a package-level or `ui`-adjacent function that accepts dependencies (MP s
 | B1 | Domain count | INFO start uses total domain count across all MPs (including those that will be skipped) |
 | B2 | Iterates all MPs | uses full loaded list, not a filtered `visible` subset |
 | B3 | Skip fresh | domains within 10 days: no WHOIS call, no DEBUG line, no save for that domain |
-| B4 | Update stale / never | due domains: WHOIS called once each; on success saver invoked (at least once per success — “after each lookup”) |
+| B4 | Update stale / never | due domains: WHOIS called once each; Save invoked once at end if any success (not after each lookup) |
+| B4b | Lookup delay | background run waits 1s before each WHOIS (injectable Sleep); Ctrl+U / Force uses no delay |
 | B5 | Continue on error | one domain fails WHOIS; later domains still processed; run completes with summary |
 | B6 | Counters | end INFO: `checked` = MPs with ≥1 lookup attempt; `updated` = domains with successful WHOIS (not skips, not failures) |
 | B7 | Empty input | no MPs / no domains: still emits start + end INFO with zeros; no panic |
 | B8 | Single-flight | second overlapping run is no-op or rejected while first is in progress (mutex / running flag) |
-| B9 | Save payload | saver receives MPs with updated `Expiry` / `LastChecked` for successful domains |
+| B9 | Save payload | after the run, saver receives MPs with updated `Expiry` / `LastChecked` for successful domains (single write) |
 | B10 | Env skip | `SKIP_BACKGROUND_WHOIS_LOOKUP=true` → background start is a no-op (no WHOIS, no domain save); unset/`false` allows run |
 
 ---

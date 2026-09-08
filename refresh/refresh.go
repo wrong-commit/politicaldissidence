@@ -55,6 +55,10 @@ type Deps struct {
 	Save         func(mps []data.MP) error
 	Log          Logger
 	MaxAge       time.Duration
+	// Delay waits this long before each WHOIS lookup (background rate limit).
+	// Zero means no delay (Ctrl+U / tests).
+	Delay time.Duration
+	Sleep func(time.Duration)
 	// Force skips the 10-day throttle (Ctrl+U).
 	Force bool
 }
@@ -118,15 +122,22 @@ func (d Deps) withDefaults() Deps {
 	if d.MaxAge == 0 {
 		d.MaxAge = DefaultMaxAge
 	}
+	if d.Sleep == nil {
+		d.Sleep = time.Sleep
+	}
 	if d.Log == nil {
 		d.Log = LogFn{}
 	}
 	return d
 }
 
+// DefaultLookupDelay is the pause before each background WHOIS lookup.
+const DefaultLookupDelay = time.Second
+
 // Run refreshes WHOIS for domains in mps according to Deps.
 // When Force is false, fresh domains (within MaxAge) are skipped.
-// On each successful lookup, Save is called with the current mps slice.
+// Lookups are paced by Delay (if > 0). Save, when set, runs once at the end
+// if any domain was updated — not after each lookup.
 func Run(mps []data.MP, deps Deps) Result {
 	deps = deps.withDefaults()
 	total := countDomains(mps)
@@ -144,19 +155,23 @@ func Run(mps []data.MP, deps Deps) Result {
 				continue
 			}
 			mpAttempted = true
+			if deps.Delay > 0 {
+				deps.Sleep(deps.Delay)
+			}
 			deps.Log.Debug(FormatDebug(mps[i].Name(), dom.Hostname))
 			if _, err := deps.UpdateExpiry(dom); err != nil {
 				deps.Log.Error(FormatError(dom.Hostname, err.Error()))
 				continue
 			}
 			updated++
-			if deps.Save != nil {
-				_ = deps.Save(mps)
-			}
 		}
 		if mpAttempted {
 			checkedMPs++
 		}
+	}
+
+	if updated > 0 && deps.Save != nil {
+		_ = deps.Save(mps)
 	}
 
 	deps.Log.Info(FormatEnd(checkedMPs, updated))

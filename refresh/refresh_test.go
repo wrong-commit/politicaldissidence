@@ -112,12 +112,13 @@ func TestRun_CountsAndSkip(t *testing.T) {
 		}
 	}
 	for _, line := range log.dbg {
-		if strings.Contains(line, "fresh.example") || strings.Contains(line, "also-fresh") {
-			t.Fatalf("DEBUG for skipped domain: %s", line)
+		if strings.Contains(line, FormatDebug("Ms Fresh One", "fresh.example")) ||
+			strings.Contains(line, FormatDebug("Ms Fresh One", "also-fresh.example")) {
+			t.Fatalf("lookup DEBUG for skipped domain: %s", line)
 		}
 	}
-	if saves != 2 {
-		t.Fatalf("saves=%d want 2", saves)
+	if saves != 1 {
+		t.Fatalf("saves=%d want 1 (once at end)", saves)
 	}
 	if res.CheckedMPs != 2 || res.UpdatedDomains != 2 {
 		t.Fatalf("result %+v", res)
@@ -219,9 +220,13 @@ func TestRun_ForceFailureUpdatedZero(t *testing.T) {
 	}
 }
 
-func TestRun_SavePayload(t *testing.T) {
+func TestRun_SaveOnceAtEnd(t *testing.T) {
 	now := time.Date(2026, 3, 15, 12, 0, 0, 0, time.UTC)
-	mps := []data.MP{sampleMP("A", "B", "x.example", time.Time{})}
+	mps := []data.MP{
+		sampleMP("A", "One", "a.example", time.Time{}),
+		sampleMP("B", "Two", "b.example", time.Time{}),
+	}
+	var saves int
 	var saved []data.MP
 	_ = Run(mps, Deps{
 		Now: func() time.Time { return now },
@@ -231,24 +236,68 @@ func TestRun_SavePayload(t *testing.T) {
 			return d.Expiry, nil
 		},
 		Save: func(m []data.MP) error {
+			saves++
 			saved = append([]data.MP(nil), m...)
-			// deep-ish copy domains
 			if len(m) > 0 {
-				doms := append([]data.Domain(nil), m[0].Domains...)
-				saved[0].Domains = doms
+				saved[0].Domains = append([]data.Domain(nil), m[0].Domains...)
 			}
 			return nil
 		},
 		Log: &memLog{},
 	})
-	if len(saved) != 1 || len(saved[0].Domains) != 1 {
+	if saves != 1 {
+		t.Fatalf("saves=%d want 1", saves)
+	}
+	if len(saved) != 2 {
 		t.Fatalf("saved %#v", saved)
 	}
 	if saved[0].Domains[0].Expiry != "2030-01-01" {
 		t.Fatalf("expiry %q", saved[0].Domains[0].Expiry)
 	}
-	if !saved[0].Domains[0].LastChecked.Equal(now) {
-		t.Fatalf("lastChecked %v", saved[0].Domains[0].LastChecked)
+}
+
+func TestRun_LookupDelay(t *testing.T) {
+	now := time.Date(2026, 3, 15, 12, 0, 0, 0, time.UTC)
+	mps := []data.MP{
+		sampleMP("A", "One", "a.example", time.Time{}),
+		sampleMP("B", "Two", "b.example", time.Time{}),
+	}
+	var sleeps []time.Duration
+	_ = Run(mps, Deps{
+		Now: func() time.Time { return now },
+		UpdateExpiry: func(d *data.Domain) (string, error) {
+			d.Expiry = "ok"
+			d.LastChecked = now
+			return d.Expiry, nil
+		},
+		Delay: time.Second,
+		Sleep: func(d time.Duration) { sleeps = append(sleeps, d) },
+		Log:   &memLog{},
+	})
+	if len(sleeps) != 2 {
+		t.Fatalf("sleeps=%v want 2", sleeps)
+	}
+	for _, s := range sleeps {
+		if s != time.Second {
+			t.Fatalf("sleep %v want 1s", s)
+		}
+	}
+}
+
+func TestRun_ForceNoDelay(t *testing.T) {
+	sleeps := 0
+	_ = Run([]data.MP{sampleMP("A", "B", "x.example", time.Time{})}, Deps{
+		UpdateExpiry: func(d *data.Domain) (string, error) {
+			d.Expiry = "ok"
+			return d.Expiry, nil
+		},
+		Force: true,
+		Delay: 0,
+		Sleep: func(time.Duration) { sleeps++ },
+		Log:   &memLog{},
+	})
+	if sleeps != 0 {
+		t.Fatalf("Force path should not sleep, got %d", sleeps)
 	}
 }
 

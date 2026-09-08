@@ -21,8 +21,8 @@ type Domain struct {
 	/* Empty string indicates domain expiry cannot be determined */
 	Expiry  string `json:"expiry"`
 	Expired bool   `json:"expired"`
-	/* Zero time means never checked */
-	LastChecked time.Time `json:"lastChecked"`
+	/* Zero time means never checked; omitempty keeps it out of JSON until set */
+	LastChecked time.Time `json:"lastChecked,omitempty"`
 }
 
 // NeedsWhois reports whether a WHOIS lookup should run for the background job.

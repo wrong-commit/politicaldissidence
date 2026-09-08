@@ -87,8 +87,8 @@ func (ui *UI) Reload() error {
 // nextMp chooses the next MP in the LIST_PANEL
 func (ui *UI) nextMp(v *gocui.View) error {
 	index := wrap(ui.state.currentIndex+1, len(*ui.state.visible))
-	if index != ui.state.currentIndex {
-		v.MoveCursor(0, 1, true)
+	if err := setListCursor(v, index); err != nil {
+		return err
 	}
 	return ui.selectMp(index)
 }
@@ -96,8 +96,8 @@ func (ui *UI) nextMp(v *gocui.View) error {
 // prevMp chooses the previous MP in the LIST_PANEL
 func (ui *UI) prevMp(v *gocui.View) error {
 	index := wrap(ui.state.currentIndex-1, len(*ui.state.visible))
-	if index != ui.state.currentIndex {
-		v.MoveCursor(0, -1, true)
+	if err := setListCursor(v, index); err != nil {
+		return err
 	}
 	return ui.selectMp(index)
 }
@@ -105,8 +105,8 @@ func (ui *UI) prevMp(v *gocui.View) error {
 // nextDomain chooses the next Domain in the DOMAIN_PANEL
 func (ui *UI) nextDomain(v *gocui.View) error {
 	index := wrap(ui.state.domainState.index+1, len(*ui.state.domainState.domains))
-	if index != ui.state.domainState.index {
-		v.MoveCursor(0, 1, true)
+	if err := setListCursor(v, index); err != nil {
+		return err
 	}
 	return ui.selectDomain(index)
 }
@@ -114,11 +114,37 @@ func (ui *UI) nextDomain(v *gocui.View) error {
 // prevDomain chooses the previous Domain in the DOMAIN_PANEL
 func (ui *UI) prevDomain(v *gocui.View) error {
 	index := wrap(ui.state.domainState.index-1, len(*ui.state.domainState.domains))
-	ui.log(fmt.Sprintf("prevDomain(%d - 1 -> %d)", ui.state.domainState.index, index), false)
-	if index != ui.state.currentIndex {
-		v.MoveCursor(0, -1, true)
+	// ui.log(fmt.Sprintf("prevDomain(%d - 1 -> %d)", ui.state.domainState.index, index), false)
+	if err := setListCursor(v, index); err != nil {
+		return err
 	}
 	return ui.selectDomain(index)
+}
+
+// setListCursor places the highlight on absolute line index, scrolling origin as needed.
+// Cursor coords in gocui are relative to Origin, so MoveCursor(±1) cannot wrap ends.
+func setListCursor(v *gocui.View, index int) error {
+	if index < 0 {
+		return nil
+	}
+	ox, oy := v.Origin()
+	_, sy := v.Size()
+	if sy <= 0 {
+		return nil
+	}
+	if index < oy {
+		if err := v.SetOrigin(ox, index); err != nil {
+			return err
+		}
+		return v.SetCursor(0, 0)
+	}
+	if index >= oy+sy {
+		if err := v.SetOrigin(ox, index-sy+1); err != nil {
+			return err
+		}
+		return v.SetCursor(0, sy-1)
+	}
+	return v.SetCursor(0, index-oy)
 }
 
 // selectMp updates the selected MP and updates the listed Domains.
@@ -191,28 +217,17 @@ func (ui *UI) checkDomain() error {
 	return ui.setPanelView(DOMAIN_PANEL)
 }
 
-// addDomainModalTest tests the domain in the ADD_DOMAIN_PANEL
+// addDomainModalTest confirms the domain in the ADD_DOMAIN_PANEL and adds it.
+// WHOIS runs in the background via addDomain.
 func (ui *UI) addDomainModalTest(addDomainView *gocui.View) error {
 	ui.log(fmt.Sprintf("testNewDomain(%s)", addDomainView.Buffer()), false)
 	domain := strings.ReplaceAll(addDomainView.Buffer(), "\n", "")
-	newDomain := data.Domain{
-		Hostname: domain,
-		Expiry:   "",
-		Expired:  false,
-	}
-	if errMsg, err := newDomain.UpdateExpiry(); err != nil {
-		ui.log(fmt.Sprintf("Cannot add domain <%s> %s", domain, errMsg), true)
-		// wipe buffer, let user try again
-		ui.ClearView(ADD_DOMAIN_PANEL)
-		addDomainView.SetCursor(0, 0)
-		return nil
-	}
 	defer ui.closeModal(ADD_DOMAIN_PANEL)
 	return ui.addDomain(domain, ui.state.currentIndex, true)
 }
 
 // addDomain adds a domain to a MP. if showDomain is true, the DOMAIN_PANEL is opened and the new domain is
-// selected
+// selected. WHOIS for the new domain runs in a background goroutine.
 func (ui *UI) addDomain(domain string, mpIndex int, showDomain bool) error {
 	domain = strings.ReplaceAll(domain, "\n", "")
 	if mpIndex > len(*ui.state.visible)-1 {
@@ -224,22 +239,17 @@ func (ui *UI) addDomain(domain string, mpIndex int, showDomain bool) error {
 		Expiry:   "",
 		Expired:  false,
 	}
-	// Wipe entered domain if invalid
-	if errMsg, err := newDomain.UpdateExpiry(); err != nil {
-		ui.log(fmt.Sprintf("Can't check domain <%s> %s", domain, errMsg), true)
-	}
 	mp.Domains = append(mp.Domains, newDomain)
 	(*ui.state.visible)[mpIndex] = mp
-	// update MP in visible list
+	domainIdx := len((*ui.state.visible)[mpIndex].Domains) - 1
 	ui.log(fmt.Sprintf("Added domain <%s> to MP <%s>", newDomain.Hostname, mp.Name()), false)
-	ui.log(fmt.Sprintf("After has %d domains", len((*ui.state.visible)[mpIndex].Domains)), false)
+	// ui.log(fmt.Sprintf("After has %d domains", len((*ui.state.visible)[mpIndex].Domains)), false)
+
+	go ui.refreshDomainWhois(mpIndex, domainIdx)
 
 	if showDomain {
-		ui.state.domainState.domains = &mp.Domains
-		ui.selectDomain(len(*ui.state.domainState.domains) - 1)
-		// if v, err := ui.gui.View(DOMAIN_PANEL); err != nil {
-		// 	// ui.updateView(v, ui.printDomains())
-		// }
+		ui.state.domainState.domains = &(*ui.state.visible)[mpIndex].Domains
+		ui.selectDomain(domainIdx)
 		return ui.setPanelView(DOMAIN_PANEL)
 	}
 	return nil
