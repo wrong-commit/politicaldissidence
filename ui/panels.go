@@ -217,9 +217,21 @@ func (ui *UI) nextFilter() string {
 	case "have domains":
 		return "no domains"
 	case "no domains":
+		return "have alerts"
+	case "have alerts":
 	default:
 	}
 	return "all"
+}
+
+// mpHasAlert reports whether any of the MP's domains is flagged for review.
+func mpHasAlert(mp data.MP) bool {
+	for _, d := range mp.Domains {
+		if d.Alert {
+			return true
+		}
+	}
+	return false
 }
 
 // filterIndices returns indexes into all for the given filter.
@@ -238,6 +250,14 @@ func filterIndices(all []data.MP, filter string) []int {
 		out := make([]int, 0)
 		for i := range all {
 			if all[i].NeedsDomain() {
+				out = append(out, i)
+			}
+		}
+		return out
+	case "have alerts":
+		out := make([]int, 0)
+		for i := range all {
+			if mpHasAlert(all[i]) {
 				out = append(out, i)
 			}
 		}

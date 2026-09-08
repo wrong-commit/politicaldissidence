@@ -297,6 +297,10 @@ func TestAlertReasons(t *testing.T) {
 	near := at.Add(30 * 24 * time.Hour).Format("2006-01-02")
 	yesterday := at.Add(-24 * time.Hour).Format("2006-01-02")
 
+	updatedFresh := at.AddDate(0, -6, 0).Format("2006-01-02")
+	updatedExact := at.AddDate(0, -AlertWhoisUpdatedMonths, 0).Format("2006-01-02")
+	updatedStale := at.AddDate(0, -AlertWhoisUpdatedMonths, -1).Format("2006-01-02")
+
 	tests := []struct {
 		name string
 		d    Domain
@@ -310,6 +314,11 @@ func TestAlertReasons(t *testing.T) {
 		{"A5b unparseable", Domain{Expiry: "not-a-date", DNS: &DnsRecord{Outcome: "ok"}}, nil},
 		{"A6 soon+empty", Domain{Expiry: near, DNS: &DnsRecord{Empty: true}}, []string{AlertReasonSoon, AlertReasonDNSEmpty}},
 		{"A7 dns error", Domain{Expiry: far, DNS: &DnsRecord{Empty: false, Outcome: "error", Error: "timeout"}}, nil},
+		{"A8 updated fresh", Domain{Expiry: far, Whois: &WhoisRecord{Updated: updatedFresh}}, nil},
+		{"A8b updated exact 12m", Domain{Expiry: far, Whois: &WhoisRecord{Updated: updatedExact}}, nil},
+		{"A8c updated stale", Domain{Expiry: far, Whois: &WhoisRecord{Updated: updatedStale}}, []string{AlertReasonUpdatedStale}},
+		{"A8d updated unparseable", Domain{Expiry: far, Whois: &WhoisRecord{Updated: "not-a-date"}}, nil},
+		{"A8e soon+updated-stale", Domain{Expiry: near, Whois: &WhoisRecord{Updated: updatedStale}}, []string{AlertReasonSoon, AlertReasonUpdatedStale}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

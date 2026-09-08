@@ -39,3 +39,39 @@ func TestApplyFilterMutationsReachAll(t *testing.T) {
 		t.Fatalf("filtered edit did not land in all: %#v", (*ui.state.all)[1].Domains)
 	}
 }
+
+func TestApplyFilterHaveAlerts(t *testing.T) {
+	ui := &UI{state: &State{filter: "all"}}
+	mps := []data.MP{
+		{FirstName: "Alert", Surname: "One", Domains: []data.Domain{{Hostname: "a.com", Alert: true}}},
+		{FirstName: "Quiet", Surname: "Two", Domains: []data.Domain{{Hostname: "b.com", Alert: false}}},
+		{FirstName: "No", Surname: "Domain"},
+		{FirstName: "Alert", Surname: "Mixed", Domains: []data.Domain{
+			{Hostname: "ok.com", Alert: false},
+			{Hostname: "bad.com", Alert: true},
+		}},
+	}
+	ui.state.all = &mps
+	ui.applyFilter("have alerts")
+	if len(*ui.state.visible) != 2 {
+		t.Fatalf("visible=%d want 2", len(*ui.state.visible))
+	}
+	if ui.mpAt(0).Surname != "One" || ui.mpAt(1).Surname != "Mixed" {
+		t.Fatalf("got %s / %s", ui.mpAt(0).Surname, ui.mpAt(1).Surname)
+	}
+}
+
+func TestNextFilterIncludesHaveAlerts(t *testing.T) {
+	ui := &UI{state: &State{filter: "all"}}
+	got := []string{ui.state.filter}
+	for i := 0; i < 4; i++ {
+		ui.state.filter = ui.nextFilter()
+		got = append(got, ui.state.filter)
+	}
+	want := []string{"all", "have domains", "no domains", "have alerts", "all"}
+	for i := range want {
+		if got[i] != want[i] {
+			t.Fatalf("cycle %v want %v", got, want)
+		}
+	}
+}

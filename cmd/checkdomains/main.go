@@ -39,17 +39,18 @@ func main() {
 
 	now := time.Now()
 	var (
-		alertCount        int
-		expiredCount      int
-		soonCount         int
-		emptyCount        int
-		httpsExpiredCount int
-		httpsSoonCount    int
-		httpsMissingCount int
-		http404Count      int
-		http500Count      int
-		errorCount        int
-		mutated           bool
+		alertCount         int
+		expiredCount       int
+		soonCount          int
+		updatedStaleCount  int
+		emptyCount         int
+		httpsExpiredCount  int
+		httpsSoonCount     int
+		httpsMissingCount  int
+		http404Count       int
+		http500Count       int
+		errorCount         int
+		mutated            bool
 	)
 
 	domainIndex := 0
@@ -95,6 +96,8 @@ func main() {
 					expiredCount++
 				case data.AlertReasonSoon:
 					soonCount++
+				case data.AlertReasonUpdatedStale:
+					updatedStaleCount++
 				case data.AlertReasonDNSEmpty:
 					emptyCount++
 				case data.AlertReasonHTTPSExpired:
@@ -142,6 +145,6 @@ func main() {
 		fmt.Println("# no alerts")
 	}
 	fmt.Fprintf(os.Stderr, "INFO checkdomains: done alert=%d errors=%d\n", alertCount, errorCount)
-	fmt.Printf("# checked=%d alert=%d expired=%d soon=%d dns-empty=%d https-expired=%d https-soon=%d https-missing=%d http-404=%d http-500=%d errors=%d\n",
-		total, alertCount, expiredCount, soonCount, emptyCount, httpsExpiredCount, httpsSoonCount, httpsMissingCount, http404Count, http500Count, errorCount)
+	fmt.Printf("# checked=%d alert=%d expired=%d soon=%d updated-stale=%d dns-empty=%d https-expired=%d https-soon=%d https-missing=%d http-404=%d http-500=%d errors=%d\n",
+		total, alertCount, expiredCount, soonCount, updatedStaleCount, emptyCount, httpsExpiredCount, httpsSoonCount, httpsMissingCount, http404Count, http500Count, errorCount)
 }

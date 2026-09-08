@@ -33,7 +33,7 @@ Focus this panel with **Tab** (or click it).
 | ---------- | -------------------------------------------------------------------------- |
 | **↑**      | Previous MP                                                                |
 | **↓**      | Next MP                                                                    |
-| **f**      | Cycle MP filter: `all` → `have domains` → `no domains` → `all`             |
+| **f**      | Cycle MP filter: `all` → `have domains` → `no domains` → `have alerts` → `all` |
 | **Tab**    | Focus next panel (Domains)                                                 |
 | **g**      | Guess domain (search for the selected MP, then open URL picker)            |
 

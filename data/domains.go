@@ -21,6 +21,10 @@ const HttpsMaxAge = WhoisMaxAge
 // AlertSoonWindow is how far ahead a WHOIS expiry counts as "soon" for sniping alerts.
 const AlertSoonWindow = 90 * 24 * time.Hour
 
+// AlertWhoisUpdatedMonths is how old Whois.Updated may be before alerting.
+// Age is measured in calendar months via time.Time.AddDate.
+const AlertWhoisUpdatedMonths = 12
+
 // HttpsSoonWindow is the default window for HTTPS status "soon" (cert NotAfter).
 // Let's Encrypt typically renews around 30 days before expiry, so 15 days is a
 // useful neglect signal (renewal should already have happened).
@@ -29,14 +33,15 @@ const HttpsSoonWindow = 15 * 24 * time.Hour
 
 // Alert reason tokens (CLI report / tests); not persisted on Domain.
 const (
-	AlertReasonExpired      = "expired"
-	AlertReasonSoon         = "soon"
-	AlertReasonDNSEmpty     = "dns-empty"
-	AlertReasonHTTPSExpired = "https-expired"
-	AlertReasonHTTPSSoon    = "https-soon"
-	AlertReasonHTTPSMissing = "https-missing"
-	AlertReasonHTTP404      = "http-404"
-	AlertReasonHTTP500      = "http-500"
+	AlertReasonExpired       = "expired"
+	AlertReasonSoon          = "soon"
+	AlertReasonUpdatedStale  = "updated-stale"
+	AlertReasonDNSEmpty      = "dns-empty"
+	AlertReasonHTTPSExpired  = "https-expired"
+	AlertReasonHTTPSSoon     = "https-soon"
+	AlertReasonHTTPSMissing  = "https-missing"
+	AlertReasonHTTP404       = "http-404"
+	AlertReasonHTTP500       = "http-500"
 )
 
 // lookupInfo is the WHOIS lookup function; overridden in tests.
@@ -333,19 +338,28 @@ func startOfLocalDay(t time.Time) time.Time {
 }
 
 // AlertReasons returns sniping reasons for d at time at with the given soon window.
-// Missing/unparseable expiry contributes nothing; DNS errors are not dns-empty.
+// Missing/unparseable expiry or Whois.Updated contributes nothing; DNS errors are not dns-empty.
 func AlertReasons(d Domain, at time.Time, soonWindow time.Duration) []string {
 	if soonWindow <= 0 {
 		soonWindow = AlertSoonWindow
 	}
 	var reasons []string
+	today := startOfLocalDay(at)
 	if exp, ok := ParseExpiryDate(d.Expiry); ok {
-		today := startOfLocalDay(at)
 		expDay := startOfLocalDay(exp)
 		if expDay.Before(today) {
 			reasons = append(reasons, AlertReasonExpired)
 		} else if !expDay.After(today.Add(soonWindow)) {
 			reasons = append(reasons, AlertReasonSoon)
+		}
+	}
+	if d.Whois != nil {
+		if updated, ok := ParseExpiryDate(d.Whois.Updated); ok {
+			updatedDay := startOfLocalDay(updated)
+			cutoff := startOfLocalDay(at.AddDate(0, -AlertWhoisUpdatedMonths, 0))
+			if updatedDay.Before(cutoff) {
+				reasons = append(reasons, AlertReasonUpdatedStale)
+			}
 		}
 	}
 	if d.DNS != nil && d.DNS.Empty {
@@ -375,7 +389,7 @@ func ComputeAlert(d Domain, at time.Time, soonWindow time.Duration) bool {
 	return len(AlertReasons(d, at, soonWindow)) > 0
 }
 
-// RefreshAlert sets Alert from current Expiry, DNS, and HTTPS using the shared classifier.
+// RefreshAlert sets Alert from current Expiry, Whois.Updated, DNS, and HTTPS using the shared classifier.
 func (d *Domain) RefreshAlert(at time.Time, soonWindow time.Duration) {
 	d.Alert = ComputeAlert(*d, at, soonWindow)
 }

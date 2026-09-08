@@ -32,10 +32,10 @@ func TestDrawListDomainPanel_LastChecked(t *testing.T) {
 	if !strings.Contains(got, "d.example 2027-01-01  checked 26-03-01\n") {
 		t.Fatalf("missing err row:\n%s", got)
 	}
-	if !strings.Contains(got, "e.example 2027-01-01[x]  checked 26-03-01  alert: true\n") {
-		t.Fatalf("missing alert [x] row:\n%s", got)
+	if !strings.Contains(got, "[!] e.example 2027-01-01[x]  checked 26-03-01  alert: true\n") {
+		t.Fatalf("missing alert [!] prefix row:\n%s", got)
 	}
-	if !strings.Contains(got, "f.example 2025-01-01[!][x]  checked 26-03-01  alert: true\n") {
+	if !strings.Contains(got, "[!] f.example 2025-01-01[!][x]  checked 26-03-01  alert: true\n") {
 		t.Fatalf("missing [!][x] row:\n%s", got)
 	}
 	if strings.Contains(got, "dns:") {

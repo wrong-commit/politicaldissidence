@@ -101,7 +101,7 @@ var keyHandlers = &handlers{
 	{listView, gocui.KeyArrowUp, "<UP>", "Previous Mp", onPrevMp},
 	{listView, gocui.KeyArrowDown, "<DOWN>", "Next Mp", onNextMp},
 	// 	f - change filters
-	{listView, 'f', "f", "Change filter of visible MPs (all/with domains/no domains)", func(ui *UI, wrap bool) Fn {
+	{listView, 'f', "f", "Change filter of visible MPs (all/with domains/no domains/have alerts)", func(ui *UI, wrap bool) Fn {
 		onFilter := func(_ *gocui.Gui, v *gocui.View) error {
 			ui.applyFilter(ui.nextFilter())
 			// Force selectMp to refresh domainState for the new filtered list.

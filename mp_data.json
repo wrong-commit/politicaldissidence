@@ -29,7 +29,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:37.210585+10:00",
+           "checkedAt": "2026-09-09T09:12:29.3425526+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -53,7 +53,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:59:38.3792871+10:00",
+           "checkedAt": "2026-09-09T09:12:31.8794354+10:00",
            "status": "enabled",
            "notAfter": "2026-10-07T17:40:34Z",
            "httpStatus": 200,
@@ -90,7 +90,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:38.2155161+10:00",
+           "checkedAt": "2026-09-09T09:12:30.3591634+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -102,10 +102,10 @@
            ],
            "mx": [
              "aspmx.l.google.com",
-             "alt2.aspmx.l.google.com",
              "alt1.aspmx.l.google.com",
-             "alt4.aspmx.l.google.com",
-             "alt3.aspmx.l.google.com"
+             "alt2.aspmx.l.google.com",
+             "alt3.aspmx.l.google.com",
+             "alt4.aspmx.l.google.com"
            ],
            "txt": [
              "google-site-verification=SEnocELh184pXdqukEpwIdXtwPDUnV3Cr4jyJ3DIeqA",
@@ -114,7 +114,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:59:40.4295068+10:00",
+           "checkedAt": "2026-09-09T09:12:34.3233631+10:00",
            "status": "enabled",
            "notAfter": "2026-10-07T17:40:34Z",
            "httpStatus": 200,
@@ -164,12 +164,12 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:39.272812+10:00",
+           "checkedAt": "2026-09-09T09:12:31.4610032+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
-             "172.66.166.90",
              "104.20.40.230",
+             "172.66.166.90",
              "2606:4700:10::ac42:a65a",
              "2606:4700:10::6814:28e6"
            ],
@@ -189,7 +189,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:59:41.6357282+10:00",
+           "checkedAt": "2026-09-09T09:12:35.5253586+10:00",
            "status": "enabled",
            "notAfter": "2026-10-21T06:22:39Z",
            "httpStatus": 403,
@@ -244,7 +244,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:40.380502+10:00",
+           "checkedAt": "2026-09-09T09:12:32.5306863+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -258,6 +258,10 @@
              "aph-gov-au.mail.protection.outlook.com"
            ],
            "txt": [
+             "teamviewer-sso-verification=a63b23e3fed048599a0e832696cc4fa3",
+             "6m6sxr0jg15qfh8cc3wt50t9w8thrh7z",
+             "cisco-ci-domain-verification=75b1dfc8ee3cb24798f1924af4560a65d634baa7164c856bb97e8ff3f391dc7",
+             "MS=ms70069192",
              "google-site-verification=EuJOHUtljnfXXhQfkAbUPR2YtXdknHsJ5QB1ou3Mpz8",
              "QdGEas65yCOdUNoSTeDyjHFIb6kyiHs+MaQX9SUZhigviXnVPDCve8HeAcb7SomejRVPXN/UDNSj0wdxc3rROA==",
              "adobe-idp-site-verification=5f928dec816fc641e5afbce25eb31d26709c5acb18d940bc9047fb3d517cac07",
@@ -267,15 +271,11 @@
              "_globalsign-domain-verification=QQxayo9PM33iKO4YsK8NoezfVXSJgqX13IteVvPJqJ",
              "ms-domain-verification=1c4384b6-0fb4-434e-8284-2bd557921546",
              "atlassian-domain-verification=9728cuQsps/RZhxfVrtIdWu0/hGK2ina9JYPW0GB74RPrq136sPsLEML0zgf9bKn",
-             "google-site-verification=oS-6VFCIfpBKGSFW1no0kZxHp002yjoENM7X_r00KOU",
-             "teamviewer-sso-verification=a63b23e3fed048599a0e832696cc4fa3",
-             "6m6sxr0jg15qfh8cc3wt50t9w8thrh7z",
-             "cisco-ci-domain-verification=75b1dfc8ee3cb24798f1924af4560a65d634baa7164c856bb97e8ff3f391dc7",
-             "MS=ms70069192"
+             "google-site-verification=oS-6VFCIfpBKGSFW1no0kZxHp002yjoENM7X_r00KOU"
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:59:42.8857126+10:00",
+           "checkedAt": "2026-09-09T09:12:36.7648587+10:00",
            "status": "enabled",
            "notAfter": "2026-12-11T23:59:59Z",
            "httpStatus": 403,
@@ -326,7 +326,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:41.4708387+10:00",
+           "checkedAt": "2026-09-09T09:12:33.5766741+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -342,7 +342,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:59:46.4525396+10:00",
+           "checkedAt": "2026-09-09T09:12:40.282894+10:00",
            "status": "enabled",
            "notAfter": "2026-12-06T06:46:51Z",
            "httpStatus": 200,
@@ -392,7 +392,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:42.5093286+10:00",
+           "checkedAt": "2026-09-09T09:12:34.6525961+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -411,7 +411,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:59:51.6612357+10:00",
+           "checkedAt": "2026-09-09T09:12:45.2787486+10:00",
            "status": "enabled",
            "notAfter": "2026-11-21T21:24:26Z",
            "httpStatus": 200,
@@ -463,7 +463,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:43.5750972+10:00",
+           "checkedAt": "2026-09-09T09:12:35.7510843+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -484,7 +484,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:59:53.3215562+10:00",
+           "checkedAt": "2026-09-09T09:12:46.9845565+10:00",
            "status": "enabled",
            "notAfter": "2026-11-26T18:40:44Z",
            "httpStatus": 200,
@@ -536,14 +536,14 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:44.6315642+10:00",
+           "checkedAt": "2026-09-09T09:12:36.8037287+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
-             "172.67.179.20",
              "104.21.43.124",
-             "2606:4700:3033::6815:2b7c",
-             "2606:4700:3031::ac43:b314"
+             "172.67.179.20",
+             "2606:4700:3031::ac43:b314",
+             "2606:4700:3033::6815:2b7c"
            ],
            "ns": [
              "cheryl.ns.cloudflare.com",
@@ -554,7 +554,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:59:54.8237563+10:00",
+           "checkedAt": "2026-09-09T09:12:48.3935446+10:00",
            "status": "enabled",
            "notAfter": "2026-10-30T09:28:11Z",
            "httpStatus": 200,
@@ -604,7 +604,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:45.7036101+10:00",
+           "checkedAt": "2026-09-09T09:12:37.8682231+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -619,7 +619,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:59:57.2089388+10:00",
+           "checkedAt": "2026-09-09T09:12:50.7574576+10:00",
            "status": "enabled",
            "notAfter": "2026-12-04T13:31:25Z",
            "httpStatus": 200,
@@ -672,7 +672,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:46.7641243+10:00",
+           "checkedAt": "2026-09-09T09:12:38.9292612+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -688,7 +688,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T09:00:00.8965664+10:00",
+           "checkedAt": "2026-09-09T09:12:55.7835034+10:00",
            "status": "enabled",
            "notAfter": "2026-11-19T09:25:09Z",
            "httpStatus": 200,
@@ -738,14 +738,14 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:47.812+10:00",
+           "checkedAt": "2026-09-09T09:12:39.9694734+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
-             "198.49.23.145",
              "198.185.159.145",
+             "198.185.159.144",
              "198.49.23.144",
-             "198.185.159.144"
+             "198.49.23.145"
            ],
            "ns": [
              "dns1.registrar-servers.com",
@@ -753,14 +753,14 @@
            ],
            "mx": [
              "aspmx.l.google.com",
-             "alt1.aspmx.l.google.com",
              "alt2.aspmx.l.google.com",
-             "alt4.aspmx.l.google.com",
-             "alt3.aspmx.l.google.com"
+             "alt1.aspmx.l.google.com",
+             "alt3.aspmx.l.google.com",
+             "alt4.aspmx.l.google.com"
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T09:00:04.9207349+10:00",
+           "checkedAt": "2026-09-09T09:12:59.7025387+10:00",
            "status": "enabled",
            "notAfter": "2026-11-17T02:53:46Z",
            "httpStatus": 200,
@@ -798,22 +798,21 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-09T09:05:13.0749731+10:00",
+           "checkedAt": "2026-09-09T09:14:21.1177142+10:00",
            "error": "Could not parse \u003cau.linkedin.com\u003e"
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:48.907016+10:00",
+           "checkedAt": "2026-09-09T09:12:41.0610459+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
              "172.64.146.215",
              "104.18.41.41",
-             "2a06:98c1:3109::6812:2929",
-             "2a06:98c1:310b::ac40:92d7"
+             "2603:1061:14:17::1"
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T09:00:06.9092343+10:00",
+           "checkedAt": "2026-09-09T09:13:01.1676383+10:00",
            "status": "enabled",
            "notAfter": "2026-10-02T23:59:59Z",
            "httpStatus": 200,
@@ -864,7 +863,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:49.97663+10:00",
+           "checkedAt": "2026-09-09T09:12:42.1314261+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -880,7 +879,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T09:00:08.2185827+10:00",
+           "checkedAt": "2026-09-09T09:13:02.5630541+10:00",
            "status": "enabled",
            "notAfter": "2026-11-02T03:19:14Z",
            "httpStatus": 200,
@@ -931,7 +930,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:56.0271712+10:00",
+           "checkedAt": "2026-09-09T09:12:48.1722579+10:00",
            "empty": false,
            "outcome": "ok",
            "ns": [
@@ -948,7 +947,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T09:00:14.7700096+10:00",
+           "checkedAt": "2026-09-09T09:13:06.0522971+10:00",
            "status": "enabled",
            "notAfter": "2026-10-20T06:32:53Z",
            "httpStatus": 200,
@@ -998,18 +997,18 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-09T09:05:14.8685754+10:00",
+           "checkedAt": "2026-09-09T09:14:22.8026594+10:00",
            "error": "Could not get WHOIS for \u003cjimchalmers.org\u003e"
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:57.0980896+10:00",
+           "checkedAt": "2026-09-09T09:12:49.2230612+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
              "104.21.44.211",
              "172.67.203.233",
-             "2606:4700:3037::ac43:cbe9",
-             "2606:4700:3030::6815:2cd3"
+             "2606:4700:3030::6815:2cd3",
+             "2606:4700:3037::ac43:cbe9"
            ],
            "ns": [
              "cheryl.ns.cloudflare.com",
@@ -1026,7 +1025,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T09:00:16.2052004+10:00",
+           "checkedAt": "2026-09-09T09:13:07.4372544+10:00",
            "status": "enabled",
            "notAfter": "2026-12-03T20:04:32Z",
            "httpStatus": 200,
@@ -1126,7 +1125,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:58.1011204+10:00",
+           "checkedAt": "2026-09-09T09:12:50.2252393+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -1147,7 +1146,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T09:00:17.8509467+10:00",
+           "checkedAt": "2026-09-09T09:13:09.1251638+10:00",
            "status": "enabled",
            "notAfter": "2026-11-26T18:40:44Z",
            "httpStatus": 200,
@@ -1197,14 +1196,14 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:59:59.1712691+10:00",
+           "checkedAt": "2026-09-09T09:12:51.304033+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
-             "172.67.186.110",
              "104.21.1.3",
-             "2606:4700:3030::6815:103",
-             "2606:4700:3035::ac43:ba6e"
+             "172.67.186.110",
+             "2606:4700:3035::ac43:ba6e",
+             "2606:4700:3030::6815:103"
            ],
            "ns": [
              "gerald.ns.cloudflare.com",
@@ -1220,7 +1219,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T09:00:19.2449654+10:00",
+           "checkedAt": "2026-09-09T09:13:10.5111568+10:00",
            "status": "enabled",
            "notAfter": "2026-10-11T05:18:59Z",
            "httpStatus": 200,
@@ -1270,7 +1269,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T09:00:00.2558999+10:00",
+           "checkedAt": "2026-09-09T09:12:52.3680232+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -1288,7 +1287,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T09:00:20.4615028+10:00",
+           "checkedAt": "2026-09-09T09:13:11.7250825+10:00",
            "status": "enabled",
            "notAfter": "2026-11-12T02:55:19Z",
            "httpStatus": 406,
@@ -1374,7 +1373,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T09:00:01.3165966+10:00",
+           "checkedAt": "2026-09-09T09:12:53.4401644+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -1393,7 +1392,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T09:00:22.8462454+10:00",
+           "checkedAt": "2026-09-09T09:13:13.1223001+10:00",
            "status": "enabled",
            "notAfter": "2026-11-09T06:18:25Z",
            "httpStatus": 200,
@@ -1452,7 +1451,7 @@
          "hostname": "www.markdreyfus.com",
          "expiry": "2027-05-17T07:39:36Z",
          "expired": false,
-         "alert": false,
+         "alert": true,
          "lastChecked": "2026-09-09T09:00:06.6994761+10:00",
          "whois": {
            "checkedAt": "2026-09-09T09:00:06.6994761+10:00",
@@ -1469,7 +1468,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T09:00:02.3986287+10:00",
+           "checkedAt": "2026-09-09T09:12:54.5304008+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -1487,12 +1486,12 @@
              "mailstore1.secureserver.net"
            ],
            "txt": [
-             "google-site-verification=bv0qwuXwo6JOFKJVvic5KzhDAFYnkuL0XQxId0QxncA",
-             "ca3-74463ae6e93a40c38ea64189e21ab5a9"
+             "ca3-74463ae6e93a40c38ea64189e21ab5a9",
+             "google-site-verification=bv0qwuXwo6JOFKJVvic5KzhDAFYnkuL0XQxId0QxncA"
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T09:00:24.2188307+10:00",
+           "checkedAt": "2026-09-09T09:13:14.4925721+10:00",
            "status": "enabled",
            "notAfter": "2026-11-05T15:35:58Z",
            "httpStatus": 200,
@@ -1614,14 +1613,14 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T09:00:03.4651143+10:00",
+           "checkedAt": "2026-09-09T09:12:55.6027304+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
              "172.67.175.236",
              "104.21.64.40",
-             "2606:4700:3035::6815:4028",
-             "2606:4700:3037::ac43:afec"
+             "2606:4700:3037::ac43:afec",
+             "2606:4700:3035::6815:4028"
            ],
            "ns": [
              "may.ns.cloudflare.com",
@@ -1631,12 +1630,12 @@
              "smtp.google.com"
            ],
            "txt": [
-             "v=spf1 a mx a:amazonses.com ip4:13.210.167.166 include:spf.forwardemail.net ip4:54.253.230.120 ~all",
-             "google-site-verification=k3WsXrw4m1fzsF5fbJuvXTuISi2-Ieg_uUwoONTvvT4"
+             "google-site-verification=k3WsXrw4m1fzsF5fbJuvXTuISi2-Ieg_uUwoONTvvT4",
+             "v=spf1 a mx a:amazonses.com ip4:13.210.167.166 include:spf.forwardemail.net ip4:54.253.230.120 ~all"
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T09:00:25.6027848+10:00",
+           "checkedAt": "2026-09-09T09:13:15.8718313+10:00",
            "status": "enabled",
            "notAfter": "2026-12-01T12:18:00Z",
            "httpStatus": 200,
@@ -1986,14 +1985,14 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T09:00:17.5995631+10:00",
+           "checkedAt": "2026-09-09T09:12:56.6726605+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
              "104.21.40.239",
              "172.67.140.55",
-             "2606:4700:3030::ac43:8c37",
-             "2606:4700:3032::6815:28ef"
+             "2606:4700:3032::6815:28ef",
+             "2606:4700:3030::ac43:8c37"
            ],
            "ns": [
              "cheryl.ns.cloudflare.com",
@@ -2001,7 +2000,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T09:00:26.9216059+10:00",
+           "checkedAt": "2026-09-09T09:13:17.3439077+10:00",
            "status": "enabled",
            "notAfter": "2026-10-29T18:08:55Z",
            "httpStatus": 200,
