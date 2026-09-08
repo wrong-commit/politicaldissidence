@@ -7,7 +7,6 @@ import (
 	"sync"
 
 	"fmt"
-	"politicaldissidence/data"
 	"politicaldissidence/ui/panel"
 	"strings"
 
@@ -66,8 +65,8 @@ func (ui *UI) toggleListUrlsModal(g *gocui.Gui) error {
 	}
 
 	var existingHosts []string
-	if ui.state.visible != nil && ui.state.currentIndex >= 0 && ui.state.currentIndex < len(*ui.state.visible) {
-		for _, d := range (*ui.state.visible)[ui.state.currentIndex].Domains {
+	if mp := ui.mpAt(ui.state.currentIndex); mp != nil {
+		for _, d := range mp.Domains {
 			existingHosts = append(existingHosts, d.Hostname)
 		}
 	}
@@ -177,13 +176,12 @@ func (ui *UI) toggleSearchingModal(g *gocui.Gui) error {
 	if _, err := ui.openSearchingModal(g); err != nil {
 		return err
 	}
-	var mp data.MP
-	if ui.state.currentIndex > len(*ui.state.visible)-1 {
+	mp := ui.mpAt(ui.state.currentIndex)
+	if mp == nil {
 		return nil
 	}
-	mp = (*ui.state.visible)[ui.state.currentIndex]
 	ui.log("Searching MP "+mp.Name(), false)
-	go ui.SearchAndDisplay(g, mp)
+	go ui.SearchAndDisplay(g, *mp)
 	return nil
 }
 

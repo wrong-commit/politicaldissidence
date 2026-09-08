@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"fmt"
 	"time"
 
 	"politicaldissidence/data"
@@ -45,7 +46,11 @@ func (ui *UI) whoisRefreshDeps(force bool, delay time.Duration, save bool) refre
 	}
 	if save {
 		deps.Save = func(mps []data.MP) error {
-			return db.WriteMps(mps)
+			if err := db.WriteMps(mps); err != nil {
+				ui.whoisLog(fmt.Sprintf("Could not write MPs to disk: %v", err), true)
+				return err
+			}
+			return nil
 		}
 	}
 	return deps
@@ -74,16 +79,17 @@ func (ui *UI) startBackgroundWhois() {
 
 // refreshDomainWhois runs a forced WHOIS lookup for one domain off the UI thread,
 // then redraws the domain panel. Used when a domain is newly added.
+// mpIndex is an index into state.all (not the filtered visible list).
 func (ui *UI) refreshDomainWhois(mpIndex, domainIdx int) {
-	if ui.state.visible == nil || mpIndex < 0 || mpIndex >= len(*ui.state.visible) {
+	if ui.state.all == nil || mpIndex < 0 || mpIndex >= len(*ui.state.all) {
 		return
 	}
-	if domainIdx < 0 || domainIdx >= len((*ui.state.visible)[mpIndex].Domains) {
+	mp := &(*ui.state.all)[mpIndex]
+	if domainIdx < 0 || domainIdx >= len(mp.Domains) {
 		return
 	}
-	mp := (*ui.state.visible)[mpIndex]
-	one := mp
-	one.Domains = (*ui.state.visible)[mpIndex].Domains[domainIdx : domainIdx+1]
+	one := *mp
+	one.Domains = mp.Domains[domainIdx : domainIdx+1]
 	_ = refresh.Run([]data.MP{one}, ui.whoisRefreshDeps(true, 0, false))
 	ui.refreshDomainPanel()
 	ui.refreshWhoisPanel()

@@ -3,7 +3,6 @@ package ui
 import (
 	"bytes"
 	"fmt"
-	"politicaldissidence/data"
 	"politicaldissidence/ui/panel"
 	"strings"
 	"text/tabwriter"
@@ -104,26 +103,7 @@ var keyHandlers = &handlers{
 	// 	f - change filters
 	{listView, 'f', "f", "Change filter of visible MPs (all/with domains/no domains)", func(ui *UI, wrap bool) Fn {
 		onFilter := func(_ *gocui.Gui, v *gocui.View) error {
-			nextFilter := ui.nextFilter()
-			nextVisi := make([]data.MP, 0)
-			switch nextFilter {
-			case "all":
-				nextVisi = *ui.state.all
-			case "have domains":
-				for _, x := range *ui.state.all {
-					if !x.NeedsDomain() {
-						nextVisi = append(nextVisi, x)
-					}
-				}
-			case "no domains":
-				for _, x := range *ui.state.all {
-					if x.NeedsDomain() {
-						nextVisi = append(nextVisi, x)
-					}
-				}
-			}
-			ui.state.visible = &nextVisi
-			ui.state.filter = nextFilter
+			ui.applyFilter(ui.nextFilter())
 			// Force selectMp to refresh domainState for the new filtered list.
 			ui.state.currentIndex = -1
 			if _, err := ui.initPanelView(LIST_PANEL); err != nil {

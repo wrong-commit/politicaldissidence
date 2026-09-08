@@ -2,6 +2,7 @@ package ui
 
 import (
 	"fmt"
+	"politicaldissidence/data"
 	"politicaldissidence/ui/panel"
 	"runtime/debug"
 	"strings"
@@ -219,6 +220,77 @@ func (ui *UI) nextFilter() string {
 	default:
 	}
 	return "all"
+}
+
+// filterIndices returns indexes into all for the given filter.
+// nil means every MP (filter "all") — callers should alias visible to all.
+func filterIndices(all []data.MP, filter string) []int {
+	switch filter {
+	case "have domains":
+		out := make([]int, 0)
+		for i := range all {
+			if !all[i].NeedsDomain() {
+				out = append(out, i)
+			}
+		}
+		return out
+	case "no domains":
+		out := make([]int, 0)
+		for i := range all {
+			if all[i].NeedsDomain() {
+				out = append(out, i)
+			}
+		}
+		return out
+	default:
+		return nil
+	}
+}
+
+// applyFilter sets the active filter and rebuilds the visible MP list.
+// For "all", visible shares the same slice as all so edits are what Save writes.
+func (ui *UI) applyFilter(filter string) {
+	ui.state.filter = filter
+	if ui.state.all == nil {
+		empty := []data.MP{}
+		ui.state.visible = &empty
+		ui.state.visibleIdx = nil
+		return
+	}
+	idxs := filterIndices(*ui.state.all, filter)
+	ui.state.visibleIdx = idxs
+	if idxs == nil {
+		ui.state.visible = ui.state.all
+		return
+	}
+	vis := make([]data.MP, len(idxs))
+	for i, j := range idxs {
+		vis[i] = (*ui.state.all)[j]
+	}
+	ui.state.visible = &vis
+}
+
+// mpAt returns a pointer to the MP for a visible (LIST_PANEL) index.
+// Always points into all, so domain edits survive Ctrl+S.
+func (ui *UI) mpAt(visIdx int) *data.MP {
+	if ui.state.all == nil || visIdx < 0 {
+		return nil
+	}
+	all := *ui.state.all
+	if ui.state.visibleIdx == nil {
+		if visIdx >= len(all) {
+			return nil
+		}
+		return &all[visIdx]
+	}
+	if visIdx >= len(ui.state.visibleIdx) {
+		return nil
+	}
+	j := ui.state.visibleIdx[visIdx]
+	if j < 0 || j >= len(all) {
+		return nil
+	}
+	return &all[j]
 }
 
 // createPanelView creates the panel view.

@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"fmt"
 	"time"
 
 	"politicaldissidence/data"
@@ -34,7 +35,11 @@ func (ui *UI) dnsRefreshDeps(force bool, delay time.Duration, save bool) dnsrefr
 	}
 	if save {
 		deps.Save = func(mps []data.MP) error {
-			return db.WriteMps(mps)
+			if err := db.WriteMps(mps); err != nil {
+				ui.whoisLog(fmt.Sprintf("Could not write MPs to disk: %v", err), true)
+				return err
+			}
+			return nil
 		}
 	}
 	return deps
@@ -61,16 +66,17 @@ func (ui *UI) startBackgroundDns() {
 }
 
 // refreshDomainDns runs a forced DNS lookup for one domain off the UI thread.
+// mpIndex is an index into state.all (not the filtered visible list).
 func (ui *UI) refreshDomainDns(mpIndex, domainIdx int) {
-	if ui.state.visible == nil || mpIndex < 0 || mpIndex >= len(*ui.state.visible) {
+	if ui.state.all == nil || mpIndex < 0 || mpIndex >= len(*ui.state.all) {
 		return
 	}
-	if domainIdx < 0 || domainIdx >= len((*ui.state.visible)[mpIndex].Domains) {
+	mp := &(*ui.state.all)[mpIndex]
+	if domainIdx < 0 || domainIdx >= len(mp.Domains) {
 		return
 	}
-	mp := (*ui.state.visible)[mpIndex]
-	one := mp
-	one.Domains = (*ui.state.visible)[mpIndex].Domains[domainIdx : domainIdx+1]
+	one := *mp
+	one.Domains = mp.Domains[domainIdx : domainIdx+1]
 	_ = dnsrefresh.Run([]data.MP{one}, ui.dnsRefreshDeps(true, 0, false))
 	ui.refreshDomainPanel()
 	ui.refreshWhoisPanel()
@@ -87,8 +93,8 @@ func (ui *UI) drawSelectedWhois() string {
 		return panel.DrawWhoisPanel("", "", nil, nil)
 	}
 	mpName := ""
-	if ui.state.visible != nil && ui.state.currentIndex >= 0 && ui.state.currentIndex < len(*ui.state.visible) {
-		mpName = (*ui.state.visible)[ui.state.currentIndex].Name()
+	if mp := ui.mpAt(ui.state.currentIndex); mp != nil {
+		mpName = mp.Name()
 	}
 	d := domains[idx]
 	return panel.DrawWhoisPanel(d.Hostname, mpName, d.Whois, d.DNS)

@@ -39,12 +39,10 @@ func InitApp() {
 // Save saves written MP and domain details to disk
 func (ui *UI) Save() error {
 	if ui.state.all == nil {
-		ui.log("Could not write MPs to disk", true)
-		return fmt.Errorf("no MPs loaded")
+		return ui.log("Could not write MPs to disk: no MPs loaded", true)
 	}
 	if err := db.WriteMps(*ui.state.all); err != nil {
-		ui.log("Could not write MPs to disk", true)
-		return err
+		return ui.log(fmt.Sprintf("Could not write MPs to disk: %v", err), true)
 	}
 	return ui.log("Saved <3", false)
 }
@@ -56,16 +54,16 @@ func (ui *UI) Load() error {
 	if !status.Valid() {
 		empty := []data.MP{}
 		ui.state.all = &empty
-		ui.state.visible = &empty
+		ui.applyFilter(ui.state.filter)
 		return status.Err
 	}
 	mps := status.MPs
 	ui.state.all = &mps
-	ui.state.visible = &mps
-	ui.log(fmt.Sprintf("Loaded %d MPs ", len(*ui.state.visible)), false)
+	ui.applyFilter(ui.state.filter)
+	ui.log(fmt.Sprintf("Loaded %d MPs ", len(*ui.state.all)), false)
 
 	if v, ok := panelViews[LIST_PANEL]; ok {
-		v.text = panel.DrawListMpPanel(ui.gui, &mps)
+		v.text = panel.DrawListMpPanel(ui.gui, ui.state.visible)
 	}
 
 	_ = ui.selectMp(0)
@@ -81,16 +79,20 @@ func (ui *UI) Reload() error {
 	}
 	mps := status.MPs
 	ui.state.all = &mps
-	ui.state.visible = &mps
-	ui.log(fmt.Sprintf("Reloaded %d MPs ", len(*ui.state.visible)), false)
+	ui.applyFilter(ui.state.filter)
+	ui.log(fmt.Sprintf("Reloaded %d MPs ", len(mps)), false)
 
-	if v, ok := panelViews[LIST_PANEL]; ok {
-		v.text = panel.DrawListMpPanel(ui.gui, &mps)
-		if v, err := ui.gui.View(LIST_PANEL); err != gocui.ErrUnknownView {
-			v.SetCursor(0, 0)
+	// Force selectMp to refresh domainState for the reloaded (possibly filtered) list.
+	ui.state.currentIndex = -1
+	if _, err := ui.initPanelView(LIST_PANEL); err != nil {
+		return err
+	}
+	if v, err := ui.gui.View(LIST_PANEL); err != gocui.ErrUnknownView && v != nil {
+		if err := setListCursor(v, 0); err != nil {
+			return err
 		}
 	}
-	ui.selectMp(0)
+	_ = ui.selectMp(0)
 
 	return ui.log("Reloaded <3", false)
 }
@@ -175,15 +177,16 @@ func setListCursor(v *gocui.View, index int) error {
 func (ui *UI) selectMp(newMpIndex int) error {
 	// ui.log(fmt.Sprintf("DEBUG selectMp(%d + 1 -> %d)", ui.state.currentIndex, newMpIndex), false)
 
-	if newMpIndex < 0 || newMpIndex >= len(*ui.state.visible) {
+	mp := ui.mpAt(newMpIndex)
+	if mp == nil {
 		// ui.log(fmt.Sprintf("Invalid MP idx %d", newMpIndex), true)
 		return nil
 	}
 	// Store selected MP in state if index has changed (or domainState was never set)
 	if newMpIndex != ui.state.currentIndex || ui.state.domainState == nil {
 		ui.state.currentIndex = newMpIndex
-		// Point at Domains on the visible slice element, not a local MP copy
-		ui.state.domainState = &DomainState{&(*ui.state.visible)[newMpIndex].Domains, 0}
+		// Point at Domains on the canonical all slice, not a filtered copy
+		ui.state.domainState = &DomainState{&mp.Domains, 0}
 	}
 
 	domainView, err := ui.initPanelView(DOMAIN_PANEL)
@@ -230,8 +233,11 @@ func (ui *UI) checkDomain() error {
 	if idx < 0 || idx >= len(*ui.state.domainState.domains) {
 		return ui.log("Please select a domain !", true)
 	}
-	mp := (*ui.state.visible)[ui.state.currentIndex]
-	one := mp
+	mp := ui.mpAt(ui.state.currentIndex)
+	if mp == nil {
+		return ui.log("Please select a domain !", true)
+	}
+	one := *mp
 	one.Domains = (*ui.state.domainState.domains)[idx : idx+1]
 	_ = refresh.Run([]data.MP{one}, ui.whoisRefreshDeps(true, 0, false))
 	_ = dnsrefresh.Run([]data.MP{one}, ui.dnsRefreshDeps(true, 0, false))
@@ -251,10 +257,15 @@ func (ui *UI) addDomainModalTest(addDomainView *gocui.View) error {
 // selected. Registered domainAddedJobs (WHOIS, calc demo, …) run in background goroutines.
 func (ui *UI) addDomain(domain string, mpIndex int, showDomain bool) error {
 	domain = strings.ReplaceAll(domain, "\n", "")
-	if mpIndex > len(*ui.state.visible)-1 {
+	mp := ui.mpAt(mpIndex)
+	if mp == nil {
 		return ui.log(fmt.Sprintf("No MP with index <%d>", mpIndex), true)
 	}
-	mp := (*ui.state.visible)[mpIndex]
+	// Jobs run async after applyFilter; pass an index into all, not the visible row.
+	allIdx := mpIndex
+	if ui.state.visibleIdx != nil {
+		allIdx = ui.state.visibleIdx[mpIndex]
+	}
 	want := strings.ToLower(strings.TrimSpace(domain))
 	for _, existing := range mp.Domains {
 		if strings.ToLower(strings.TrimSpace(existing.Hostname)) == want {
@@ -267,24 +278,49 @@ func (ui *UI) addDomain(domain string, mpIndex int, showDomain bool) error {
 		Expired:  false,
 	}
 	mp.Domains = append(mp.Domains, newDomain)
-	(*ui.state.visible)[mpIndex] = mp
-	domainIdx := len((*ui.state.visible)[mpIndex].Domains) - 1
+	domainIdx := len(mp.Domains) - 1
 	ui.log(fmt.Sprintf("Added domain <%s> to MP <%s>", newDomain.Hostname, mp.Name()), false)
-	// ui.log(fmt.Sprintf("After has %d domains", len((*ui.state.visible)[mpIndex].Domains)), false)
 
 	jobs.Kick(jobs.Context{
-		MPIndex:   mpIndex,
+		MPIndex:   allIdx,
 		DomainIdx: domainIdx,
 		Hostname:  newDomain.Hostname,
 		Log:       ui.whoisLog,
 	}, ui.domainAddedJobs...)
 
+	// Keep filtered display list in sync (and drop MPs that no longer match).
+	ui.applyFilter(ui.state.filter)
+
 	if showDomain {
-		ui.state.domainState.domains = &(*ui.state.visible)[mpIndex].Domains
+		// Find this MP again in the (possibly rebuilt) visible list.
+		visIdx := ui.visibleIndexOfAll(allIdx)
+		if visIdx < 0 {
+			ui.state.currentIndex = -1
+			_ = ui.selectMp(0)
+			return ui.setPanelView(LIST_PANEL)
+		}
+		ui.state.currentIndex = visIdx
+		ui.state.domainState = &DomainState{&(*ui.state.all)[allIdx].Domains, domainIdx}
 		ui.selectDomain(domainIdx)
 		return ui.setPanelView(DOMAIN_PANEL)
 	}
 	return nil
+}
+
+// visibleIndexOfAll returns the LIST_PANEL row for an index into all, or -1 if filtered out.
+func (ui *UI) visibleIndexOfAll(allIdx int) int {
+	if ui.state.all == nil || allIdx < 0 || allIdx >= len(*ui.state.all) {
+		return -1
+	}
+	if ui.state.visibleIdx == nil {
+		return allIdx
+	}
+	for i, j := range ui.state.visibleIdx {
+		if j == allIdx {
+			return i
+		}
+	}
+	return -1
 }
 
 // testAllDomains test the domain status of the selected MP

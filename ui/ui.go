@@ -45,6 +45,9 @@ type UI struct {
 type State struct {
 	all     *[]data.MP
 	visible *[]data.MP
+	// visibleIdx maps LIST_PANEL row -> index in all. nil means identity (filter "all"),
+	// so visible aliases all and mutations persist on Save.
+	visibleIdx []int
 	// all | have domains | no domains
 	filter       string
 	currentIndex int

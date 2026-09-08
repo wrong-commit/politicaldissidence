@@ -103,16 +103,16 @@ func (ui *UI) toggleURLSearchEngine(g *gocui.Gui) error {
 // toggleURLSearchTerm switches SearchTerm1 ↔ SearchTerm2 and re-fetches page 0.
 func (ui *UI) toggleURLSearchTerm(g *gocui.Gui) error {
 	ui.ensureSearchPrefs()
-	if ui.state.visible == nil || ui.state.currentIndex < 0 || ui.state.currentIndex >= len(*ui.state.visible) {
+	mp := ui.mpAt(ui.state.currentIndex)
+	if mp == nil {
 		return ui.log("No MP selected for term toggle", true)
 	}
-	mp := (*ui.state.visible)[ui.state.currentIndex]
 	if ui.state.searchPrefs.TermIndex() == 1 {
 		ui.state.searchPrefs.termIndex = 2
 	} else {
 		ui.state.searchPrefs.termIndex = 1
 	}
-	term := ui.searchTermForMP(mp)
+	term := ui.searchTermForMP(*mp)
 	_ = ui.log(fmt.Sprintf("Search term → T%d <%s>", ui.state.searchPrefs.TermIndex(), term), false)
 	return ui.refetchURLSearch(g, term, 0)
 }

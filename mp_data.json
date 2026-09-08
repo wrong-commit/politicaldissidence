@@ -555,7 +555,7 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-08T16:46:15.3728473+10:00",
+           "checkedAt": "2026-09-08T17:00:41.0309239+10:00",
            "error": "Could not parse \u003cau.linkedin.com\u003e"
          },
          "dns": {
@@ -706,7 +706,7 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-08T16:46:18.148368+10:00",
+           "checkedAt": "2026-09-08T17:00:42.7284712+10:00",
            "error": "Could not get WHOIS for \u003cjimchalmers.org\u003e"
          },
          "dns": {
@@ -794,7 +794,50 @@
      "party": "ALP",
      "state": "NSW",
      "level": "",
-     "domains": null
+     "domains": [
+       {
+         "hostname": "www.sharonclaydon.com",
+         "expiry": "2027-01-30T07:39:19Z",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-08T17:00:43.7738451+10:00",
+         "whois": {
+           "checkedAt": "2026-09-08T17:00:43.7738451+10:00",
+           "status": [
+             "ok"
+           ],
+           "created": "2013-01-30T07:39:19Z",
+           "updated": "2026-01-15T10:01:18Z",
+           "expiry": "2027-01-30T07:39:19Z",
+           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
+           "nameServers": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-08T17:00:43.0700045+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "172.67.185.115",
+             "104.21.59.241",
+             "2606:4700:3036::ac43:b973",
+             "2606:4700:3034::6815:3bf1"
+           ],
+           "ns": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ],
+           "mx": [
+             "mx.emailnb.com"
+           ],
+           "txt": [
+             "v=spf1 a mx include:sendgrid.net ~all"
+           ]
+         }
+       }
+     ]
    },
    {
      "honorific": "Ms",
