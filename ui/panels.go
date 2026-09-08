@@ -176,13 +176,13 @@ func (ui *UI) Layout(g *gocui.Gui) error {
 
 	// Activate the first panel on first run
 	if v := ui.gui.CurrentView(); v == nil {
-		ui.log("Setting default view to "+LIST_PANEL, false)
+		// ui.log("Setting default view to "+LIST_PANEL, false)
 		v, err := ui.gui.SetCurrentView(LIST_PANEL)
 		if err != nil && err != gocui.ErrUnknownView {
 			return err
 		}
 		if ui.state.visible != nil && len(*ui.state.visible) != 0 {
-			ui.log("Setting selected MP to 0 ", false)
+			// ui.log("Setting selected MP to 0 ", false)
 			v.SetCursor(0, 0)
 			// draw
 			listPanel := panelViews[LIST_PANEL]

@@ -11,24 +11,24 @@ import (
 func (ui *UI) whoisLogger() refresh.Logger {
 	return refresh.LogFn{
 		OnInfo: func(msg string) {
-			ui.whoisLog(msg)
+			ui.whoisLog(msg, false)
 		},
 		OnDebug: func(msg string) {
-			ui.whoisLog(msg)
+			ui.whoisLog(msg, false)
 		},
 		OnError: func(msg string) {
-			ui.whoisLog(msg)
+			ui.whoisLog(msg, true)
 		},
 	}
 }
 
-func (ui *UI) whoisLog(msg string) {
+func (ui *UI) whoisLog(msg string, isError bool) {
 	if ui.gui == nil || !ui.started {
-		_ = ui.logPlain(msg)
+		_ = ui.log(msg, isError)
 		return
 	}
 	ui.gui.Update(func(g *gocui.Gui) error {
-		return ui.logPlain(msg)
+		return ui.log(msg, isError)
 	})
 }
 

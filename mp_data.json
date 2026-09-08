@@ -24,63 +24,6 @@
      "domains": null
    },
    {
-     "honorific": "Dr",
-     "firstName": "Katrina",
-     "surnname": "Allen",
-     "otherName": "Jane",
-     "preferredName": "Katie",
-     "electorate": "Higgins",
-     "party": "LP",
-     "state": "VIC",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "katieallen.com.au",
-         "expiry": "",
-         "expired": true,
-         "lastChecked": "2026-09-08T13:30:37.4669466+10:00"
-       }
-     ]
-   },
-   {
-     "honorific": "Dr",
-     "firstName": "Anne",
-     "surnname": "Aly",
-     "otherName": "",
-     "preferredName": "Anne",
-     "electorate": "Cowan",
-     "party": "ALP",
-     "state": "WA",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "annealy.com",
-         "expiry": "2029-01-14T22:18:08Z",
-         "expired": false,
-         "lastChecked": "2026-09-08T13:30:39.7940415+10:00"
-       }
-     ]
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Karen",
-     "surnname": "Andrews",
-     "otherName": "Lesley",
-     "preferredName": "Karen",
-     "electorate": "McPherson",
-     "party": "LNP",
-     "state": "QLD",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "karenandrewsmp.com.au",
-         "expiry": "",
-         "expired": false,
-         "lastChecked": "2026-09-08T13:30:41.2862159+10:00"
-       }
-     ]
-   },
-   {
      "honorific": "Hon",
      "firstName": "Kevin",
      "surnname": "Andrews",
@@ -103,25 +46,6 @@
      "state": "TAS",
      "level": "",
      "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "Adam",
-     "surnname": "Bandt",
-     "otherName": "Paul",
-     "preferredName": "",
-     "electorate": "Melbourne",
-     "party": "AG",
-     "state": "VIC",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "www.adambandt.com",
-         "expiry": "2030-05-05T09:05:22Z",
-         "expired": false,
-         "lastChecked": "2026-09-08T13:30:43.6466853+10:00"
-       }
-     ]
    },
    {
      "honorific": "Ms",
@@ -232,25 +156,6 @@
      "domains": null
    },
    {
-     "honorific": "Ms",
-     "firstName": "Terri",
-     "surnname": "Butler",
-     "otherName": "Megan",
-     "preferredName": "Terri",
-     "electorate": "Griffith",
-     "party": "ALP",
-     "state": "QLD",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "terributlermp.com",
-         "expiry": "2027-02-26T00:25:04Z",
-         "expired": false,
-         "lastChecked": "2026-09-08T13:30:46.1715807+10:00"
-       }
-     ]
-   },
-   {
      "honorific": "Hon",
      "firstName": "Anthony",
      "surnname": "Byrne",
@@ -309,25 +214,6 @@
      "state": "VIC",
      "level": "",
      "domains": null
-   },
-   {
-     "honorific": "Mr",
-     "firstName": "George",
-     "surnname": "Christensen",
-     "otherName": "Robert",
-     "preferredName": "George",
-     "electorate": "Dawson",
-     "party": "LNP",
-     "state": "QLD",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "www.georgechristensen.com.au",
-         "expiry": "",
-         "expired": false,
-         "lastChecked": "2026-09-08T13:30:47.6830527+10:00"
-       }
-     ]
    },
    {
      "honorific": "Hon",
@@ -472,25 +358,6 @@
      "state": "VIC",
      "level": "",
      "domains": null
-   },
-   {
-     "honorific": "Hon",
-     "firstName": "Peter",
-     "surnname": "Dutton",
-     "otherName": "Craig",
-     "preferredName": "",
-     "electorate": "Dickson",
-     "party": "LNP",
-     "state": "QLD",
-     "level": "",
-     "domains": [
-       {
-         "hostname": "www.peterdutton.com.au",
-         "expiry": "",
-         "expired": false,
-         "lastChecked": "2026-09-08T13:30:49.1448643+10:00"
-       }
-     ]
    },
    {
      "honorific": "Hon",
@@ -874,7 +741,14 @@
      "party": "ALP",
      "state": "VIC",
      "level": "",
-     "domains": null
+     "domains": [
+       {
+         "hostname": "www.gedkearney.org.au",
+         "expiry": "",
+         "expired": false,
+         "lastChecked": "2026-09-08T13:36:10.8405457+10:00"
+       }
+     ]
    },
    {
      "honorific": "Mr",
@@ -2027,17 +1901,42 @@
      "state": "NSW",
      "level": "",
      "domains": null
-   }
- ]
-me": "Richard",
-        "surnname": "Wilson",
-        "otherName": "James",
-        "preferredName": "Rick",
-        "electorate": "O'Connor",
-        "party": "LP",
-        "state": "WA",
-        "level": "",
-        "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Terry",
+     "surnname": "Young",
+     "otherName": "James",
+     "preferredName": "Terry",
+     "electorate": "Longman",
+     "party": "LNP",
+     "state": "QLD",
+     "level": "",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Antonio",
+     "surnname": "Zappia",
+     "otherName": "",
+     "preferredName": "Tony",
+     "electorate": "Makin",
+     "party": "ALP",
+     "state": "SA",
+     "level": "",
+     "domains": null
+   },
+   {
+     "honorific": "Mr",
+     "firstName": "Trent",
+     "surnname": "Zimmerman",
+     "otherName": "Moir",
+     "preferredName": "Trent",
+     "electorate": "North Sydney",
+     "party": "LP",
+     "state": "NSW",
+     "level": "",
+     "domains": null
     },
     {
         "honorific": "Mr",

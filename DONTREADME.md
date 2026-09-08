@@ -33,6 +33,7 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
 
 - [Background WHOIS refresh](SPEC_BACKGROUND_WHOIS.md)
 - [MP JSON validation on load / reload](SPEC_JSON_VALIDATION.md)
+- [Atomic MP JSON save](SPEC_JSON_SAVE.md)
 
 ## TODO
 
@@ -69,7 +70,7 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
     - [x] JSON Validation on startup/reload
 - [ ] Code
     - [ ] Figure out how and when to use `log` package, replace fmt.Println
-    - [ ] Cleanup CLI code base buginess / shit ness 
+    - [x] Cleanup CLI code base buginess / shit ness 
 
 
 [0] https://www.aph.gov.au/Senators_and_Members/Guidelines_for_Contacting_Senators_and_Members/Address_labels_and_CSV_files

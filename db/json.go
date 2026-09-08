@@ -104,42 +104,71 @@ func WriteMps(mps []data.MP) error {
 	return write(mps, mpJsonFilename)
 }
 
+// write encodes v as indented JSON to a uniquely named temp file next to
+// filename, revalidates that temp file can be reloaded, then replaces the
+// destination (delete + rename) so a failed write never corrupts the live DB.
 func write(v interface{}, filename string) error {
-	var file *os.File
-
-	// create/open file
-	if _, err := os.Stat(filename); os.IsNotExist(err) {
-		fmt.Println("[+] Creating file", filename)
-		if file, err = os.Create(filename); err != nil {
-			fmt.Println("[-] Could not create file", filename)
-			return err
-		}
-	} else {
-		file, err = os.OpenFile(filename, os.O_RDWR, os.ModeExclusive)
-		if err != nil {
-			fmt.Println("[-] Could not open file", filename)
-			return err
-		}
-	}
-	defer file.Close()
-
-	// convert v to json bytes[]
 	var buf bytes.Buffer
-
 	encoder := json.NewEncoder(&buf)
 	encoder.SetIndent(" ", "  ")
-	err := encoder.Encode(v)
-	if err != nil {
+	if err := encoder.Encode(v); err != nil {
 		fmt.Println("[-] Could serialize JSON before writing to", filename)
 		return err
 	}
 
-	// write json to file
-	_, err = file.Write(buf.Bytes())
-	if err != nil {
-		fmt.Println("[-] Could not write", buf.Len(), "bytes of JSON to", filename)
+	dir := filepath.Dir(filename)
+	if dir == "" || dir == "." {
+		dir = "."
 	}
-	return err
+	// Random suffix avoids collisions when concurrent saves both write a tmp.
+	tmp, err := os.CreateTemp(dir, "mp_data.*.tmp")
+	if err != nil {
+		fmt.Println("[-] Could not create temp file for", filename)
+		return err
+	}
+	tmpPath := tmp.Name()
+	cleanup := true
+	defer func() {
+		if cleanup {
+			_ = os.Remove(tmpPath)
+		}
+	}()
+
+	if _, err := tmp.Write(buf.Bytes()); err != nil {
+		_ = tmp.Close()
+		fmt.Println("[-] Could not write", buf.Len(), "bytes of JSON to", tmpPath)
+		return err
+	}
+	if err := tmp.Sync(); err != nil {
+		_ = tmp.Close()
+		return err
+	}
+	if err := tmp.Close(); err != nil {
+		return err
+	}
+
+	status := ValidateMPJSONFile(tmpPath)
+	if !status.Valid() {
+		fmt.Println("[-] Temp MP JSON failed validation before replace:", status.LogMessage())
+		return status.Err
+	}
+
+	if err := replaceFile(tmpPath, filename); err != nil {
+		fmt.Println("[-] Could not replace", filename, "with", tmpPath)
+		return err
+	}
+	cleanup = false
+	return nil
+}
+
+// replaceFile deletes dest (if present) then renames src onto dest.
+// Same-directory rename keeps the swap as atomic as the OS allows; on Windows
+// rename cannot overwrite, so delete-then-rename is required.
+func replaceFile(src, dest string) error {
+	if err := os.Remove(dest); err != nil && !os.IsNotExist(err) {
+		return err
+	}
+	return os.Rename(src, dest)
 }
 
 type filePos struct {

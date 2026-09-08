@@ -31,9 +31,9 @@ If validation fails for any reason above, the load/reload path must treat the fi
 | Startup | `UI.Load` (from `InitApp`) | After UI/console can accept logs (or buffer via existing `startupLog` until `started`, same as other early logs). |
 | Reload | `UI.Reload` (Ctrl+R) | Same validation as startup, before replacing in-memory MP state. |
 
-Do **not** re-validate on `Save` / `WriteMps` in v1 (writer already encodes from in-memory structs). Do **not** run as a separate background job.
+Do **not** run validation as a separate background job. Save-time validation of the temp file is covered by [SPEC_JSON_SAVE.md](SPEC_JSON_SAVE.md).
 
-Prefer a single shared helper (e.g. in `db` or a small validate function used by `ReadMps` / Load+Reload) so startup and reload share identical rules and log wording.
+Prefer a single shared helper (e.g. in `db` or a small validate function used by `ReadMps` / Load+Reload) so startup and reload share identical rules and log wording. Save uses the same helper on the **temp** file before replace — see [SPEC_JSON_SAVE.md](SPEC_JSON_SAVE.md).
 
 ## Behavior on valid vs invalid
 
@@ -85,7 +85,6 @@ Both startup and reload must emit these messages (valid → INFO; invalid → ER
 
 - Schema lint of required string fields / hostname format
 - Rejecting unknown JSON fields (`DisallowUnknownFields`)
-- Validating on save / write
 - Auto-repair or backup of corrupt JSON
 - Changing the on-disk filename or format of `mp_data.json`
 

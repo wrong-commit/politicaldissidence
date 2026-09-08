@@ -108,6 +108,9 @@ func (ui *UI) prevMp(v *gocui.View) error {
 
 // nextDomain chooses the next Domain in the DOMAIN_PANEL
 func (ui *UI) nextDomain(v *gocui.View) error {
+	if !ui.hasDomains() {
+		return nil
+	}
 	index := wrap(ui.state.domainState.index+1, len(*ui.state.domainState.domains))
 	if err := setListCursor(v, index); err != nil {
 		return err
@@ -117,12 +120,21 @@ func (ui *UI) nextDomain(v *gocui.View) error {
 
 // prevDomain chooses the previous Domain in the DOMAIN_PANEL
 func (ui *UI) prevDomain(v *gocui.View) error {
+	if !ui.hasDomains() {
+		return nil
+	}
 	index := wrap(ui.state.domainState.index-1, len(*ui.state.domainState.domains))
 	// ui.log(fmt.Sprintf("prevDomain(%d - 1 -> %d)", ui.state.domainState.index, index), false)
 	if err := setListCursor(v, index); err != nil {
 		return err
 	}
 	return ui.selectDomain(index)
+}
+
+func (ui *UI) hasDomains() bool {
+	return ui.state.domainState != nil &&
+		ui.state.domainState.domains != nil &&
+		len(*ui.state.domainState.domains) > 0
 }
 
 // setListCursor places the highlight on absolute line index, scrolling origin as needed.
@@ -160,12 +172,11 @@ func (ui *UI) selectMp(newMpIndex int) error {
 		// ui.log(fmt.Sprintf("Invalid MP idx %d", newMpIndex), true)
 		return nil
 	}
-	// Store selected MP in state if index has changed
-	if newMpIndex != ui.state.currentIndex {
-		mp := (*ui.state.visible)[newMpIndex]
+	// Store selected MP in state if index has changed (or domainState was never set)
+	if newMpIndex != ui.state.currentIndex || ui.state.domainState == nil {
 		ui.state.currentIndex = newMpIndex
-		// update DomainList state
-		ui.state.domainState = &DomainState{&mp.Domains, 0}
+		// Point at Domains on the visible slice element, not a local MP copy
+		ui.state.domainState = &DomainState{&(*ui.state.visible)[newMpIndex].Domains, 0}
 	}
 
 	var err error
@@ -185,6 +196,9 @@ func (ui *UI) selectMp(newMpIndex int) error {
 // If an MP is selected the DOMAIN_PANEL state is updated
 func (ui *UI) selectDomain(newIndex int) error {
 	// ui.log(fmt.Sprintf("DEBUG selectDomain(%d -> %d)", ui.state.domainState.index, newIndex), false)
+	if !ui.hasDomains() {
+		return nil
+	}
 	if newIndex < 0 || newIndex > len(*ui.state.domainState.domains)-1 {
 		ui.log(fmt.Sprintf("Invalid Domain idx %d", newIndex), true)
 		return nil
@@ -285,6 +299,9 @@ func (ui *UI) testAllDomains() error {
 }
 
 func wrap(index, max int) int {
+	if max <= 0 {
+		return -1
+	}
 	if index < 0 {
 		index = max - 1
 	} else if index > max-1 {

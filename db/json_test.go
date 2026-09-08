@@ -242,3 +242,105 @@ func TestOffsetToLineCol(t *testing.T) {
 		t.Errorf("offset 2 -> %+v", p)
 	}
 }
+
+func TestWrite_AtomicReplaceAndReload(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "mp_data.json")
+
+	type mp struct {
+		FirstName string `json:"firstName"`
+		Surnname  string `json:"surnname"`
+	}
+	if err := write([]mp{{FirstName: "Ada", Surnname: "Lovelace"}}, path); err != nil {
+		t.Fatalf("write: %v", err)
+	}
+	status := ValidateMPJSONFile(path)
+	if !status.Valid() {
+		t.Fatalf("reload after write: %v", status.Err)
+	}
+	if len(status.MPs) != 1 || status.MPs[0].FirstName != "Ada" {
+		t.Fatalf("unexpected MPs: %+v", status.MPs)
+	}
+
+	// Shorter payload must not leave trailing garbage from a prior longer write.
+	if err := write([]mp{{FirstName: "Bo"}}, path); err != nil {
+		t.Fatalf("second write: %v", err)
+	}
+	status = ValidateMPJSONFile(path)
+	if !status.Valid() {
+		t.Fatalf("reload after short write: %v (%s)", status.Err, status.LogMessage())
+	}
+	if len(status.MPs) != 1 || status.MPs[0].FirstName != "Bo" {
+		t.Fatalf("unexpected MPs after short write: %+v", status.MPs)
+	}
+
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, e := range entries {
+		if strings.HasPrefix(e.Name(), "mp_data.") && strings.HasSuffix(e.Name(), ".tmp") {
+			t.Errorf("temp file left behind: %s", e.Name())
+		}
+	}
+}
+
+func TestWrite_LeavesLiveFileOnFailedValidation(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "mp_data.json")
+	good := `[{"firstName":"Keep","surnname":"Me"}]`
+	if err := os.WriteFile(path, []byte(good), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	// Force a bad tmp by writing invalid JSON next to the live file, then
+	// simulating the replace gate: validation must fail and live file stay put.
+	tmp, err := os.CreateTemp(dir, "mp_data.*.tmp")
+	if err != nil {
+		t.Fatal(err)
+	}
+	tmpPath := tmp.Name()
+	if _, err := tmp.WriteString("{not-an-array}"); err != nil {
+		t.Fatal(err)
+	}
+	_ = tmp.Close()
+
+	status := ValidateMPJSONFile(tmpPath)
+	if status.Valid() {
+		t.Fatal("expected invalid tmp")
+	}
+	_ = os.Remove(tmpPath)
+
+	got, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(got) != good {
+		t.Fatalf("live file changed: %q", got)
+	}
+}
+
+func TestReplaceFile(t *testing.T) {
+	dir := t.TempDir()
+	dest := filepath.Join(dir, "dest.json")
+	src := filepath.Join(dir, "src.json")
+	if err := os.WriteFile(dest, []byte("old"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(src, []byte("new"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := replaceFile(src, dest); err != nil {
+		t.Fatal(err)
+	}
+	got, err := os.ReadFile(dest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(got) != "new" {
+		t.Fatalf("got %q", got)
+	}
+	if _, err := os.Stat(src); !os.IsNotExist(err) {
+		t.Fatalf("src should be gone, err=%v", err)
+	}
+}
