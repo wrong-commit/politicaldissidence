@@ -14,6 +14,7 @@ import (
 	"politicaldissidence/refresh"
 	"politicaldissidence/ui/panel"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/jroimartin/gocui"
 )
@@ -148,30 +149,83 @@ func (ui *UI) hasDomains() bool {
 		len(*ui.state.domainState.domains) > 0
 }
 
-// setListCursor places the highlight on absolute line index, scrolling origin as needed.
+// setListCursor places the highlight on absolute buffer-line index, scrolling origin as needed.
 // Cursor coords in gocui are relative to Origin, so MoveCursor(±1) cannot wrap ends.
+// When v.Wrap is set, Origin Y indexes visual (wrapped) rows, not buffer lines — map accordingly.
 func setListCursor(v *gocui.View, index int) error {
 	if index < 0 {
 		return nil
 	}
 	ox, oy := v.Origin()
-	_, sy := v.Size()
+	sx, sy := v.Size()
 	if sy <= 0 {
 		return nil
 	}
-	if index < oy {
-		if err := v.SetOrigin(ox, index); err != nil {
+
+	visStart := index
+	visEnd := index
+	if v.Wrap {
+		starts := visualLineStarts(v.BufferLines(), sx)
+		if len(starts) < 2 {
+			return v.SetCursor(0, 0)
+		}
+		if index > len(starts)-2 {
+			index = len(starts) - 2
+		}
+		visStart = starts[index]
+		visEnd = starts[index+1] - 1
+	}
+
+	newOy := oy
+	if visStart < oy {
+		newOy = visStart
+	} else if visEnd >= oy+sy {
+		newOy = visEnd - sy + 1
+		if newOy > visStart {
+			newOy = visStart
+		}
+		if newOy < 0 {
+			newOy = 0
+		}
+	}
+	if newOy != oy {
+		if err := v.SetOrigin(ox, newOy); err != nil {
 			return err
 		}
-		return v.SetCursor(0, 0)
 	}
-	if index >= oy+sy {
-		if err := v.SetOrigin(ox, index-sy+1); err != nil {
-			return err
-		}
-		return v.SetCursor(0, sy-1)
+	cy := visStart - newOy
+	if cy < 0 {
+		cy = 0
 	}
-	return v.SetCursor(0, index-oy)
+	if cy >= sy {
+		cy = sy - 1
+	}
+	return v.SetCursor(0, cy)
+}
+
+// wrappedLineCount matches gocui's Wrap layout: lines shorter than width stay one row;
+// otherwise ceil(len/width) plus the empty trailing chunk when len is an exact multiple.
+func wrappedLineCount(cellLen, width int) int {
+	if width <= 0 {
+		width = 1
+	}
+	if cellLen < width {
+		return 1
+	}
+	return cellLen/width + 1
+}
+
+// visualLineStarts returns the first visual-row index for each buffer line, matching gocui Wrap.
+// The final element is the total visual row count (one past the last buffer line).
+func visualLineStarts(bufferLines []string, width int) []int {
+	starts := make([]int, len(bufferLines)+1)
+	vis := 0
+	for i, line := range bufferLines {
+		starts[i] = vis
+		vis += wrappedLineCount(utf8.RuneCountInString(line), width)
+	}
+	starts[len(bufferLines)] = vis
+	return starts
 }
 
 // selectMp updates the selected MP and updates the listed Domains.
