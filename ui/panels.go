@@ -80,7 +80,7 @@ var panelViews = map[string]panelProperties{
 	},
 	// Session-only latest WHOIS detail (not persisted)
 	WHOIS_PANEL: {
-		title: "WHOIS information",
+		title: "Domain Information",
 		text:  "",
 		// right panel
 		x1:       2.0 / 3.0,

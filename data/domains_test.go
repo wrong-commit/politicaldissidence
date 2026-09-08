@@ -6,6 +6,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"politicaldissidence/dnscheck"
 )
 
 func TestDomain_UpdateExpiry_Success(t *testing.T) {
@@ -169,6 +171,119 @@ func TestDomain_NeedsWhois(t *testing.T) {
 			d := Domain{LastChecked: tt.lastChecked}
 			if got := d.NeedsWhois(at, maxAge); got != tt.want {
 				t.Fatalf("NeedsWhois = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestDomain_UpdateDns_Success(t *testing.T) {
+	fixed := time.Date(2026, 3, 8, 12, 0, 0, 0, time.UTC)
+	prevNow := now
+	now = func() time.Time { return fixed }
+	defer func() { now = prevNow }()
+
+	d := Domain{Hostname: "example.com"}
+	info, err := d.updateDns(func(hostname string) (dnscheck.Info, error) {
+		return dnscheck.Info{
+			Hostname: hostname,
+			Outcome:  dnscheck.OutcomeEmpty,
+			Empty:    true,
+		}, nil
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !info.Empty || d.DNS == nil || !d.DNS.Empty || d.DNS.Outcome != "empty" {
+		t.Fatalf("DNS=%+v info=%+v", d.DNS, info)
+	}
+	if !d.DNS.CheckedAt.Equal(fixed) {
+		t.Fatalf("CheckedAt=%v", d.DNS.CheckedAt)
+	}
+}
+
+func TestDomain_UpdateDns_Failure(t *testing.T) {
+	fixed := time.Date(2026, 3, 8, 12, 0, 0, 0, time.UTC)
+	prevNow := now
+	now = func() time.Time { return fixed }
+	defer func() { now = prevNow }()
+
+	d := Domain{Hostname: "example.com"}
+	lookupErr := errors.New("i/o timeout")
+	_, err := d.updateDns(func(hostname string) (dnscheck.Info, error) {
+		return dnscheck.Info{
+			Hostname: hostname,
+			Outcome:  dnscheck.OutcomeError,
+			Message:  "Could not get DNS for <example.com>: i/o timeout",
+		}, lookupErr
+	})
+	if err == nil {
+		t.Fatal("expected error")
+	}
+	if d.DNS == nil || d.DNS.Empty || d.DNS.Error == "" || d.DNS.Outcome != "error" {
+		t.Fatalf("DNS=%+v", d.DNS)
+	}
+	if !d.DNS.CheckedAt.Equal(fixed) {
+		t.Fatalf("CheckedAt=%v", d.DNS.CheckedAt)
+	}
+}
+
+func TestDomain_DNS_JSONRoundTrip(t *testing.T) {
+	checked := time.Date(2026, 2, 1, 15, 4, 5, 0, time.UTC)
+	orig := Domain{
+		Hostname: "example.com.au",
+		Expiry:   "2027-01-01",
+		DNS: &DnsRecord{
+			CheckedAt: checked,
+			Empty:     true,
+			Outcome:   "empty",
+			A:         []string{},
+		},
+	}
+	b, err := json.Marshal(orig)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(b), `"dns"`) || !strings.Contains(string(b), `"empty":true`) {
+		t.Fatalf("expected dns in JSON: %s", b)
+	}
+	var got Domain
+	if err := json.Unmarshal(b, &got); err != nil {
+		t.Fatal(err)
+	}
+	if got.DNS == nil || !got.DNS.Empty || got.DNS.Outcome != "empty" || !got.DNS.CheckedAt.Equal(checked) {
+		t.Fatalf("DNS=%+v", got.DNS)
+	}
+
+	var missing Domain
+	if err := json.Unmarshal([]byte(`{"hostname":"x.com","expiry":"","expired":false}`), &missing); err != nil {
+		t.Fatal(err)
+	}
+	if missing.DNS != nil {
+		t.Fatalf("missing dns should be nil, got %+v", missing.DNS)
+	}
+}
+
+func TestDomain_NeedsDns(t *testing.T) {
+	at := time.Date(2026, 3, 15, 12, 0, 0, 0, time.UTC)
+	maxAge := DnsMaxAge
+
+	tests := []struct {
+		name string
+		dns  *DnsRecord
+		want bool
+	}{
+		{"never checked", nil, true},
+		{"zero checkedAt", &DnsRecord{}, true},
+		{"fresh", &DnsRecord{CheckedAt: at}, false},
+		{"fresh 9 days", &DnsRecord{CheckedAt: at.Add(-9 * 24 * time.Hour)}, false},
+		{"exactly 10 days", &DnsRecord{CheckedAt: at.Add(-10 * 24 * time.Hour)}, true},
+		{"far past", &DnsRecord{CheckedAt: at.Add(-90 * 24 * time.Hour)}, true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			d := Domain{DNS: tt.dns}
+			if got := d.NeedsDns(at, maxAge); got != tt.want {
+				t.Fatalf("NeedsDns = %v, want %v", got, tt.want)
 			}
 		})
 	}

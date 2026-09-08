@@ -33,6 +33,8 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
 
 - [Background WHOIS refresh](SPEC_BACKGROUND_WHOIS.md)
 - [WHOIS information panel](SPEC_WHOIS_PANEL.md)
+- [DNS emptiness check](SPEC_DNS_EMPTY.md)
+- [CLI batch domain watchlist](SPEC_CLI_EXPIRED_DOMAINS.md)
 - [Domain-added background jobs](SPEC_DOMAIN_ADDED_JOBS.md)
 - [MP JSON validation on load / reload](SPEC_JSON_VALIDATION.md)
 - [Atomic MP JSON save](SPEC_JSON_SAVE.md)
@@ -69,10 +71,13 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
         - [x] Persist domain `lastChecked` on WHOIS
         - [x] Show last-checked in domain panel
         - [x] Show full WHOIS response
-        - [ ] Add script for running WHOIS checks against all MP domains and outputting expired domains
+        - [x] DNS emptiness check (see [SPEC_DNS_EMPTY.md](SPEC_DNS_EMPTY.md))
+        - [ ] Add script for running WHOIS checks against all MP domains and outputting expired domains (see [SPEC_CLI_EXPIRED_DOMAINS.md](SPEC_CLI_EXPIRED_DOMAINS.md))
     - [x] Validate `mp_data.json` on load / reload (see [SPEC_JSON_VALIDATION.md](SPEC_JSON_VALIDATION.md))
     - [x] Fix UI bugginess, cursor gets out of whack 
     - [x] Add multiple engines/search terms to url lookup
+    - [ ] DNS Record Checks as well as WHOIS
+        - [ ] [SPEC_DNS_EMPTY.md](SPEC_DNS_EMPTY.md)
 - [ ] Maintainence 
     - [ ] Detect when URL disappears
     - [ ] Alert when current list changes found/removed

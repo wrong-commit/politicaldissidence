@@ -50,7 +50,7 @@ Focus this panel with **Tab** (or click it). Shows domains for the currently sel
 | **↓**      | Next domain                                                  |
 | **Tab**    | Focus next panel (List)                                      |
 | **g**      | Guess domain (same as on List)                               |
-| **u**      | Check domain (WHOIS / expiry update for the selected domain) |
+| **u**      | Check domain (WHOIS + DNS for the selected domain) |
 
 
 ---

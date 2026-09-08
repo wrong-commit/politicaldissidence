@@ -6,7 +6,6 @@ import (
 	"politicaldissidence/data"
 	"politicaldissidence/db"
 	"politicaldissidence/refresh"
-	"politicaldissidence/ui/panel"
 	"politicaldissidence/whois"
 
 	"github.com/jroimartin/gocui"
@@ -118,22 +117,4 @@ func (ui *UI) refreshWhoisPanel() {
 		_, err := ui.initPanelView(WHOIS_PANEL)
 		return err
 	})
-}
-
-// drawSelectedWhois renders WHOIS for the domain currently selected in Member Domains.
-func (ui *UI) drawSelectedWhois() string {
-	if !ui.hasDomains() {
-		return panel.DrawWhoisPanel("", "", nil)
-	}
-	idx := ui.state.domainState.index
-	domains := *ui.state.domainState.domains
-	if idx < 0 || idx >= len(domains) {
-		return panel.DrawWhoisPanel("", "", nil)
-	}
-	mpName := ""
-	if ui.state.visible != nil && ui.state.currentIndex >= 0 && ui.state.currentIndex < len(*ui.state.visible) {
-		mpName = (*ui.state.visible)[ui.state.currentIndex].Name()
-	}
-	d := domains[idx]
-	return panel.DrawWhoisPanel(d.Hostname, mpName, d.Whois)
 }

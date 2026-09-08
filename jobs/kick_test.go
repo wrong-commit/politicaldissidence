@@ -94,3 +94,22 @@ func TestNewWhoisOnAdd(t *testing.T) {
 		t.Fatalf("nil run: %v", err)
 	}
 }
+
+func TestNewDnsOnAdd(t *testing.T) {
+	var mp, dom int
+	j := NewDnsOnAdd(func(mpIndex, domainIdx int) {
+		mp, dom = mpIndex, domainIdx
+	})
+	if j.Name() != "dns-on-add" {
+		t.Fatalf("Name = %q", j.Name())
+	}
+	if err := j.Run(Context{MPIndex: 1, DomainIdx: 2}); err != nil {
+		t.Fatal(err)
+	}
+	if mp != 1 || dom != 2 {
+		t.Fatalf("got mp=%d dom=%d", mp, dom)
+	}
+	if err := NewDnsOnAdd(nil).Run(Context{}); err != nil {
+		t.Fatalf("nil run: %v", err)
+	}
+}

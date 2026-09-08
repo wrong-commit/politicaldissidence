@@ -14,9 +14,9 @@
          "hostname": "anthonyalbanese.com.au",
          "expiry": "",
          "expired": false,
-         "lastChecked": "2026-09-08T15:17:10.1567561+10:00",
+         "lastChecked": "2026-09-08T15:30:47.9199258+10:00",
          "whois": {
-           "checkedAt": "2026-09-08T15:17:10.1567561+10:00",
+           "checkedAt": "2026-09-08T15:30:47.9199258+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -25,6 +25,30 @@
            "nameServers": [
              "magali.ns.cloudflare.com",
              "sid.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-08T15:30:47.9209962+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "76.76.21.21"
+           ],
+           "ns": [
+             "sid.ns.cloudflare.com",
+             "magali.ns.cloudflare.com"
+           ],
+           "mx": [
+             "aspmx.l.google.com",
+             "alt1.aspmx.l.google.com",
+             "alt2.aspmx.l.google.com",
+             "alt4.aspmx.l.google.com",
+             "alt3.aspmx.l.google.com"
+           ],
+           "txt": [
+             "v=spf1 include:_spf.google.com -all",
+             "google-site-verification=SEnocELh184pXdqukEpwIdXtwPDUnV3Cr4jyJ3DIeqA",
+             "google-site-verification=9oUKLuBnaYKBSH2p0uQ9QUIgUe0xMz1dQjQcD03JPt0"
            ]
          }
        },
@@ -43,6 +67,30 @@
            "nameServers": [
              "magali.ns.cloudflare.com",
              "sid.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-08T15:30:46.8932558+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "76.76.21.21"
+           ],
+           "ns": [
+             "sid.ns.cloudflare.com",
+             "magali.ns.cloudflare.com"
+           ],
+           "mx": [
+             "aspmx.l.google.com",
+             "alt1.aspmx.l.google.com",
+             "alt2.aspmx.l.google.com",
+             "alt3.aspmx.l.google.com",
+             "alt4.aspmx.l.google.com"
+           ],
+           "txt": [
+             "v=spf1 include:_spf.google.com -all",
+             "google-site-verification=SEnocELh184pXdqukEpwIdXtwPDUnV3Cr4jyJ3DIeqA",
+             "google-site-verification=9oUKLuBnaYKBSH2p0uQ9QUIgUe0xMz1dQjQcD03JPt0"
            ]
          }
        }
@@ -135,7 +183,22 @@
          "hostname": "russellbroadbent.com.au",
          "expiry": "",
          "expired": false,
-         "lastChecked": "2026-09-08T14:51:53.5442532+10:00"
+         "lastChecked": "2026-09-08T14:51:53.5442532+10:00",
+         "dns": {
+           "checkedAt": "2026-09-08T15:30:48.0096027+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "172.67.154.137",
+             "104.21.72.191",
+             "2606:4700:3035::ac43:9a89",
+             "2606:4700:3031::6815:48bf"
+           ],
+           "ns": [
+             "kristin.ns.cloudflare.com",
+             "quinton.ns.cloudflare.com"
+           ]
+         }
        }
      ]
    },
@@ -166,7 +229,29 @@
          "hostname": "www.tonyburke.com.au",
          "expiry": "",
          "expired": false,
-         "lastChecked": "2026-09-08T14:59:39.3030091+10:00"
+         "lastChecked": "2026-09-08T14:59:39.3030091+10:00",
+         "dns": {
+           "checkedAt": "2026-09-08T15:30:49.0972852+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "198.49.23.144",
+             "198.185.159.144",
+             "198.185.159.145",
+             "198.49.23.145"
+           ],
+           "ns": [
+             "dns2.registrar-servers.com",
+             "dns1.registrar-servers.com"
+           ],
+           "mx": [
+             "aspmx.l.google.com",
+             "alt1.aspmx.l.google.com",
+             "alt2.aspmx.l.google.com",
+             "alt4.aspmx.l.google.com",
+             "alt3.aspmx.l.google.com"
+           ]
+         }
        }
      ]
    },
@@ -187,8 +272,19 @@
          "expired": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-08T15:15:52.5966807+10:00",
+           "checkedAt": "2026-09-08T15:30:46.5697206+10:00",
            "error": "Could not parse \u003cau.linkedin.com\u003e"
+         },
+         "dns": {
+           "checkedAt": "2026-09-08T15:30:50.1955151+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "104.18.41.41",
+             "172.64.146.215",
+             "2a06:98c1:3109::6812:2929",
+             "2a06:98c1:310b::ac40:92d7"
+           ]
          }
        }
      ]
@@ -208,7 +304,23 @@
          "hostname": "www.joshburns.com.au",
          "expiry": "",
          "expired": false,
-         "lastChecked": "2026-09-08T14:56:02.7591856+10:00"
+         "lastChecked": "2026-09-08T14:56:02.7591856+10:00",
+         "dns": {
+           "checkedAt": "2026-09-08T15:30:51.332667+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "76.76.21.21"
+           ],
+           "ns": [
+             "ns3.nameserver.net.au",
+             "ns2.nameserver.net.au",
+             "ns1.nameserver.net.au"
+           ],
+           "mx": [
+             "smtp.google.com"
+           ]
+         }
        }
      ]
    },
@@ -815,7 +927,22 @@
          "hostname": "www.gedkearney.org.au",
          "expiry": "",
          "expired": false,
-         "lastChecked": "2026-09-08T13:36:10.8405457+10:00"
+         "lastChecked": "2026-09-08T13:36:10.8405457+10:00",
+         "dns": {
+           "checkedAt": "2026-09-08T15:30:52.4712721+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "172.67.140.55",
+             "104.21.40.239",
+             "2606:4700:3030::ac43:8c37",
+             "2606:4700:3032::6815:28ef"
+           ],
+           "ns": [
+             "gerald.ns.cloudflare.com",
+             "cheryl.ns.cloudflare.com"
+           ]
+         }
        }
      ]
    },

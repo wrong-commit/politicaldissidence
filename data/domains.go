@@ -2,6 +2,7 @@ package data
 
 import (
 	"fmt"
+	"politicaldissidence/dnscheck"
 	"politicaldissidence/whois"
 	"time"
 )
@@ -9,8 +10,14 @@ import (
 // WhoisMaxAge is the background refresh throttle window.
 const WhoisMaxAge = 10 * 24 * time.Hour
 
+// DnsMaxAge is the background DNS refresh throttle window.
+const DnsMaxAge = WhoisMaxAge
+
 // lookupInfo is the WHOIS lookup function; overridden in tests.
 var lookupInfo = whois.Lookup
+
+// lookupDns is the DNS lookup function; overridden in tests.
+var lookupDns = dnscheck.Lookup
 
 // now returns the current time; overridden in tests.
 var now = time.Now
@@ -28,6 +35,19 @@ type WhoisRecord struct {
 	Error       string    `json:"error,omitempty"`
 }
 
+// DnsRecord is the latest DNS emptiness check for a domain (only one kept).
+// Persisted under Domain.DNS in mp_data.json.
+type DnsRecord struct {
+	CheckedAt time.Time `json:"checkedAt,omitempty"`
+	Empty     bool      `json:"empty"`
+	Outcome   string    `json:"outcome,omitempty"`
+	A         []string  `json:"a,omitempty"`
+	NS        []string  `json:"ns,omitempty"`
+	MX        []string  `json:"mx,omitempty"`
+	TXT       []string  `json:"txt,omitempty"`
+	Error     string    `json:"error,omitempty"`
+}
+
 type Domain struct {
 	/* Domain Hostname */
 	Hostname string `json:"hostname"`
@@ -38,6 +58,8 @@ type Domain struct {
 	LastChecked time.Time `json:"lastChecked,omitempty"`
 	/* Latest WHOIS detail for the WHOIS panel; omitempty when never looked up */
 	Whois *WhoisRecord `json:"whois,omitempty"`
+	/* Latest DNS emptiness check; omitempty when never looked up */
+	DNS *DnsRecord `json:"dns,omitempty"`
 }
 
 // NeedsWhois reports whether a WHOIS lookup should run for the background job.
@@ -48,6 +70,15 @@ func (d Domain) NeedsWhois(at time.Time, maxAge time.Duration) bool {
 		return true
 	}
 	return !d.LastChecked.After(at.Add(-maxAge))
+}
+
+// NeedsDns reports whether a DNS lookup should run for the background job.
+// Never-checked domains and domains whose dns.checkedAt is at least maxAge ago need DNS.
+func (d Domain) NeedsDns(at time.Time, maxAge time.Duration) bool {
+	if d.DNS == nil || d.DNS.CheckedAt.IsZero() {
+		return true
+	}
+	return !d.DNS.CheckedAt.After(at.Add(-maxAge))
 }
 
 // UpdateExpiry updates the expiry on a domain object via live WHOIS.
@@ -97,6 +128,44 @@ func (d *Domain) updateExpiryInfo(lookup func(string) (whois.Info, error)) (info
 		NameServers: append([]string(nil), info.NameServers...),
 	}
 	// TODO: check if date is after current date
+	return info, nil
+}
+
+// UpdateDns runs a DNS emptiness check and stores the latest DnsRecord.
+func (d *Domain) UpdateDns() (dnscheck.Info, error) {
+	return d.updateDns(lookupDns)
+}
+
+func (d *Domain) updateDns(lookup func(string) (dnscheck.Info, error)) (info dnscheck.Info, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("recovered in UpdateDns: %v", r)
+		}
+	}()
+	info, err = lookup(d.Hostname)
+	checked := now()
+	if err != nil {
+		msg := info.Message
+		if msg == "" {
+			msg = err.Error()
+		}
+		d.DNS = &DnsRecord{
+			CheckedAt: checked,
+			Empty:     false,
+			Outcome:   string(dnscheck.OutcomeError),
+			Error:     msg,
+		}
+		return info, err
+	}
+	d.DNS = &DnsRecord{
+		CheckedAt: checked,
+		Empty:     info.Empty,
+		Outcome:   string(info.Outcome),
+		A:         append([]string(nil), info.A...),
+		NS:        append([]string(nil), info.NS...),
+		MX:        append([]string(nil), info.MX...),
+		TXT:       append([]string(nil), info.TXT...),
+	}
 	return info, nil
 }
 

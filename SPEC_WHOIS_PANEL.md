@@ -11,6 +11,7 @@ Primary population path: the **startup domain scan** (and other WHOIS paths: Ctr
 ### 1. WHOIS Panel (replaces Logo)
 
 - Constant `WHOIS_PANEL` (view `"whois"`), title `"WHOIS information"`.
+  - **Superseded for display title:** [SPEC_DNS_EMPTY.md](SPEC_DNS_EMPTY.md) renames the visible title to `"Domain Information"` (constant/view id unchanged in that v1).
 - Same layout as former Logo Panel (right third, top ~60%).
 - In `MainViews`; **not** in `tabViews` (display-only).
 
