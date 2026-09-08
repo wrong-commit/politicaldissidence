@@ -201,12 +201,13 @@ type Runner struct {
 }
 
 // TryRun starts a refresh if one is not already running and background is enabled.
-// If SKIP_BACKGROUND_WHOIS_LOOKUP=true, logs and returns a skipped Result without running.
+// If SKIP_BACKGROUND_WHOIS_LOOKUP=true and Force is false, logs and returns a skipped Result without running.
+// Force=true (manual recheck) bypasses the env skip.
 // If already running, returns ok=false.
 func (r *Runner) TryRun(mps []data.MP, deps Deps) (Result, bool) {
 	deps = deps.withDefaults()
 
-	if !BackgroundEnabled() {
+	if !deps.Force && !BackgroundEnabled() {
 		deps.Log.Info(FormatSkippedEnv())
 		return Result{Skipped: true}, true
 	}

@@ -215,6 +215,23 @@ func TestRunner_TryRun_EnvSkip(t *testing.T) {
 	}
 }
 
+func TestRunner_TryRun_ForceBypassesEnvSkip(t *testing.T) {
+	t.Setenv(EnvSkipBackgroundDNS, "true")
+	var called bool
+	r := &Runner{}
+	res, ok := r.TryRun([]data.MP{sampleMP("A", "B", "x.example", time.Time{})}, Deps{
+		UpdateDns: func(d *data.Domain) (dnscheck.Info, error) {
+			called = true
+			return dnscheck.Info{Hostname: d.Hostname, Outcome: dnscheck.OutcomeOK}, nil
+		},
+		Force: true,
+		Log:   &memLog{},
+	})
+	if !ok || res.Skipped || !called {
+		t.Fatalf("ok=%v res=%+v called=%v", ok, res, called)
+	}
+}
+
 func TestRunner_SingleFlight(t *testing.T) {
 	t.Setenv(EnvSkipBackgroundDNS, "")
 	r := &Runner{}

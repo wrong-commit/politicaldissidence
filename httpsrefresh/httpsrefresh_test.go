@@ -200,6 +200,23 @@ func TestRunner_TryRun_EnvSkip(t *testing.T) {
 	}
 }
 
+func TestRunner_TryRun_ForceBypassesEnvSkip(t *testing.T) {
+	t.Setenv(EnvSkipBackgroundHTTPS, "true")
+	var called bool
+	r := &Runner{}
+	res, ok := r.TryRun([]data.MP{sampleMP("A", "B", "x.example", time.Time{})}, Deps{
+		UpdateHttps: func(d *data.Domain) (httpscheck.Info, error) {
+			called = true
+			return httpscheck.Info{Status: httpscheck.StatusEnabled}, nil
+		},
+		Force: true,
+		Log:   &memLog{},
+	})
+	if !ok || res.Skipped || !called {
+		t.Fatalf("ok=%v res=%+v called=%v", ok, res, called)
+	}
+}
+
 func TestRunner_SingleFlight(t *testing.T) {
 	t.Setenv(EnvSkipBackgroundHTTPS, "")
 	r := &Runner{}

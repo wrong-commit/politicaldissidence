@@ -191,10 +191,11 @@ type Runner struct {
 }
 
 // TryRun starts an HTTPS refresh if one is not already running and background is enabled.
+// Force=true (manual recheck) bypasses the env skip.
 func (r *Runner) TryRun(mps []data.MP, deps Deps) (Result, bool) {
 	deps = deps.withDefaults()
 
-	if !BackgroundEnabled() {
+	if !deps.Force && !BackgroundEnabled() {
 		deps.Log.Info(FormatSkippedEnv())
 		return Result{Skipped: true}, true
 	}

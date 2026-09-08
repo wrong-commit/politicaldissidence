@@ -66,13 +66,15 @@ func (ui *UI) onWhoisLookup(mpName string, info whois.Info, err error) {
 }
 
 // startBackgroundWhois runs a one-shot background WHOIS refresh after load.
-// Honours SKIP_BACKGROUND_WHOIS_LOOKUP=true.
-func (ui *UI) startBackgroundWhois() {
+// Honours SKIP_BACKGROUND_WHOIS_LOOKUP=true unless force is true.
+func (ui *UI) startBackgroundWhois(force bool) {
 	if ui.state.all == nil {
 		return
 	}
-	deps := ui.whoisRefreshDeps(false, refresh.DefaultLookupDelay, true)
-	_, _ = ui.whoisRunner.TryRun(*ui.state.all, deps)
+	deps := ui.whoisRefreshDeps(force, refresh.DefaultLookupDelay, true)
+	if _, ok := ui.whoisRunner.TryRun(*ui.state.all, deps); !ok {
+		ui.whoisLog("WHOIS refresh already running", false)
+	}
 	ui.refreshDomainPanel()
 	ui.refreshWhoisPanel()
 }

@@ -31,9 +31,9 @@ func InitApp() {
 
 	ui.started = true
 	ui.log(ui.startupLog, false)
-	go ui.startBackgroundWhois()
-	go ui.startBackgroundDns()
-	go ui.startBackgroundHttps()
+	go ui.startBackgroundWhois(false)
+	go ui.startBackgroundDns(false)
+	go ui.startBackgroundHttps(false)
 	ui.Loop()
 	defer func() { fmt.Println(ui.consoleLog) }()
 }
@@ -245,6 +245,24 @@ func (ui *UI) checkDomain() error {
 	_ = dnsrefresh.Run([]data.MP{one}, ui.dnsRefreshDeps(true, 0, false))
 	_ = httpsrefresh.Run([]data.MP{one}, ui.httpsRefreshDeps(true, 0, false))
 	return ui.setPanelView(DOMAIN_PANEL)
+}
+
+// rerunBackgroundChecks kicks WHOIS, DNS, and HTTPS background scans for all domains.
+// When force is false, fresh lastChecked / checkedAt values are skipped (same as startup).
+// When force is true, every domain is rechecked and SKIP_BACKGROUND_* env skips are ignored.
+func (ui *UI) rerunBackgroundChecks(force bool) error {
+	if ui.state.all == nil {
+		return ui.log("Could not start domain checks: no MPs loaded", true)
+	}
+	if force {
+		_ = ui.log("Force-checking all domains (WHOIS/DNS/HTTPS)", false)
+	} else {
+		_ = ui.log("Rechecking domains (WHOIS/DNS/HTTPS), skipping fresh lastChecked", false)
+	}
+	go ui.startBackgroundWhois(force)
+	go ui.startBackgroundDns(force)
+	go ui.startBackgroundHttps(force)
+	return nil
 }
 
 // addDomainModalTest confirms the domain in the ADD_DOMAIN_PANEL and adds it.

@@ -363,6 +363,23 @@ func TestRunner_EnvSkip(t *testing.T) {
 	}
 }
 
+func TestRunner_ForceBypassesEnvSkip(t *testing.T) {
+	t.Setenv(EnvSkipBackgroundWhois, "true")
+	r := &Runner{}
+	calls := 0
+	res, ok := r.TryRun([]data.MP{sampleMP("A", "B", "x.example", time.Time{})}, Deps{
+		UpdateExpiry: func(d *data.Domain) (whois.Info, error) {
+			calls++
+			return whois.Info{Hostname: d.Hostname}, nil
+		},
+		Force: true,
+		Log:   &memLog{},
+	})
+	if !ok || res.Skipped || calls != 1 {
+		t.Fatalf("ok=%v res=%+v calls=%d", ok, res, calls)
+	}
+}
+
 func TestBackgroundEnabled(t *testing.T) {
 	t.Setenv(EnvSkipBackgroundWhois, "")
 	if !BackgroundEnabled() {

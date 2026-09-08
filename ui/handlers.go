@@ -135,6 +135,8 @@ var keyHandlers = &handlers{
 	{nil, gocui.KeyCtrlS, "<CTRL>+s", "Save ", onSave},
 	// 	ctrl r - reload
 	{nil, gocui.KeyCtrlR, "<CTRL>+r", "Reload ", onReload},
+	// 	ctrl p - force recheck all domains (ignore lastChecked)
+	{nil, gocui.KeyCtrlP, "<CTRL>+p", "Force recheck all domains (WHOIS/DNS/HTTPS)", onForceRecheckDomains},
 	// Domain Information (whois) panel scroll — global; panel is not focusable
 	{nil, gocui.KeyPgup, "<PGUP>", "Scroll Domain Information up", onWhoisPageUp},
 	{nil, gocui.KeyPgdn, "<PGDN>", "Scroll Domain Information down", onWhoisPageDown},
@@ -145,6 +147,13 @@ func onCheckDomain(ui *UI, wrap bool) Fn {
 	// ui.log("[*] register onCheckDomain", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
 		return ui.checkDomain()
+	}
+}
+
+// onForceRecheckDomains force-rechecks all domains, ignoring lastChecked / freshness.
+func onForceRecheckDomains(ui *UI, wrap bool) Fn {
+	return func(*gocui.Gui, *gocui.View) error {
+		return ui.rerunBackgroundChecks(true)
 	}
 }
 

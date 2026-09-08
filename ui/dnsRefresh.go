@@ -53,13 +53,15 @@ func (ui *UI) onDnsLookup(mpName string, info dnscheck.Info, err error) {
 }
 
 // startBackgroundDns runs a one-shot background DNS refresh after load.
-// Honours SKIP_BACKGROUND_DNS_LOOKUP=true.
-func (ui *UI) startBackgroundDns() {
+// Honours SKIP_BACKGROUND_DNS_LOOKUP=true unless force is true.
+func (ui *UI) startBackgroundDns(force bool) {
 	if ui.state.all == nil {
 		return
 	}
-	deps := ui.dnsRefreshDeps(false, dnsrefresh.DefaultLookupDelay, true)
-	_, _ = ui.dnsRunner.TryRun(*ui.state.all, deps)
+	deps := ui.dnsRefreshDeps(force, dnsrefresh.DefaultLookupDelay, true)
+	if _, ok := ui.dnsRunner.TryRun(*ui.state.all, deps); !ok {
+		ui.whoisLog("DNS refresh already running", false)
+	}
 	ui.refreshDomainPanel()
 	ui.refreshWhoisPanel()
 }
