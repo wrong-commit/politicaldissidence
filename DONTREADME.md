@@ -97,6 +97,7 @@ See [KEYBOARD_SHORTCUTS.md](KEYBOARD_SHORTCUTS.md).
         - [x] bing
         - [ ] bypass google/ddg rate limit 
         - [x] pagination
+        - [x] automatic fallthrough to other domains when search fails
     - [x] Allow CRUD to set domain to MP
     - [x] WHOIS lookup to check domain
         - [x] Perform WHOIS and get expiry date

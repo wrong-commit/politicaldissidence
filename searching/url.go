@@ -33,39 +33,50 @@ func debugLog(format string, args ...interface{}) {
 }
 
 func (u UrlSearcher) Search(term string) ([]Link, error) {
-	found, err := duckduck{}.Go(term, 0)
-	if err == nil && len(found) > 0 {
-		return found, nil
-	}
-
-	// DuckDuckGo often serves a bot-challenge page to automated clients.
-	// Fall back to Bing so non-UI callers still get selectable URLs.
-	bingLinks, bingErr := bing{}.Go(term, 0)
-	if bingErr == nil && len(bingLinks) > 0 {
-		return bingLinks, nil
-	}
-
-	if err != nil {
-		if bingErr != nil {
-			return nil, fmt.Errorf("duckduckgo: %v; bing: %w", err, bingErr)
-		}
-		return nil, err
-	}
-	if bingErr != nil {
-		return nil, bingErr
-	}
-	return nil, fmt.Errorf("no search results for %q", term)
+	// Prefer DDG then Bing (bot challenges are common on automated DDG).
+	links, _, err := u.SearchPage(term, 0, EngineDuckDuckGo)
+	return links, err
 }
 
 // SearchPage fetches one page of results for the given engine (0-based page).
 // Used by g / ← / → / engine / term toggles.
-func (u UrlSearcher) SearchPage(term string, page int, engine Engine) ([]Link, error) {
-	switch engine.Normalize() {
+// When DuckDuckGo fails or returns no links, falls back to Bing for the same page.
+// used is the engine that produced the returned links (Bing when fallback succeeds).
+func (u UrlSearcher) SearchPage(term string, page int, engine Engine) (links []Link, used Engine, err error) {
+	engine = engine.Normalize()
+	switch engine {
 	case EngineDuckDuckGo:
-		return duckduck{}.Go(term, page)
+		found, ddgErr := duckduck{}.Go(term, page)
+		var bingLinks []Link
+		var bingErr error
+		if ddgErr != nil || len(found) == 0 {
+			bingLinks, bingErr = bing{}.Go(term, page)
+		}
+		return coalesceDDGThenBing(found, ddgErr, bingLinks, bingErr)
 	default:
-		return bing{}.Go(term, page)
+		links, err := bing{}.Go(term, page)
+		return links, EngineBing, err
 	}
+}
+
+// coalesceDDGThenBing picks DDG results when usable, otherwise Bing.
+func coalesceDDGThenBing(ddgLinks []Link, ddgErr error, bingLinks []Link, bingErr error) ([]Link, Engine, error) {
+	if ddgErr == nil && len(ddgLinks) > 0 {
+		return ddgLinks, EngineDuckDuckGo, nil
+	}
+	if bingErr == nil && len(bingLinks) > 0 {
+		return bingLinks, EngineBing, nil
+	}
+	if ddgErr != nil {
+		if bingErr != nil {
+			return nil, EngineDuckDuckGo, fmt.Errorf("duckduckgo: %v; bing: %w", ddgErr, bingErr)
+		}
+		return nil, EngineDuckDuckGo, ddgErr
+	}
+	if bingErr != nil {
+		return nil, EngineDuckDuckGo, bingErr
+	}
+	return nil, EngineDuckDuckGo, fmt.Errorf("no search results")
 }
 
 // assertRequest returns an error if the request is invalid

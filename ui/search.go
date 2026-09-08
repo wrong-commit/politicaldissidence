@@ -158,10 +158,11 @@ func (ui *UI) refetchURLSearch(g *gocui.Gui, term string, page int) error {
 
 // fetchSearchPage runs SearchPage off the UI thread, then updates modals on the main loop.
 // On failure, priorLinks/priorPage (when priorLinks != nil) restore the previous Select a URL page.
+// When DuckDuckGo fails and Bing succeeds, session prefs switch to Bing so later guesses keep working.
 func (ui *UI) fetchSearchPage(g *gocui.Gui, term string, page int, priorLinks *[]searching.Link, priorPage int, mpName string) {
 	ui.ensureSearchPrefs()
 	engine := ui.state.searchPrefs.Engine()
-	links, err := searching.UrlSearcher{}.SearchPage(term, page, engine)
+	links, used, err := searching.UrlSearcher{}.SearchPage(term, page, engine)
 
 	g.Update(func(g *gocui.Gui) error {
 		if cerr := ui.closeModal(SEARCHING_MODAL); cerr != nil {
@@ -177,6 +178,11 @@ func (ui *UI) fetchSearchPage(g *gocui.Gui, term string, page int, priorLinks *[
 			return ui.reopenURLListAfterPageFailure(g, priorLinks, priorPage)
 		}
 
+		if used != engine && used == searching.EngineBing {
+			ui.state.searchPrefs.engine = searching.EngineBing
+			_ = ui.log(fmt.Sprintf("%s failed; fell back to Bing", engine.Label()), false)
+		}
+
 		ui.state.searchState.term = term
 		ui.state.searchState.page = page
 		ui.state.searchState.result = &links
@@ -184,7 +190,7 @@ func (ui *UI) fetchSearchPage(g *gocui.Gui, term string, page int, priorLinks *[
 		if mpName != "" {
 			label = mpName
 		}
-		_ = ui.log(fmt.Sprintf("Found %d links for <%s> (page %d)", len(links), label, page+1), false)
+		_ = ui.log(fmt.Sprintf("Found %d links for <%s> (page %d · %s)", len(links), label, page+1, used.Short()), false)
 		if err := ui.toggleListUrlsModal(g); err != nil {
 			return ui.log(fmt.Sprintf("Could not open URL list modal: %v", err), true)
 		}

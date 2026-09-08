@@ -15,9 +15,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:48:42.9459364+10:00",
+         "lastChecked": "2026-09-09T08:53:41.4440459+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:48:42.9459364+10:00",
+           "checkedAt": "2026-09-09T08:53:41.4440459+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -29,7 +29,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:42.4964658+10:00",
+           "checkedAt": "2026-09-09T08:53:40.9561281+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -53,7 +53,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:48:42.9875872+10:00",
+           "checkedAt": "2026-09-09T08:53:41.4710497+10:00",
            "status": "enabled",
            "notAfter": "2026-10-07T17:40:34Z",
            "apex": {
@@ -73,9 +73,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:48:44.3153998+10:00",
+         "lastChecked": "2026-09-09T08:53:42.9052888+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:48:44.3153998+10:00",
+           "checkedAt": "2026-09-09T08:53:42.9052888+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -87,7 +87,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:43.5026706+10:00",
+           "checkedAt": "2026-09-09T08:53:41.9828941+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -101,8 +101,8 @@
              "aspmx.l.google.com",
              "alt1.aspmx.l.google.com",
              "alt2.aspmx.l.google.com",
-             "alt3.aspmx.l.google.com",
-             "alt4.aspmx.l.google.com"
+             "alt4.aspmx.l.google.com",
+             "alt3.aspmx.l.google.com"
            ],
            "txt": [
              "google-site-verification=SEnocELh184pXdqukEpwIdXtwPDUnV3Cr4jyJ3DIeqA",
@@ -111,7 +111,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:48:44.4800524+10:00",
+           "checkedAt": "2026-09-09T08:53:42.548661+10:00",
            "status": "enabled",
            "notAfter": "2026-10-07T17:40:34Z",
            "apex": {
@@ -138,7 +138,67 @@
      "party": "LP",
      "state": "NSW",
      "level": "",
-     "domains": null
+     "domains": [
+       {
+         "hostname": "www.openaustralia.org.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-09T08:53:44.3689587+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T08:53:44.3689587+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-09-03T00:36:46Z",
+           "registrar": "Domain Directors Pty Ltd trading as Instra",
+           "nameServers": [
+             "jule.ns.cloudflare.com",
+             "will.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T08:53:42.9950056+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "104.20.40.230",
+             "172.66.166.90",
+             "2606:4700:10::ac42:a65a",
+             "2606:4700:10::6814:28e6"
+           ],
+           "ns": [
+             "jule.ns.cloudflare.com",
+             "will.ns.cloudflare.com"
+           ],
+           "mx": [
+             "smtp.google.com"
+           ],
+           "txt": [
+             "google-site-verification=1xl-YdNs-D67htH3q438bFSGf1ThVHap5vXIFS6J0dI",
+             "google-site-verification=Vd5DN8gzLQUkHOGNtGd6p_zPIb_df7QELe4me2tCnEM",
+             "facebook-domain-verification=9fhej8uj8j643zkpahnblrfsst6iz5",
+             "v=spf1 include:_spf1.oaf.org.au include:_spf.google.com include:spf.postal.oaf.org.au ~all",
+             "google-site-verification=NMrCE8wbE8mEodpPYd_RY30JbAu99A3HjWkyR6dmrK4"
+           ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T08:53:43.6136543+10:00",
+           "status": "enabled",
+           "notAfter": "2026-10-21T06:22:39Z",
+           "apex": {
+             "hostname": "openaustralia.org.au",
+             "status": "enabled",
+             "notAfter": "2026-10-21T06:22:39Z"
+           },
+           "www": {
+             "hostname": "www.openaustralia.org.au",
+             "status": "enabled",
+             "notAfter": "2026-10-21T06:22:39Z"
+           }
+         }
+       }
+     ]
    },
    {
      "honorific": "Hon",
@@ -156,9 +216,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:48:45.678355+10:00",
+         "lastChecked": "2026-09-09T08:53:45.8433812+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:48:45.678355+10:00",
+           "checkedAt": "2026-09-09T08:53:45.8433812+10:00",
            "status": [
              "clientdeleteprohibited",
              "serverdeleteprohibited",
@@ -175,7 +235,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:44.6148148+10:00",
+           "checkedAt": "2026-09-09T08:53:44.0684836+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -189,24 +249,24 @@
              "aph-gov-au.mail.protection.outlook.com"
            ],
            "txt": [
+             "ms-domain-verification=1c4384b6-0fb4-434e-8284-2bd557921546",
              "atlassian-domain-verification=9728cuQsps/RZhxfVrtIdWu0/hGK2ina9JYPW0GB74RPrq136sPsLEML0zgf9bKn",
+             "google-site-verification=oS-6VFCIfpBKGSFW1no0kZxHp002yjoENM7X_r00KOU",
+             "teamviewer-sso-verification=a63b23e3fed048599a0e832696cc4fa3",
+             "6m6sxr0jg15qfh8cc3wt50t9w8thrh7z",
+             "cisco-ci-domain-verification=75b1dfc8ee3cb24798f1924af4560a65d634baa7164c856bb97e8ff3f391dc7",
+             "MS=ms70069192",
+             "google-site-verification=EuJOHUtljnfXXhQfkAbUPR2YtXdknHsJ5QB1ou3Mpz8",
              "QdGEas65yCOdUNoSTeDyjHFIb6kyiHs+MaQX9SUZhigviXnVPDCve8HeAcb7SomejRVPXN/UDNSj0wdxc3rROA==",
              "adobe-idp-site-verification=5f928dec816fc641e5afbce25eb31d26709c5acb18d940bc9047fb3d517cac07",
-             "ms-domain-verification=1c4384b6-0fb4-434e-8284-2bd557921546",
-             "v=spf1 ip4:202.14.81.0/24 ip4:20.5.80.155 ip4:20.5.82.25 ip4:12.129.29.143 ip4:54.252.177.62 ip4:54.252.156.126 ip4:164.75.66.253 ip4:164.75.112.1 ip4:164.75.112.2 ip4:164.75.66.25 ip4:164.75.66.26 include:service-now.com include:spf.protection.outlo",
-             "MS=ms70069192",
-             "cisco-ci-domain-verification=75b1dfc8ee3cb24798f1924af4560a65d634baa7164c856bb97e8ff3f391dc7",
-             "teamviewer-sso-verification=a63b23e3fed048599a0e832696cc4fa3",
-             "google-site-verification=oS-6VFCIfpBKGSFW1no0kZxHp002yjoENM7X_r00KOU",
              "ms-domain-verification=11cbfb81-faa4-43d2-b1a9-902c19bc411e",
              "atlassian-domain-verification=9zwW0iT1isl7DjKsVZIZukkSCzeP6xOFpp9YZFSMCXk4dUqhV5eytHlpTpso/lWa",
-             "6m6sxr0jg15qfh8cc3wt50t9w8thrh7z",
-             "google-site-verification=EuJOHUtljnfXXhQfkAbUPR2YtXdknHsJ5QB1ou3Mpz8",
+             "v=spf1 ip4:202.14.81.0/24 ip4:20.5.80.155 ip4:20.5.82.25 ip4:12.129.29.143 ip4:54.252.177.62 ip4:54.252.156.126 ip4:164.75.66.253 ip4:164.75.112.1 ip4:164.75.112.2 ip4:164.75.66.25 ip4:164.75.66.26 include:service-now.com include:spf.protection.outlo",
              "_globalsign-domain-verification=QQxayo9PM33iKO4YsK8NoezfVXSJgqX13IteVvPJqJ"
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:48:45.6080548+10:00",
+           "checkedAt": "2026-09-09T08:53:44.7508469+10:00",
            "status": "enabled",
            "notAfter": "2026-12-11T23:59:59Z",
            "apex": {
@@ -239,9 +299,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:48:47.0931958+10:00",
+         "lastChecked": "2026-09-09T08:53:47.3073131+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:48:47.0931958+10:00",
+           "checkedAt": "2026-09-09T08:53:47.3073131+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -254,7 +314,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:45.6797172+10:00",
+           "checkedAt": "2026-09-09T08:53:45.1795737+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -270,7 +330,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:48:47.4087281+10:00",
+           "checkedAt": "2026-09-09T08:53:46.4844601+10:00",
            "status": "enabled",
            "notAfter": "2026-12-06T06:46:51Z",
            "apex": {
@@ -303,9 +363,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:48:48.4379029+10:00",
+         "lastChecked": "2026-09-09T08:53:48.7583373+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:48:48.4379029+10:00",
+           "checkedAt": "2026-09-09T08:53:48.7583373+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -317,7 +377,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:46.8047147+10:00",
+           "checkedAt": "2026-09-09T08:53:46.228975+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -336,7 +396,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:48:48.5027563+10:00",
+           "checkedAt": "2026-09-09T08:53:47.5914945+10:00",
            "status": "enabled",
            "notAfter": "2026-11-21T21:24:26Z",
            "apex": {
@@ -369,9 +429,9 @@
          "expiry": "2027-01-30T07:39:19Z",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:48:50.1939717+10:00",
+         "lastChecked": "2026-09-09T08:53:50.6076682+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:48:50.1939717+10:00",
+           "checkedAt": "2026-09-09T08:53:50.6076682+10:00",
            "status": [
              "ok"
            ],
@@ -385,14 +445,14 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:47.878961+10:00",
+           "checkedAt": "2026-09-09T08:53:47.2715271+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
-             "104.21.59.241",
              "172.67.185.115",
-             "2606:4700:3036::ac43:b973",
-             "2606:4700:3034::6815:3bf1"
+             "104.21.59.241",
+             "2606:4700:3034::6815:3bf1",
+             "2606:4700:3036::ac43:b973"
            ],
            "ns": [
              "cheryl.ns.cloudflare.com",
@@ -406,7 +466,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:48:49.5899763+10:00",
+           "checkedAt": "2026-09-09T08:53:48.6755671+10:00",
            "status": "enabled",
            "notAfter": "2026-11-26T18:40:44Z",
            "apex": {
@@ -439,9 +499,9 @@
          "expiry": "2027-08-07T03:48:55Z",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:48:52.115412+10:00",
+         "lastChecked": "2026-09-09T08:53:52.4490539+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:48:52.115412+10:00",
+           "checkedAt": "2026-09-09T08:53:52.4490539+10:00",
            "status": [
              "ok"
            ],
@@ -455,7 +515,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:48.8998068+10:00",
+           "checkedAt": "2026-09-09T08:53:48.3502326+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -473,7 +533,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:48:50.6707312+10:00",
+           "checkedAt": "2026-09-09T08:53:49.786581+10:00",
            "status": "enabled",
            "notAfter": "2026-10-30T09:28:11Z",
            "apex": {
@@ -506,9 +566,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:48:53.4560836+10:00",
+         "lastChecked": "2026-09-09T08:53:53.9045532+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:48:53.4560836+10:00",
+           "checkedAt": "2026-09-09T08:53:53.9045532+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -520,7 +580,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:49.9898741+10:00",
+           "checkedAt": "2026-09-09T08:53:49.3913048+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -535,7 +595,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:48:51.780729+10:00",
+           "checkedAt": "2026-09-09T08:53:50.8815935+10:00",
            "status": "enabled",
            "notAfter": "2026-12-04T13:31:25Z",
            "apex": {
@@ -568,9 +628,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:48:54.8415213+10:00",
+         "lastChecked": "2026-09-09T08:53:55.3716066+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:48:54.8415213+10:00",
+           "checkedAt": "2026-09-09T08:53:55.3716066+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -585,7 +645,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:51.0764139+10:00",
+           "checkedAt": "2026-09-09T08:53:50.4364311+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -601,7 +661,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:48:52.8711439+10:00",
+           "checkedAt": "2026-09-09T08:53:51.9653501+10:00",
            "status": "enabled",
            "notAfter": "2026-11-19T09:25:09Z",
            "apex": {
@@ -634,9 +694,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:48:56.2117686+10:00",
+         "lastChecked": "2026-09-09T08:53:56.843048+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:48:56.2117686+10:00",
+           "checkedAt": "2026-09-09T08:53:56.843048+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -648,7 +708,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:52.1509871+10:00",
+           "checkedAt": "2026-09-09T08:53:51.4779111+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -670,7 +730,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:48:54.6274405+10:00",
+           "checkedAt": "2026-09-09T08:53:53.7194104+10:00",
            "status": "enabled",
            "notAfter": "2026-11-17T02:53:46Z",
            "apex": {
@@ -705,22 +765,22 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-09T08:48:57.8684357+10:00",
+           "checkedAt": "2026-09-09T08:53:58.581842+10:00",
            "error": "Could not parse \u003cau.linkedin.com\u003e"
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:53.2498768+10:00",
+           "checkedAt": "2026-09-09T08:53:52.5587892+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
              "104.18.41.41",
              "172.64.146.215",
-             "2a06:98c1:310b::ac40:92d7",
-             "2a06:98c1:3109::6812:2929"
+             "2a06:98c1:3109::6812:2929",
+             "2a06:98c1:310b::ac40:92d7"
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:48:55.6891845+10:00",
+           "checkedAt": "2026-09-09T08:53:54.769774+10:00",
            "status": "enabled",
            "notAfter": "2026-10-02T23:59:59Z",
            "apex": {
@@ -754,9 +814,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:48:59.2173673+10:00",
+         "lastChecked": "2026-09-09T08:54:00.043413+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:48:59.2173673+10:00",
+           "checkedAt": "2026-09-09T08:54:00.043413+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -769,7 +829,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:54.4203617+10:00",
+           "checkedAt": "2026-09-09T08:53:53.6053714+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -785,7 +845,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:48:56.7933994+10:00",
+           "checkedAt": "2026-09-09T08:53:55.9264224+10:00",
            "status": "enabled",
            "notAfter": "2026-11-02T03:19:14Z",
            "apex": {
@@ -818,9 +878,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:49:00.5860252+10:00",
+         "lastChecked": "2026-09-09T08:54:01.5008867+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:49:00.5860252+10:00",
+           "checkedAt": "2026-09-09T08:54:01.5008867+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -833,7 +893,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:55.5708509+10:00",
+           "checkedAt": "2026-09-09T08:53:54.6277666+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -856,7 +916,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:48:58.6313134+10:00",
+           "checkedAt": "2026-09-09T08:53:57.670706+10:00",
            "status": "enabled",
            "notAfter": "2026-10-20T06:32:53Z",
            "apex": {
@@ -903,11 +963,11 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-09T08:49:02.2454512+10:00",
+           "checkedAt": "2026-09-09T08:54:03.2996678+10:00",
            "error": "Could not get WHOIS for \u003cjimchalmers.org\u003e"
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:56.6562665+10:00",
+           "checkedAt": "2026-09-09T08:53:55.6437387+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -931,7 +991,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:48:59.7210814+10:00",
+           "checkedAt": "2026-09-09T08:53:58.7619714+10:00",
            "status": "enabled",
            "notAfter": "2026-12-03T20:04:32Z",
            "apex": {
@@ -1012,9 +1072,9 @@
          "expiry": "2027-01-30T07:39:19Z",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:49:03.9868732+10:00",
+         "lastChecked": "2026-09-09T08:54:05.1264403+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:49:03.9868732+10:00",
+           "checkedAt": "2026-09-09T08:54:05.1264403+10:00",
            "status": [
              "ok"
            ],
@@ -1028,14 +1088,14 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:57.6648232+10:00",
+           "checkedAt": "2026-09-09T08:53:56.6761586+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
-             "104.21.59.241",
              "172.67.185.115",
-             "2606:4700:3036::ac43:b973",
-             "2606:4700:3034::6815:3bf1"
+             "104.21.59.241",
+             "2606:4700:3034::6815:3bf1",
+             "2606:4700:3036::ac43:b973"
            ],
            "ns": [
              "cheryl.ns.cloudflare.com",
@@ -1049,7 +1109,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:49:00.8021923+10:00",
+           "checkedAt": "2026-09-09T08:53:59.8468556+10:00",
            "status": "enabled",
            "notAfter": "2026-11-26T18:40:44Z",
            "apex": {
@@ -1082,9 +1142,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:49:05.3976099+10:00",
+         "lastChecked": "2026-09-09T08:54:06.6236724+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:49:05.3976099+10:00",
+           "checkedAt": "2026-09-09T08:54:06.6236724+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -1096,7 +1156,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:58.7513648+10:00",
+           "checkedAt": "2026-09-09T08:53:57.6791255+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -1119,7 +1179,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:49:01.8895087+10:00",
+           "checkedAt": "2026-09-09T08:54:00.9317801+10:00",
            "status": "enabled",
            "notAfter": "2026-10-11T05:18:59Z",
            "apex": {
@@ -1152,9 +1212,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:49:06.7648409+10:00",
+         "lastChecked": "2026-09-09T08:54:08.0882875+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:49:06.7648409+10:00",
+           "checkedAt": "2026-09-09T08:54:08.0882875+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -1166,7 +1226,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:48:59.8454528+10:00",
+           "checkedAt": "2026-09-09T08:53:58.6956263+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -1184,7 +1244,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:49:02.9785158+10:00",
+           "checkedAt": "2026-09-09T08:54:02.0320898+10:00",
            "status": "enabled",
            "notAfter": "2026-11-12T02:55:19Z",
            "apex": {
@@ -1253,9 +1313,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:49:08.1367672+10:00",
+         "lastChecked": "2026-09-09T08:54:09.5910637+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:49:08.1367672+10:00",
+           "checkedAt": "2026-09-09T08:54:09.5910637+10:00",
            "status": [
              "ok"
            ],
@@ -1267,7 +1327,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:49:00.9329846+10:00",
+           "checkedAt": "2026-09-09T08:53:59.7247834+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -1286,7 +1346,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:49:04.0615965+10:00",
+           "checkedAt": "2026-09-09T08:54:03.1219786+10:00",
            "status": "enabled",
            "notAfter": "2026-11-09T06:18:25Z",
            "apex": {
@@ -1343,9 +1403,9 @@
          "expiry": "2027-05-17T07:39:36Z",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:49:09.9397028+10:00",
+         "lastChecked": "2026-09-09T08:54:11.4669264+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:49:09.9397028+10:00",
+           "checkedAt": "2026-09-09T08:54:11.4669264+10:00",
            "status": [
              "ok"
            ],
@@ -1359,7 +1419,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:49:02.0313386+10:00",
+           "checkedAt": "2026-09-09T08:54:00.7276977+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -1382,7 +1442,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:49:05.163753+10:00",
+           "checkedAt": "2026-09-09T08:54:04.2508813+10:00",
            "status": "enabled",
            "notAfter": "2026-11-05T15:35:58Z",
            "apex": {
@@ -1481,7 +1541,64 @@
      "party": "LP",
      "state": "NSW",
      "level": "",
-     "domains": null
+     "domains": [
+       {
+         "hostname": "www.paulfletcher.com.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-09T08:54:12.9451269+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T08:54:12.9451269+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-09-08T19:12:30Z",
+           "registrar": "Web Address Registration Pty Ltd",
+           "nameServers": [
+             "ian.ns.cloudflare.com",
+             "may.ns.cloudflare.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T08:54:01.7363169+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "104.21.64.40",
+             "172.67.175.236",
+             "2606:4700:3035::6815:4028",
+             "2606:4700:3037::ac43:afec"
+           ],
+           "ns": [
+             "may.ns.cloudflare.com",
+             "ian.ns.cloudflare.com"
+           ],
+           "mx": [
+             "smtp.google.com"
+           ],
+           "txt": [
+             "google-site-verification=k3WsXrw4m1fzsF5fbJuvXTuISi2-Ieg_uUwoONTvvT4",
+             "v=spf1 a mx a:amazonses.com ip4:13.210.167.166 include:spf.forwardemail.net ip4:54.253.230.120 ~all"
+           ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T08:54:05.3313393+10:00",
+           "status": "enabled",
+           "notAfter": "2026-12-01T12:18:00Z",
+           "apex": {
+             "hostname": "paulfletcher.com.au",
+             "status": "enabled",
+             "notAfter": "2026-12-01T12:18:00Z"
+           },
+           "www": {
+             "hostname": "www.paulfletcher.com.au",
+             "status": "enabled",
+             "notAfter": "2026-12-01T12:18:00Z"
+           }
+         }
+       }
+     ]
    },
    {
      "honorific": "Ms",
@@ -1799,9 +1916,9 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "2026-09-09T08:49:11.2888611+10:00",
+         "lastChecked": "2026-09-09T08:54:14.4158382+10:00",
          "whois": {
-           "checkedAt": "2026-09-09T08:49:11.2888611+10:00",
+           "checkedAt": "2026-09-09T08:54:14.4158382+10:00",
            "status": [
              "serverrenewprohibited"
            ],
@@ -1813,7 +1930,7 @@
            ]
          },
          "dns": {
-           "checkedAt": "2026-09-09T08:49:03.1135382+10:00",
+           "checkedAt": "2026-09-09T08:54:02.7916691+10:00",
            "empty": false,
            "outcome": "ok",
            "a": [
@@ -1828,7 +1945,7 @@
            ]
          },
          "https": {
-           "checkedAt": "2026-09-09T08:49:06.2997447+10:00",
+           "checkedAt": "2026-09-09T08:54:06.4894033+10:00",
            "status": "enabled",
            "notAfter": "2026-10-29T18:08:55Z",
            "apex": {
