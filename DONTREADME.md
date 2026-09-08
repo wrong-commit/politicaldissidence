@@ -24,6 +24,17 @@ go run ./cmd/checkdomains
 go run ./cmd/checkdomains -dry-run
 ```
 
+Or build and run the executable:
+
+```powershell
+go build -o checkdomains.exe ./cmd/checkdomains
+.\checkdomains.exe
+.\checkdomains.exe -dry-run
+.\checkdomains.exe -v
+.\checkdomains.exe -soon-days 90 -delay 1s
+.\checkdomains.exe -save=false
+```
+
 On macOS / Linux (or Git Bash), the `make` script builds then runs:
 
 ```sh
