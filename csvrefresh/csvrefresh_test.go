@@ -167,6 +167,9 @@ func TestRun_DownloadError(t *testing.T) {
 	if len(log.err) == 0 || !strings.Contains(log.err[0], "dial fail") {
 		t.Fatalf("err=%v", log.err)
 	}
+	if !strings.Contains(log.err[0], "https://example.org/page") {
+		t.Fatalf("expected failed URL in log: %v", log.err)
+	}
 }
 
 func TestRun_ParseError(t *testing.T) {

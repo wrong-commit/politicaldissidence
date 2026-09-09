@@ -12,7 +12,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-const defaultAphListingURL = "https://www.aph.gov.au/Senators_and_Members/Guidelines_for_Contacting_Senators_and_Members/Address_labels_and_CSV_files"
+const defaultAphListingURL = "https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members/Address_labels_and_CSV_files"
 
 // GetFunc fetches a URL and returns the response body bytes.
 type GetFunc func(rawURL string) ([]byte, error)
@@ -30,12 +30,12 @@ func DefaultGet(rawURL string) ([]byte, error) {
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%s: %w", rawURL, err)
 	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%s: %w", rawURL, err)
 	}
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		snippet := strings.TrimSpace(string(body))

@@ -22,6 +22,11 @@ func FormatError(reason string) string {
 	return fmt.Sprintf("ERROR CSV refresh: %s", reason)
 }
 
+// FormatURLError logs a fetch failure with the URL that failed to load.
+func FormatURLError(rawURL, reason string) string {
+	return fmt.Sprintf("ERROR CSV refresh: failed to load %s: %s", rawURL, reason)
+}
+
 func FormatParseError(reason string) string {
 	return fmt.Sprintf("ERROR CSV refresh: parse: %s", reason)
 }

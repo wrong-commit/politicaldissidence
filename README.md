@@ -155,7 +155,7 @@ See [KEYBOARD_SHORTCUTS.md](docs/KEYBOARD_SHORTCUTS.md).
     - [x] Cleanup CLI code base buginess / shit ness 
 
 
-[0] https://www.aph.gov.au/Senators_and_Members/Guidelines_for_Contacting_Senators_and_Members/Address_labels_and_CSV_files
+[0] https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members/Address_labels_and_CSV_files
 
 
 ### gocui references

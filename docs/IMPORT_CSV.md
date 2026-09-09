@@ -10,7 +10,7 @@ Federal senator and House of Representatives address-label CSVs are published he
 
 Related guidelines / CSV notes:
 
-[https://www.aph.gov.au/Senators_and_Members/Guidelines_for_Contacting_Senators_and_Members/Address_labels_and_CSV_files](https://www.aph.gov.au/Senators_and_Members/Guidelines_for_Contacting_Senators_and_Members/Address_labels_and_CSV_files)
+[https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members/Address_labels_and_CSV_files](https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members/Address_labels_and_CSV_files)
 
 Save the files somewhere under the project root (any path is fine; pass it to the flags below).
 

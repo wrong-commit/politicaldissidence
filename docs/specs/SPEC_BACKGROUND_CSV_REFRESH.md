@@ -61,7 +61,7 @@ Senators (default-shaped):
 
 ```json
 {
-  "csvSourceURL": "https://www.aph.gov.au/Senators_and_Members/Guidelines_for_Contacting_Senators_and_Members/Address_labels_and_CSV_files",
+  "csvSourceURL": "https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members/Address_labels_and_CSV_files",
   "csvFilename": "allsenel.csv",
   "format": "senators",
   "interval": "1h"
@@ -72,7 +72,7 @@ House of Reps members:
 
 ```json
 {
-  "csvSourceURL": "https://www.aph.gov.au/Senators_and_Members/Guidelines_for_Contacting_Senators_and_Members/Address_labels_and_CSV_files",
+  "csvSourceURL": "https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members/Address_labels_and_CSV_files",
   "csvFilename": "FamilynameRepsCSV.csv",
   "format": "members",
   "interval": "1h"

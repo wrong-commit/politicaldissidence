@@ -142,20 +142,20 @@ func Run(deps Deps) Result {
 
 	pageBody, err := deps.Get(cfg.CSVSourceURL)
 	if err != nil {
-		deps.Log.Error(FormatError(err.Error()))
+		deps.Log.Error(FormatURLError(cfg.CSVSourceURL, err.Error()))
 		return Result{}
 	}
 
 	csvURL, err := deps.FindURL(cfg.CSVSourceURL, cfg.CSVFilename, pageBody)
 	if err != nil {
-		deps.Log.Error(FormatError(err.Error()))
+		deps.Log.Error(FormatURLError(cfg.CSVSourceURL, err.Error()))
 		return Result{}
 	}
 	deps.Log.Debug(FormatDownloadURL(csvURL))
 
 	csvBody, err := deps.Get(csvURL)
 	if err != nil {
-		deps.Log.Error(FormatError(err.Error()))
+		deps.Log.Error(FormatURLError(csvURL, err.Error()))
 		return Result{}
 	}
 	deps.Log.Info(FormatDownloadOK(cfg.CSVFilename, len(csvBody)))
