@@ -55,6 +55,14 @@ go build -o mergeDatabases.exe ./cmd/mergeDatabases
 ```
 
 Details: [cmd/mergeDatabases/README.md](cmd/mergeDatabases/README.md) and [SPEC_MERGE_DATABASES.md](docs/specs/SPEC_MERGE_DATABASES.md).
+
+Dry-run CSV refresh (same path as TUI Ctrl+L; no save):
+
+```powershell
+go run ./cmd/csvrefresh -v
+```
+
+See [cmd/csvrefresh/README.md](cmd/csvrefresh/README.md).
 On macOS / Linux (or Git Bash), the `make` script builds then runs:
 
 ```sh
