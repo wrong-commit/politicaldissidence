@@ -123,6 +123,40 @@ On macOS / Linux (or Git Bash), the `make` script builds then runs:
 
 That script runs `go build` and, on success, `./politicaldissidence`.
 
+## Search terms (`search_terms.json`)
+
+Guess-domain search (**g**) loads query templates from `search_terms.json` next to the app. Each template is a Go `text/template` rendered from the selected MP. The file is reloaded when opening the search flow (no restart needed after edits). Missing or invalid config falls back to the two built-in terms (`SearchTerm1` / `SearchTerm2`).
+
+From Select a URL, **←** / **→** cycle terms (wrap at ends); last chosen term index is kept for the session.
+
+```json
+{
+  "terms": [
+    {
+      "id": "t1",
+      "label": "T1",
+      "template": "{{.NameWithHonorific}} member for {{.Electorate}} {{.Party}} "
+    },
+    {
+      "id": "t2",
+      "label": "T2",
+      "template": "{{.Name}} member for {{.Electorate}} {{.Party}} "
+    }
+  ]
+}
+```
+
+| Field | Required | Notes |
+| ----- | -------- | ----- |
+| `terms` | yes | One or more templates (must be non-empty) |
+| `terms[].id` | no | Stable slug for logs (default `T1`, `T2`, …) |
+| `terms[].label` | no | Short name for UI / console (default = `id` or `T{n}`) |
+| `terms[].template` | yes | Go `text/template` over MP fields (below) |
+
+Template placeholders: `{{.Honorific}}`, `{{.FirstName}}`, `{{.Surname}}`, `{{.OtherName}}`, `{{.PreferredName}}`, `{{.Electorate}}`, `{{.Party}}`, `{{.State}}`, `{{.Level}}`, `{{.Name}}`, `{{.NameWithHonorific}}`.
+
+Details: [SPEC_CUSTOM_SEARCH_TERMS.md](docs/specs/SPEC_CUSTOM_SEARCH_TERMS.md).
+
 ## Keyboard shortcuts
 
 See [KEYBOARD_SHORTCUTS.md](docs/KEYBOARD_SHORTCUTS.md).
@@ -143,6 +177,7 @@ See [ENVIRONMENT.md](docs/ENVIRONMENT.md) for all runtime env flags (background 
 - [Select a URL modal improvements](docs/specs/SPEC_SELECT_URL_MODAL.md)
 - [Select a URL search paging (v2)](docs/specs/SPEC_SELECT_URL_PAGING.md)
 - [Select a URL searcher controls (v3)](docs/specs/SPEC_SELECT_URL_SEARCHER_V3.md)
+- [Custom search terms](docs/specs/SPEC_CUSTOM_SEARCH_TERMS.md)
 - [Merge MP JSON databases](docs/specs/SPEC_MERGE_DATABASES.md)
 - [Hourly background CSV refresh](docs/specs/SPEC_BACKGROUND_CSV_REFRESH.md)
 
@@ -202,7 +237,8 @@ See [ENVIRONMENT.md](docs/ENVIRONMENT.md) for all runtime env flags (background 
         - [x] easy config for modifying for different files
         - [x] HTTPS Certificate Checks (see [SPEC_HTTPS_CERT.md](docs/specs/SPEC_HTTPS_CERT.md))
         - [x] Add HTTP Status Checks
-    - [ ] 
+    - [ ] Custom search terms JSON
+    - [ ] If I get bored: run nikto/wpscan/sqlmap against targets
 - [x] Maintainence 
     - [x] Detect when URL disappears (used statuses instead, works better for reporting)
     - [x] Alert when current list changes found/removed (added console logs when importing members)
