@@ -2,7 +2,7 @@
 
 ## Description
 A custom purpose TUI/CLI for tracking domains that might expire soon.
-- import any shape CSV file of targets
+- import any shape CSV file of targets, or predefined values
 - easily search DuckDuckGo/Bing from within the TUI to find websites for the target
 - check DNS for records indicating website handover to DNS registrar
 - check HTTPS certificate statuses to indicate for forgotten website
