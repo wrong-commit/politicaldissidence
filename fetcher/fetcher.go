@@ -18,8 +18,17 @@ const defaultAphListingURL = "https://www.aph.gov.au/Senators_and_Members/Guidel
 type GetFunc func(rawURL string) ([]byte, error)
 
 // DefaultGet performs an HTTP GET and requires a 2xx status.
+// Uses a generic Chrome User-Agent — APH (and similar) often return 403 to the Go default client.
 func DefaultGet(rawURL string) ([]byte, error) {
-	resp, err := http.Get(rawURL)
+	req, err := http.NewRequest(http.MethodGet, rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
+	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8")
+	req.Header.Set("Accept-Language", "en-US,en;q=0.9")
+
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +38,14 @@ func DefaultGet(rawURL string) ([]byte, error) {
 		return nil, err
 	}
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return nil, fmt.Errorf("HTTP %d for %s", resp.StatusCode, rawURL)
+		snippet := strings.TrimSpace(string(body))
+		if len(snippet) > 200 {
+			snippet = snippet[:200] + "…"
+		}
+		if snippet == "" {
+			return nil, fmt.Errorf("HTTP %d for %s", resp.StatusCode, rawURL)
+		}
+		return nil, fmt.Errorf("HTTP %d for %s: %s", resp.StatusCode, rawURL, snippet)
 	}
 	if len(body) == 0 {
 		return nil, fmt.Errorf("empty body for %s", rawURL)
