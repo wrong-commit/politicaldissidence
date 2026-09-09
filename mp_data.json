@@ -440,6 +440,50 @@
              "httpStatus": 200
            }
          }
+       },
+       {
+         "hostname": "searchnational.com.au",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "2026-09-09T13:04:48.0460113+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T13:04:48.0460113+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-15T22:52:03Z",
+           "registrar": "Web Address Registration Pty Ltd",
+           "nameServers": [
+             "ns1.a2hosting.com",
+             "ns2.a2hosting.com",
+             "ns3.a2hosting.com",
+             "ns4.a2hosting.com"
+           ]
+         },
+         "dns": {
+           "checkedAt": "2026-09-09T13:04:47.6891879+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "85.187.128.41"
+           ],
+           "ns": [
+             "ns1.a2hosting.com",
+             "ns2.a2hosting.com",
+             "ns4.a2hosting.com",
+             "ns3.a2hosting.com"
+           ],
+           "mx": [
+             "mx.zoho.com",
+             "mx2.zoho.com",
+             "mx3.zoho.com"
+           ],
+           "txt": [
+             "google-site-verification=5DnwQwbBhNQMMKJN0awtnhhqTTZmDLp-4c36H3HCZqY",
+             "v=spf1 include:zoho.com ~all"
+           ]
+         }
        }
      ]
    },
@@ -737,7 +781,7 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-09T12:46:22.6871065+10:00",
+           "checkedAt": "2026-09-09T13:04:42.0221088+10:00",
            "error": "Could not parse \u003cau.linkedin.com\u003e"
          },
          "dns": {
@@ -942,7 +986,7 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-09T12:46:24.4135029+10:00",
+           "checkedAt": "2026-09-09T13:04:43.8797236+10:00",
            "error": "Could not get WHOIS for \u003cjimchalmers.org\u003e"
          },
          "dns": {
@@ -1501,7 +1545,19 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "0001-01-01T00:00:00Z",
+         "lastChecked": "2026-09-09T13:04:45.4359848+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T13:04:45.4359848+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-15T18:35:34Z",
+           "registrar": "Synergy Wholesale Accreditations Pty Ltd",
+           "nameServers": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ]
+         },
          "dns": {
            "checkedAt": "2026-09-09T12:47:07.7027621+10:00",
            "empty": false,

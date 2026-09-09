@@ -1,9 +1,9 @@
 # Domain Sniper
 
 ## Description
-A custom purpose TUI/CLI for stealing domains that might expire soon.
-- import any shape CSV file of politicians
-- easily search DuckDuckGo/Bing from within the TUI to find websites
+A custom purpose TUI/CLI for tracking domains that might expire soon.
+- import any shape CSV file of targets
+- easily search DuckDuckGo/Bing from within the TUI to find websites for the target
 - check DNS for records indicating website handover to DNS registrar
 - check HTTPS certificate statuses to indicate for forgotten website
 - check WHOIS for expiry information and to see if its for sale
