@@ -117,7 +117,7 @@ See [KEYBOARD_SHORTCUTS.md](docs/KEYBOARD_SHORTCUTS.md).
 
 ## Environment variables
 
-See [ENVIRONMENT.md](docs/ENVIRONMENT.md) for all runtime env flags (background WHOIS/DNS/HTTPS, 30-minute periodic rechecks, CSV ticker).
+See [ENVIRONMENT.md](docs/ENVIRONMENT.md) for all runtime env flags (background WHOIS/DNS/HTTPS, 30-minute periodic rechecks, CSV ticker, title screen skip).
 
 ## Specs
 
@@ -136,7 +136,7 @@ See [ENVIRONMENT.md](docs/ENVIRONMENT.md) for all runtime env flags (background 
 
 ## TODO
 
-- [ ] Automating MP detection
+- [x] Automating MP detection
     - [x] Get list of Senators and Reps
         - [x] Parse HTML [0] 
         - [x] Fetch CSV files
@@ -161,7 +161,7 @@ See [ENVIRONMENT.md](docs/ENVIRONMENT.md) for all runtime env flags (background 
         - [x] Run the MP merge logic like cmd/mergeDatabases does
         - [x] Console Log when new members are added or merged
         - [x] Let the user save manually
-- [ ] CLI 
+- [ ] CLI/TUI
     - [x] Linking MP and domain
     - [x] Display list of MPs requiring linkage
     - [ ] Search engines

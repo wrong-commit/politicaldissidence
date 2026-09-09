@@ -32,6 +32,8 @@ type UI struct {
 	logTimer   *time.Timer
 	// True when application has started
 	started bool
+	// True while the startup title is the only UI (main panels not created yet)
+	titleOnly bool
 	// True when the log panel is expanded to full height
 	logExpanded bool
 	// UI/application state

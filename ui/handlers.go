@@ -166,6 +166,9 @@ func onRemoveDomain(ui *UI, wrap bool) Fn {
 // onForceRecheckDomains force-rechecks all domains, ignoring lastChecked / freshness.
 func onForceRecheckDomains(ui *UI, wrap bool) Fn {
 	return func(*gocui.Gui, *gocui.View) error {
+		if ui.titleScreenBlocking() {
+			return nil
+		}
 		return ui.rerunBackgroundChecks(true)
 	}
 }
@@ -173,6 +176,9 @@ func onForceRecheckDomains(ui *UI, wrap bool) Fn {
 // onCsvRefresh fetches/parses the configured CSV and merges into memory (Ctrl+S to save).
 func onCsvRefresh(ui *UI, wrap bool) Fn {
 	return func(*gocui.Gui, *gocui.View) error {
+		if ui.titleScreenBlocking() {
+			return nil
+		}
 		go ui.tryCsvRefresh()
 		return nil
 	}
@@ -258,6 +264,9 @@ func onNextDomain(ui *UI, _ bool) Fn {
 // onToggleLog expands or restores the log panel height.
 func onToggleLog(ui *UI, _ bool) Fn {
 	return func(*gocui.Gui, *gocui.View) error {
+		if ui.titleScreenBlocking() {
+			return nil
+		}
 		return ui.toggleLogExpanded()
 	}
 }
@@ -265,6 +274,9 @@ func onToggleLog(ui *UI, _ bool) Fn {
 // onPageUp scrolls the expanded log panel, or Domain Information when log is minimized.
 func onPageUp(ui *UI, _ bool) Fn {
 	return func(*gocui.Gui, *gocui.View) error {
+		if ui.titleScreenBlocking() {
+			return nil
+		}
 		if ui.logExpanded {
 			return ui.scrollLogPage(-1)
 		}
@@ -275,6 +287,9 @@ func onPageUp(ui *UI, _ bool) Fn {
 // onPageDown scrolls the expanded log panel, or Domain Information when log is minimized.
 func onPageDown(ui *UI, _ bool) Fn {
 	return func(*gocui.Gui, *gocui.View) error {
+		if ui.titleScreenBlocking() {
+			return nil
+		}
 		if ui.logExpanded {
 			return ui.scrollLogPage(1)
 		}
@@ -310,6 +325,9 @@ func (handlers handlers) ApplyKeyBindings(ui *UI, g *gocui.Gui) error {
 func onHelp(ui *UI, handler handlers) Fn {
 	// ui.log("[*] register onHelp", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
+		if ui.titleScreenBlocking() {
+			return nil
+		}
 		return ui.toggleHelp(g, handler.HelpContent(v.Name()))
 	}
 }
@@ -318,6 +336,9 @@ func onHelp(ui *UI, handler handlers) Fn {
 func onSave(ui *UI, wrap bool) Fn {
 	// ui.log("[*] register onSave", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
+		if ui.titleScreenBlocking() {
+			return nil
+		}
 		return ui.Save()
 	}
 }
@@ -326,6 +347,9 @@ func onSave(ui *UI, wrap bool) Fn {
 func onReload(ui *UI, wrap bool) Fn {
 	// ui.log("[*] register onReload", false)
 	return func(g *gocui.Gui, v *gocui.View) error {
+		if ui.titleScreenBlocking() {
+			return nil
+		}
 		return ui.Reload()
 	}
 }
@@ -334,11 +358,11 @@ func onReload(ui *UI, wrap bool) Fn {
 func onQuit(ui *UI, wrap bool) Fn {
 	//ui.log("[*] register onQuit", false)
 	return func(*gocui.Gui, *gocui.View) error {
-		if ui.currentModal == "" {
+		// Title screen is not dismissible — quit the app (same as no modal).
+		if ui.currentModal == "" || ui.currentModal == TITLE_PANEL {
 			return gocui.ErrQuit
-		} else {
-			return ui.closeOpenedModals([]string{ui.currentModal})
 		}
+		return ui.closeOpenedModals([]string{ui.currentModal})
 	}
 }
 
