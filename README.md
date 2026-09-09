@@ -1,17 +1,25 @@
 # Political Dissidence 
 
-A custom purpose TUI/CLI for
+A custom purpose TUI/CLI for stealing domains that might expire soon
 - import any shape CSV file of targets
-- easily search DuckDuckGo/Bing from within the TUI to find personal websites based
-- runs automated DNS/WHOIS/HTTPS status checks against any added host
+- easily search DuckDuckGo/Bing from within the TUI to find websites
+- check DNS for records indicating website handover to DNS registrar
+- check HTTPS certificate statuses to indicate for forgotten website
+- check WHOIS for expiry information and to see if its for sale
 - raise an alert if anything indicates the domain might be expiring soon
-- automatically scan DNS/WHOIS/HTTPS records
+- a fancy startup screen
 
 ## Generate source database
 
 Import APH CSVs into MP JSON: [IMPORT_CSV.md](docs/IMPORT_CSV.md).
 
 ## Build and run
+
+### Quickstart
+
+`go run main.go`
+
+### Build and installation details
 
 Requires [Go](https://go.dev/dl/) (module targets Go 1.17+).
 
@@ -190,6 +198,7 @@ See [ENVIRONMENT.md](docs/ENVIRONMENT.md) for all runtime env flags (background 
         - [x] easy config for modifying for different files
         - [x] HTTPS Certificate Checks (see [SPEC_HTTPS_CERT.md](docs/specs/SPEC_HTTPS_CERT.md))
         - [x] Add HTTP Status Checks
+    - [ ] 
 - [x] Maintainence 
     - [x] Detect when URL disappears (used statuses instead, works better for reporting)
     - [x] Alert when current list changes found/removed (added console logs when importing members)
