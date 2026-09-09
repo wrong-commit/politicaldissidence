@@ -10,6 +10,8 @@ A custom purpose TUI/CLI for stealing domains that might expire soon.
 - raise an alert if anything indicates the domain might be expiring soon
 - a fancy startup screen
 
+![Main TUI](screenshots/main.png)
+
 ## What is the purpose of this?
 To build a build a toy app in a TUI. Originally I started this by hand to improve my go and TUI skills, but with LLM assisted development features were added much faster. I have no clue what to do with this tool now. 
 
