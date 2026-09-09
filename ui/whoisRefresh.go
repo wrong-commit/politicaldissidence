@@ -67,11 +67,12 @@ func (ui *UI) onWhoisLookup(mpName string, info whois.Info, err error) {
 
 // startBackgroundWhois runs a one-shot background WHOIS refresh after load.
 // Honours SKIP_BACKGROUND_WHOIS_LOOKUP=true unless force is true.
+// Updates stay in memory until the user saves (Ctrl+S).
 func (ui *UI) startBackgroundWhois(force bool) {
 	if ui.state.all == nil {
 		return
 	}
-	deps := ui.whoisRefreshDeps(force, refresh.DefaultLookupDelay, true)
+	deps := ui.whoisRefreshDeps(force, refresh.DefaultLookupDelay, false)
 	if _, ok := ui.whoisRunner.TryRun(*ui.state.all, deps); !ok {
 		ui.whoisLog("WHOIS refresh already running", false)
 	}

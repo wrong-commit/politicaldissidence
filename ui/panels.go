@@ -168,9 +168,29 @@ func (ui *UI) Layout(g *gocui.Gui) error {
 		return err
 	}
 
+	// When expanded, draw the log last so it covers the other panels.
+	views := MainViews
+	if ui.logExpanded {
+		views = make([]string, 0, len(MainViews))
+		for _, name := range MainViews {
+			if name != LOG_PANEL {
+				views = append(views, name)
+			}
+		}
+		views = append(views, LOG_PANEL)
+	}
+
 	// Initialize each panel
-	for _, view := range MainViews {
+	for _, view := range views {
 		if _, err := ui.initPanelView(view); err != nil {
+			return err
+		}
+	}
+
+	// SetView only updates coordinates; z-order follows creation order, so
+	// LIST/DOMAIN stay above LOG unless we explicitly raise it.
+	if ui.logExpanded {
+		if _, err := ui.gui.SetViewOnTop(LOG_PANEL); err != nil && err != gocui.ErrUnknownView {
 			return err
 		}
 	}
@@ -198,6 +218,10 @@ func (ui *UI) Layout(g *gocui.Gui) error {
 // initPanelView initializes the panel view.
 func (ui *UI) initPanelView(name string) (*gocui.View, error) {
 	maxX, maxY := ui.gui.Size()
+
+	if ui.logExpanded && name == LOG_PANEL {
+		return ui.createPanelView(name, 0, 0, maxX-1, maxY-1)
+	}
 
 	p := panelViews[name]
 
@@ -328,6 +352,9 @@ func (ui *UI) createPanelView(name string, x1, y1, x2, y2 int) (*gocui.View, err
 	if name == LIST_PANEL {
 		v.Title = fmt.Sprintf("%s [%s]", p.title, ui.state.filter)
 	}
+	if name == LOG_PANEL {
+		v.Title = ui.logPanelTitle()
+	}
 	v.Editable = p.editable
 
 	// generate content for panels
@@ -364,7 +391,11 @@ func (ui *UI) createPanelView(name string, x1, y1, x2, y2 int) (*gocui.View, err
 
 	switch name {
 	case LOG_PANEL:
-		v.Autoscroll = true
+		// Minimized: always follow newest lines. Expanded: keep current Autoscroll
+		// so live updates continue until the user pages away from the bottom.
+		if !ui.logExpanded {
+			v.Autoscroll = true
+		}
 		break
 	case DOMAIN_PANEL:
 		v.Highlight = true
@@ -606,7 +637,43 @@ func (ui *UI) prevView(wrap bool) error {
 // scrollWhoisPage scrolls the Domain Information panel by one page.
 // direction < 0 scrolls up; direction > 0 scrolls down.
 func (ui *UI) scrollWhoisPage(direction int) error {
-	v, err := ui.gui.View(WHOIS_PANEL)
+	return ui.scrollViewPage(WHOIS_PANEL, direction)
+}
+
+// scrollLogPage scrolls the Log panel by one page.
+// direction < 0 scrolls up; direction > 0 scrolls down.
+// Paging up disables autoscroll; reaching the bottom re-enables it.
+func (ui *UI) scrollLogPage(direction int) error {
+	v, err := ui.gui.View(LOG_PANEL)
+	if err != nil {
+		return nil
+	}
+	if direction < 0 {
+		v.Autoscroll = false
+	}
+	if err := ui.scrollViewPage(LOG_PANEL, direction); err != nil {
+		return err
+	}
+	_, sy := v.Size()
+	if sy <= 0 {
+		return nil
+	}
+	_, oy := v.Origin()
+	lines := len(v.ViewBufferLines())
+	maxOy := lines - sy
+	if maxOy < 0 {
+		maxOy = 0
+	}
+	if direction > 0 && oy >= maxOy {
+		v.Autoscroll = true
+	}
+	return nil
+}
+
+// scrollViewPage scrolls named view by one page of visible rows.
+// direction < 0 scrolls up; direction > 0 scrolls down.
+func (ui *UI) scrollViewPage(name string, direction int) error {
+	v, err := ui.gui.View(name)
 	if err != nil {
 		return nil
 	}
@@ -628,6 +695,44 @@ func (ui *UI) scrollWhoisPage(direction int) error {
 		newOy = maxOy
 	}
 	return v.SetOrigin(ox, newOy)
+}
+
+// logPanelTitle returns the Log Panel frame title, including expand/scroll hints.
+func (ui *UI) logPanelTitle() string {
+	if ui.logExpanded {
+		return "Log Panel — l: collapse, <PGUP>: up, <PGDN>: down"
+	}
+	return "Log Panel — l: expand"
+}
+
+// toggleLogExpanded expands the log panel to full height, or restores the
+// normal layout. Always resets the log viewport to the bottom.
+func (ui *UI) toggleLogExpanded() error {
+	ui.logExpanded = !ui.logExpanded
+	if err := ui.Layout(ui.gui); err != nil {
+		return err
+	}
+	return ui.resetLogToBottom()
+}
+
+// resetLogToBottom scrolls the log panel to the newest lines and restores autoscroll.
+func (ui *UI) resetLogToBottom() error {
+	v, err := ui.gui.View(LOG_PANEL)
+	if err != nil {
+		return nil
+	}
+	v.Autoscroll = true
+	_, sy := v.Size()
+	if sy <= 0 {
+		return nil
+	}
+	ox, _ := v.Origin()
+	lines := len(v.ViewBufferLines())
+	maxOy := lines - sy
+	if maxOy < 0 {
+		maxOy = 0
+	}
+	return v.SetOrigin(ox, maxOy)
 }
 
 // ClearView clears the panel view.

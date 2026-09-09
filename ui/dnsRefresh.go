@@ -54,11 +54,12 @@ func (ui *UI) onDnsLookup(mpName string, info dnscheck.Info, err error) {
 
 // startBackgroundDns runs a one-shot background DNS refresh after load.
 // Honours SKIP_BACKGROUND_DNS_LOOKUP=true unless force is true.
+// Updates stay in memory until the user saves (Ctrl+S).
 func (ui *UI) startBackgroundDns(force bool) {
 	if ui.state.all == nil {
 		return
 	}
-	deps := ui.dnsRefreshDeps(force, dnsrefresh.DefaultLookupDelay, true)
+	deps := ui.dnsRefreshDeps(force, dnsrefresh.DefaultLookupDelay, false)
 	if _, ok := ui.dnsRunner.TryRun(*ui.state.all, deps); !ok {
 		ui.whoisLog("DNS refresh already running", false)
 	}
