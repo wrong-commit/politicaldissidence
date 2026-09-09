@@ -2,7 +2,7 @@
 
 A custom purpose TUI/CLI for
 - import any shape CSV file of targets
-- easily search DuckDuckGo/Bing from within the TUI to find personal websites
+- easily search DuckDuckGo/Bing from within the TUI to find personal websites based
 - runs automated DNS/WHOIS/HTTPS status checks against any added host
 - raise an alert if anything indicates the domain might be expiring soon
 - automatically scan DNS/WHOIS/HTTPS records
@@ -63,7 +63,40 @@ go build -o mergeDatabases.exe ./cmd/mergeDatabases
 
 Details: [cmd/mergeDatabases/README.md](cmd/mergeDatabases/README.md) and [SPEC_MERGE_DATABASES.md](docs/specs/SPEC_MERGE_DATABASES.md).
 
-Dry-run CSV refresh (same path as TUI Ctrl+L; no save):
+## CSV refresh (`csv_refresh.json`)
+
+Ctrl+L (and the optional hourly ticker) fetch/parse **every** entry in `csv_refresh.json` and merge into memory. The whole file is reloaded each run (no restart needed for URL / filename / format changes). Nothing is written until **Ctrl+S**.
+
+```json
+{
+  "interval": "1h",
+  "entries": [
+    {
+      "csvSourceURL": "https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members/Address_labels_and_CSV_files",
+      "csvFilename": "allsenel.csv",
+      "format": "senators"
+    },
+    {
+      "csvSourceURL": "https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members/Address_labels_and_CSV_files",
+      "csvFilename": "FamilynameRepsCSV.csv",
+      "format": "members"
+    }
+  ]
+}
+```
+
+| Field | Required | Notes |
+| ----- | -------- | ----- |
+| `interval` | no | Ticker period, Go duration string (default `1h`; armed at startup) |
+| `entries` | yes | One or more CSV sources (must be non-empty) |
+| `entries[].csvSourceURL` | yes | HTTPS listing page that links to the CSV |
+| `entries[].csvFilename` | no | Substring matched in `<a href>` (default `allsenel.csv`) |
+| `entries[].format` | no | `senators`, `members`, or `custom` (default `senators`) |
+| `entries[].columns` / `level` | for `custom` | Header map + optional MP level — see [SPEC_BACKGROUND_CSV_REFRESH.md](docs/specs/SPEC_BACKGROUND_CSV_REFRESH.md) |
+
+APH examples: senators → `allsenel.csv` / `senators`; House of Reps → `FamilynameRepsCSV.csv` / `members`.
+
+Dry-run the same pipeline (no save):
 
 ```powershell
 go run ./cmd/csvrefresh -v
@@ -104,13 +137,15 @@ See [ENVIRONMENT.md](docs/ENVIRONMENT.md) for all runtime env flags (background 
 ## TODO
 
 - [ ] Automating MP detection
-    - [ ] Get list of Senators and Reps
+    - [x] Get list of Senators and Reps
         - [x] Parse HTML [0] 
+        - [x] Fetch CSV files
+        - [x] Automatically import on schedule 
+    - [x] Get list of territory and state Members and Senators
+        - [x] Find sites 
+        - [x] Parse HTML 
         - [x] Fetch CSV files 
-    - [ ] Get list of territory and state Members and Senators
-        - [ ] Find sites 
-        - [ ] Parse HTML 
-        - [ ] Fetch CSV files 
+        - [x] Automatically import on schedule
     - [x] From CSV files extract (Honorific) (Full Name + Prefered Name) (Party) (Electorate) into database
     - [x] Alert when new MP found
     - [x] Run background job every hour that: (see [SPEC_BACKGROUND_CSV_REFRESH.md](docs/specs/SPEC_BACKGROUND_CSV_REFRESH.md))
@@ -155,13 +190,14 @@ See [ENVIRONMENT.md](docs/ENVIRONMENT.md) for all runtime env flags (background 
         - [x] easy config for modifying for different files
         - [x] HTTPS Certificate Checks (see [SPEC_HTTPS_CERT.md](docs/specs/SPEC_HTTPS_CERT.md))
         - [x] Add HTTP Status Checks
-- [ ] Maintainence 
+- [x] Maintainence 
     - [x] Detect when URL disappears (used statuses instead, works better for reporting)
     - [x] Alert when current list changes found/removed (added console logs when importing members)
     - [x] Check all domains on startup
     - [x] Re-check due domains every 30 minutes (toggle: `SKIP_PERIODIC_DOMAIN_CHECKS`; see [ENVIRONMENT.md](docs/ENVIRONMENT.md))
     - [x] WHOIS information panel (see [SPEC_WHOIS_PANEL.md](docs/specs/SPEC_WHOIS_PANEL.md))
     - [x] JSON Validation on startup/reload
+    - [x] Add csv_refresh.json config steps
 - [ ] Code
     - [ ] Figure out how and when to use `log` package, replace fmt.Println
     - [x] Cleanup CLI code base buginess / shit ness 

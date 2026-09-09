@@ -2,9 +2,9 @@
 
 ## Goal
 
-While the TUI is running, a background job can refresh MPs from a configured CSV: fetch the listing page over HTTPS, locate and download the configured file (e.g. `allsenel.csv`), parse it with the configured column map (`senators` / `members` / `custom`), merge into the in-memory database with the same rules as `cmd/mergeDatabases` / `data.MergeMPs`, and log additions / merges to the Console Log. **Do not** write `mp_data.json` automatically — the user saves with **Ctrl+S**.
+While the TUI is running, a background job can refresh MPs from **every** entry in `csv_refresh.json`: for each entry, fetch the listing page over HTTPS, locate and download that entry’s CSV, parse it with the entry’s column map (`senators` / `members` / `custom`), merge into the in-memory database with the same rules as `cmd/mergeDatabases` / `data.MergeMPs`, and log additions / merges to the Console Log. **Do not** write `mp_data.json` automatically — the user saves with **Ctrl+S**.
 
-**Triggers:** **Ctrl+L** (manual) and an optional **hourly** ticker. **Do not** run the job on startup / after load.
+**Triggers:** **Ctrl+L** (manual) and an optional **hourly** ticker. Both use the same run path and process **all** `entries[]`. **Do not** run the job on startup / after load.
 
 ## Motivation
 
@@ -12,26 +12,27 @@ Manual CSV download + `csv2json` + `mergeDatabases` keeps the live DB stale betw
 
 ## Config
 
-Introduce a small config file (v1: JSON next to the app, e.g. `config.json` or `csv_refresh.json` — pick one name and stick to it). The job must **not** hardcode the listing-page URL in Go (today `fetcher.findAphHtml` does).
+`csv_refresh.json` next to the app. The job must **not** hardcode the listing-page URL in Go.
 
 | Field | Required | Default / example | Meaning |
 | ----- | -------- | ----------------- | ------- |
-| `csvSourceURL` | yes | APH Address labels / CSV guidelines page | HTTPS URL of the HTML page that links to CSVs |
-| `csvFilename` | no | `allsenel.csv` | Substring matched against `<a href>` to find the download link |
 | `interval` | no | `1h` | How often the ticker runs (Go duration string) |
-| `format` | no | `senators` | Which built-in column map / level to use: `senators`, `members`, or `custom` |
-| `columns` | when `format` is `custom` | — | Header map object (same fields as `csv.ColumnMap`); ignored for built-in formats |
-| `level` | no | derived from `format` | MP `level` string written on each parsed row; required (or strongly recommended) for `custom` |
+| `entries` | yes | non-empty array | One or more CSV sources; each run processes **all** entries in order |
+| `entries[].csvSourceURL` | yes | APH Address labels / CSV guidelines page | HTTPS URL of the HTML page that links to CSVs |
+| `entries[].csvFilename` | no | `allsenel.csv` | Substring matched against `<a href>` to find the download link |
+| `entries[].format` | no | `senators` | Column map / level: `senators`, `members`, or `custom` |
+| `entries[].columns` | when `format` is `custom` | — | Header map object (same fields as `csv.ColumnMap`); ignored for built-in formats |
+| `entries[].level` | no | derived from `format` | MP `level` string written on each parsed row; recommended for `custom` |
 
 ### Format → parse mapping
 
-Reuse `csv.ParseReader` (see [IMPORT_CSV.md](../IMPORT_CSV.md)). Built-in formats pick the existing column maps and default levels; `custom` uses the config-supplied map.
+Reuse `csv.ParseReader` (see [IMPORT_CSV.md](../IMPORT_CSV.md)). Built-in formats pick the existing column maps and default levels; `custom` uses the entry-supplied map.
 
 | `format` | Column map | Default `level` (if `level` omitted) |
 | -------- | ---------- | ------------------------------------ |
 | `senators` | `csv.SenatorColumns` | `data.Level.FedSenator` (`Federal Senator`) |
 | `members` | `csv.MemberColumns` | `data.Level.FedRep` (`Federal House of Representatives Member`) |
-| `custom` | `columns` from config (must be present and usable) | `level` from config, or `""` if omitted (same as today’s `ParseCustomReader`) |
+| `custom` | `columns` from entry (must be present and usable) | `level` from entry, or `""` if omitted (same as today’s `ParseCustomReader`) |
 
 `columns` object keys (JSON), matching `csv.ColumnMap`:
 
@@ -50,58 +51,59 @@ Values are the **exact CSV header names** in the downloaded file (same rules as 
 
 **Validation on load:**
 
-- `format` must be one of `senators` | `members` | `custom` (case-insensitive OK if documented).
-- If `format` is `custom`, `columns` is required; reject config if missing or if every header is empty (unusable map).
-- If `format` is `senators` or `members`, ignore any `columns` object (or reject it as a config error — pick one; prefer **ignore** with optional DEBUG).
+- `entries` must be non-empty.
+- Each entry `format` must be one of `senators` | `members` | `custom` (case-insensitive OK if documented).
+- If `format` is `custom`, `columns` is required; reject entry if missing or if every header is empty (unusable map).
+- If `format` is `senators` or `members`, ignore any `columns` object.
 - Unknown `format` → ERROR, job disabled.
 
-Examples:
-
-Senators (default-shaped):
+Example (senators + House of Reps):
 
 ```json
 {
-  "csvSourceURL": "https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members/Address_labels_and_CSV_files",
-  "csvFilename": "allsenel.csv",
-  "format": "senators",
-  "interval": "1h"
+  "interval": "1h",
+  "entries": [
+    {
+      "csvSourceURL": "https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members/Address_labels_and_CSV_files",
+      "csvFilename": "allsenel.csv",
+      "format": "senators"
+    },
+    {
+      "csvSourceURL": "https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members/Address_labels_and_CSV_files",
+      "csvFilename": "FamilynameRepsCSV.csv",
+      "format": "members"
+    }
+  ]
 }
 ```
 
-House of Reps members:
+Custom headers + level (as one entry):
 
 ```json
 {
-  "csvSourceURL": "https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members/Address_labels_and_CSV_files",
-  "csvFilename": "FamilynameRepsCSV.csv",
-  "format": "members",
-  "interval": "1h"
+  "interval": "1h",
+  "entries": [
+    {
+      "csvSourceURL": "https://example.org/contacts",
+      "csvFilename": "roster.csv",
+      "format": "custom",
+      "level": "State Senator",
+      "columns": {
+        "honorific": "Title",
+        "firstName": "First Name",
+        "surname": "Surname",
+        "otherName": "Other Name",
+        "preferredName": "Preferred Name",
+        "party": "Party",
+        "state": "State",
+        "electorate": "District"
+      }
+    }
+  ]
 }
 ```
 
-Custom headers + level:
-
-```json
-{
-  "csvSourceURL": "https://example.org/contacts",
-  "csvFilename": "roster.csv",
-  "format": "custom",
-  "level": "State Senator",
-  "columns": {
-    "honorific": "Title",
-    "firstName": "First Name",
-    "surname": "Surname",
-    "otherName": "Other Name",
-    "preferredName": "Preferred Name",
-    "party": "Party",
-    "state": "State",
-    "electorate": "District"
-  },
-  "interval": "1h"
-}
-```
-
-**Load:** once at app start (same window as other init). Missing / invalid config → log ERROR to Console Log; **Ctrl+L** and the hourly ticker are no-ops until config is fixed. Changing config requires restart (v1).
+**Load:** at app start (to arm the ticker) and again at the start of every refresh run (**Ctrl+L** / ticker). Missing / invalid config → log ERROR to Console Log; that run is a no-op. Editing `csv_refresh.json` (including adding/removing entries) is picked up on the next Ctrl+L **or** ticker fire (ticker **interval** remains whatever was armed at startup).
 
 **Disable via env:** if `SKIP_BACKGROUND_CSV_REFRESH=true` (case-insensitive), do **not** start the hourly ticker; log a single INFO that the automatic refresh was skipped. **Ctrl+L** still runs when config is valid (same idea as `SKIP_BACKGROUND_WHOIS_LOOKUP` vs manual WHOIS). Manual CLI workflows (`csv2json`, `mergeDatabases`) are unaffected.
 
@@ -109,8 +111,8 @@ Custom headers + level:
 
 | Trigger | When | Notes |
 | ------- | ---- | ----- |
-| **Ctrl+L** | User keypress (global binding) | Starts one refresh run off the UI thread. Always allowed when config is valid (honours single-flight). |
-| Hourly ticker | Every `interval` (default **1h**) after the ticker is armed | Arm after MPs are loaded if config is valid and env skip is unset. **First fire is after one full interval** — never on startup / immediately after load. |
+| **Ctrl+L** | User keypress (global binding) | Starts one refresh run off the UI thread; processes **all** `entries[]`. Always allowed when config is valid (honours single-flight). |
+| Hourly ticker | Every `interval` (default **1h**) after the ticker is armed | Same run path as Ctrl+L (reload config → all entries). Arm after MPs are loaded if config is valid and env skip is unset. **First fire is after one full interval** — never on startup / immediately after load. |
 | Startup / load | — | **Do not** trigger a refresh when the app starts or when MPs finish loading. |
 
 Document **Ctrl+L** in [KEYBOARD_SHORTCUTS.md](../KEYBOARD_SHORTCUTS.md) and the in-app **Ctrl+H** help (global section) when implementing.
@@ -121,25 +123,30 @@ Document **Ctrl+L** in [KEYBOARD_SHORTCUTS.md](../KEYBOARD_SHORTCUTS.md) and the
 
 **UI thread safety:** HTTP, parse, and merge stay off the gocui main loop. Console updates and any MP-list redraw go through `g.Update(...)` (same pattern as background WHOIS).
 
-### Pipeline (stop on hard failure; always log)
+### Pipeline (per entry, then one apply; always log)
+
+For **each** item in `entries[]` (Ctrl+L and the hourly ticker both iterate the full list):
 
 1. **HTTPS GET** `csvSourceURL`.
-   - Non-2xx, dial/TLS error, or empty body → ERROR to Console Log; abort run (no parse/merge).
+   - Non-2xx, dial/TLS error, or empty body → ERROR to Console Log; skip this entry (continue with remaining entries).
 2. **Parse HTML**; find an `<a href>` whose value **contains** `csvFilename` (reuse / generalize `fetcher.findAnchorWithPartialHref`).
-   - Not found → ERROR; abort.
-   - Resolve relative hrefs against the page origin (today: prefix `https://www.aph.gov.au` when href is path-absolute). Prefer proper URL join so the config host stays authoritative.
+   - Not found → ERROR; skip this entry.
+   - Resolve relative hrefs against the page origin. Prefer proper URL join so the config host stays authoritative.
 3. **HTTPS GET** the CSV URL; read body into memory (or temp; v1 need not persist the file on disk).
-   - Failure → ERROR; abort.
-4. **Parse CSV** with `csv.ParseReader` using the column map and level selected from config (`senators` → `SenatorColumns` + FedSenator; `members` → `MemberColumns` + FedRep; `custom` → config `columns` + config `level`). See [IMPORT_CSV.md](../IMPORT_CSV.md).
-   - Header / row errors → ERROR (or WARN per-row if the parser grows that mode); abort merge if the parse returns a fatal error. Do not leave a half-applied merge.
-5. **Merge** into the loaded in-memory list:
-   - `A` = current `ui.state.all` (or equivalent live slice).
-   - `B` = MPs freshly parsed from CSV (treated as **newer** for party/bio, same as `-b` in [SPEC_MERGE_DATABASES.md](SPEC_MERGE_DATABASES.md)).
+   - Failure → ERROR; skip this entry.
+4. **Parse CSV** with `csv.ParseReader` using the column map and level selected from the entry (`senators` → `SenatorColumns` + FedSenator; `members` → `MemberColumns` + FedRep; `custom` → entry `columns` + entry `level`). See [IMPORT_CSV.md](../IMPORT_CSV.md).
+   - Header / row errors → ERROR; skip this entry (do not merge that entry’s rows).
+5. **Merge** into the accumulating in-memory list for this run:
+   - `A` = MPs after previous entries in this run (starts as live `ui.state.all`).
+   - `B` = MPs freshly parsed from this entry’s CSV (treated as **newer** for party/bio, same as `-b` in [SPEC_MERGE_DATABASES.md](SPEC_MERGE_DATABASES.md)).
    - Call `data.MergeMPs(A, B)` (shared with `cmd/mergeDatabases` — do not fork merge rules).
-6. **Apply in memory only:** replace the live MP slice with `MergeResult.MPs`. Refresh visible list / panels as needed so the UI shows new members without a reload from disk.
+
+After all entries:
+
+6. **Apply in memory only** (if at least one entry succeeded): replace the live MP slice with the accumulated merge result. Refresh visible list / panels as needed.
 7. **Do not call** `db.WriteMps` / `UI.Save`. Log that changes are unsaved if any add/merge occurred (see below).
 
-If step 3 fails, steps 4–7 do not run. If CSV downloads but parse fails, do not merge.
+If every entry fails, do not apply.
 
 ## Detecting “new” vs “merged”
 

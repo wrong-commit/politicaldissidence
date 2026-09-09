@@ -1,6 +1,15 @@
 {
-  "csvSourceURL": "https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members/Address_labels_and_CSV_files",
-  "csvFilename": "allsenel.csv",
-  "format": "senators",
-  "interval": "1h"
+  "interval": "1h",
+  "entries": [
+    {
+      "csvSourceURL": "https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members/Address_labels_and_CSV_files",
+      "csvFilename": "allsenel.csv",
+      "format": "senators"
+    },
+    {
+      "csvSourceURL": "https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members/Address_labels_and_CSV_files",
+      "csvFilename": "FamilynameRepsCSV.csv",
+      "format": "members"
+    }
+  ]
 }

@@ -42,24 +42,26 @@ func (ui *UI) csvLog(msg string, isError bool) {
 	})
 }
 
-// loadCsvRefreshConfig loads csv_refresh.json once. Missing/invalid → ERROR; Ctrl+L/ticker no-ops.
-func (ui *UI) loadCsvRefreshConfig() {
+// loadCsvRefreshConfig reads csv_refresh.json from disk. Missing/invalid → ERROR log and false.
+func (ui *UI) loadCsvRefreshConfig() bool {
 	cfg, err := csvrefresh.LoadFile(csvrefresh.DefaultConfigPath)
 	if err != nil {
 		ui.csvConfig = nil
-		_ = ui.logPlain(csvrefresh.FormatConfigError(err.Error()))
-		return
+		ui.csvLog(csvrefresh.FormatConfigError(err.Error()), true)
+		return false
 	}
 	ui.csvConfig = cfg
+	return true
 }
 
 // armCsvRefreshTicker starts the hourly ticker after one full interval. Does not run on startup.
+// Each tick calls tryCsvRefresh (same path as Ctrl+L): reload csv_refresh.json and process all entries.
 func (ui *UI) armCsvRefreshTicker() {
 	if ui.csvConfig == nil {
 		return
 	}
 	if !csvrefresh.TickerEnabled() {
-		_ = ui.logPlain(csvrefresh.FormatTickerSkipped())
+		ui.csvLog(csvrefresh.FormatTickerSkipped(), false)
 		return
 	}
 	interval := ui.csvConfig.IntervalDuration
@@ -72,8 +74,12 @@ func (ui *UI) armCsvRefreshTicker() {
 	}()
 }
 
-// tryCsvRefresh runs one CSV refresh (Ctrl+L or ticker). Never writes disk.
+// tryCsvRefresh reloads csv_refresh.json then runs CSV refresh for every entries[] item
+// (Ctrl+L and the background ticker share this path). Never writes disk.
 func (ui *UI) tryCsvRefresh() {
+	if !ui.loadCsvRefreshConfig() {
+		return
+	}
 	deps := csvrefresh.Deps{
 		Log:    ui.csvLogger(),
 		Config: ui.csvConfig,

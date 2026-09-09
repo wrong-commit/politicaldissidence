@@ -34,20 +34,27 @@ type ColumnConfig struct {
 	Electorate    string `json:"electorate"`
 }
 
-// Config is the on-disk CSV refresh configuration.
-type Config struct {
+// Entry is one CSV source in csv_refresh.json.
+type Entry struct {
 	CSVSourceURL string        `json:"csvSourceURL"`
 	CSVFilename  string        `json:"csvFilename"`
-	Interval     string        `json:"interval"`
 	Format       string        `json:"format"`
 	Columns      *ColumnConfig `json:"columns,omitempty"`
 	Level        string        `json:"level"`
 
 	// Resolved at load time (not JSON).
-	IntervalDuration time.Duration `json:"-"`
 	ColumnMap        csv.ColumnMap `json:"-"`
 	ResolvedLevel    string        `json:"-"`
 	NormalizedFormat string        `json:"-"`
+}
+
+// Config is the on-disk CSV refresh file (interval + one or more entries).
+type Config struct {
+	Interval string  `json:"interval"`
+	Entries  []Entry `json:"entries"`
+
+	// Resolved at load time (not JSON).
+	IntervalDuration time.Duration `json:"-"`
 }
 
 // LoadFile reads and validates a config JSON file.
@@ -73,13 +80,6 @@ func ParseConfig(raw []byte) (*Config, error) {
 
 // Validate fills defaults and resolved fields.
 func (c *Config) Validate() error {
-	c.CSVSourceURL = strings.TrimSpace(c.CSVSourceURL)
-	if c.CSVSourceURL == "" {
-		return fmt.Errorf("csvSourceURL is required")
-	}
-	if strings.TrimSpace(c.CSVFilename) == "" {
-		c.CSVFilename = "allsenel.csv"
-	}
 	if strings.TrimSpace(c.Interval) == "" {
 		c.Interval = "1h"
 	}
@@ -92,45 +92,66 @@ func (c *Config) Validate() error {
 	}
 	c.IntervalDuration = d
 
-	format := strings.ToLower(strings.TrimSpace(c.Format))
+	if len(c.Entries) == 0 {
+		return fmt.Errorf("entries must contain at least one CSV source")
+	}
+	for i := range c.Entries {
+		if err := c.Entries[i].Validate(); err != nil {
+			return fmt.Errorf("entries[%d]: %w", i, err)
+		}
+	}
+	return nil
+}
+
+// Validate fills defaults and resolved fields for one entry.
+func (e *Entry) Validate() error {
+	e.CSVSourceURL = strings.TrimSpace(e.CSVSourceURL)
+	if e.CSVSourceURL == "" {
+		return fmt.Errorf("csvSourceURL is required")
+	}
+	if strings.TrimSpace(e.CSVFilename) == "" {
+		e.CSVFilename = "allsenel.csv"
+	}
+
+	format := strings.ToLower(strings.TrimSpace(e.Format))
 	if format == "" {
 		format = FormatSenators
 	}
-	c.NormalizedFormat = format
+	e.NormalizedFormat = format
 
 	switch format {
 	case FormatSenators:
-		c.ColumnMap = csv.SenatorColumns
-		c.ResolvedLevel = strings.TrimSpace(c.Level)
-		if c.ResolvedLevel == "" {
-			c.ResolvedLevel = data.Level.FedSenator
+		e.ColumnMap = csv.SenatorColumns
+		e.ResolvedLevel = strings.TrimSpace(e.Level)
+		if e.ResolvedLevel == "" {
+			e.ResolvedLevel = data.Level.FedSenator
 		}
 	case FormatMembers:
-		c.ColumnMap = csv.MemberColumns
-		c.ResolvedLevel = strings.TrimSpace(c.Level)
-		if c.ResolvedLevel == "" {
-			c.ResolvedLevel = data.Level.FedRep
+		e.ColumnMap = csv.MemberColumns
+		e.ResolvedLevel = strings.TrimSpace(e.Level)
+		if e.ResolvedLevel == "" {
+			e.ResolvedLevel = data.Level.FedRep
 		}
 	case FormatCustom:
-		if c.Columns == nil {
+		if e.Columns == nil {
 			return fmt.Errorf("columns required when format=custom")
 		}
-		c.ColumnMap = csv.ColumnMap{
-			Honorific:     c.Columns.Honorific,
-			FirstName:     c.Columns.FirstName,
-			Surname:       c.Columns.Surname,
-			OtherName:     c.Columns.OtherName,
-			PreferredName: c.Columns.PreferredName,
-			Party:         c.Columns.Party,
-			State:         c.Columns.State,
-			Electorate:    c.Columns.Electorate,
+		e.ColumnMap = csv.ColumnMap{
+			Honorific:     e.Columns.Honorific,
+			FirstName:     e.Columns.FirstName,
+			Surname:       e.Columns.Surname,
+			OtherName:     e.Columns.OtherName,
+			PreferredName: e.Columns.PreferredName,
+			Party:         e.Columns.Party,
+			State:         e.Columns.State,
+			Electorate:    e.Columns.Electorate,
 		}
-		if !columnMapUsable(c.ColumnMap) {
+		if !columnMapUsable(e.ColumnMap) {
 			return fmt.Errorf("columns must map at least one non-empty header")
 		}
-		c.ResolvedLevel = strings.TrimSpace(c.Level)
+		e.ResolvedLevel = strings.TrimSpace(e.Level)
 	default:
-		return fmt.Errorf("unknown format %q (want senators, members, or custom)", c.Format)
+		return fmt.Errorf("unknown format %q (want senators, members, or custom)", e.Format)
 	}
 	return nil
 }

@@ -140,7 +140,7 @@ var keyHandlers = &handlers{
 	// 	ctrl p - force recheck all domains (ignore lastChecked)
 	{nil, gocui.KeyCtrlP, "<CTRL>+p", "Force recheck all domains (WHOIS/DNS/HTTPS)", onForceRecheckDomains},
 	// 	ctrl l - refresh MPs from configured CSV
-	{nil, gocui.KeyCtrlL, "<CTRL>+l", "Refresh MPs from CSV", onCsvRefresh},
+	{nil, gocui.KeyCtrlL, "<CTRL>+l", "Reload csv_refresh.json + refresh MPs", onCsvRefresh},
 	// 	l - expand / restore log panel
 	{nil, 'l', "l", "Toggle log panel full height", onToggleLog},
 	// Domain Information / Log panel scroll — global; panels are not focusable
