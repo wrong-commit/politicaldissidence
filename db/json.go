@@ -11,12 +11,28 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
+
 	"politicaldissidence/data"
 )
 
-const mpJsonFilename = "mp_data.json"
+const (
+	// DefaultMPJSONFilename is the on-disk MP database when MP_DATA_PATH is unset.
+	DefaultMPJSONFilename = "mp_data.json"
 
-// MPJSONStatus is the outcome of reading and validating mp_data.json.
+	// EnvMPDataPath overrides the path used by ReadMps / WriteMps / ReadMpsValidated.
+	EnvMPDataPath = "MP_DATA_PATH"
+)
+
+// MPJSONPath returns the MP JSON file path: trimmed MP_DATA_PATH if set, else DefaultMPJSONFilename.
+func MPJSONPath() string {
+	if v := strings.TrimSpace(os.Getenv(EnvMPDataPath)); v != "" {
+		return v
+	}
+	return DefaultMPJSONFilename
+}
+
+// MPJSONStatus is the outcome of reading and validating the MP JSON file.
 type MPJSONStatus struct {
 	Path      string // absolute path of the file checked
 	SizeBytes int64
@@ -52,9 +68,9 @@ func (s MPJSONStatus) LogMessage() string {
 	return fmt.Sprintf("ERROR mp_data.json invalid path=%s size=%.1fKB: %s", s.Path, s.SizeKB(), reason)
 }
 
-// ReadMpsValidated reads and validates the default MP JSON file.
+// ReadMpsValidated reads and validates the configured MP JSON file (see MPJSONPath).
 func ReadMpsValidated() MPJSONStatus {
-	return ValidateMPJSONFile(mpJsonFilename)
+	return ValidateMPJSONFile(MPJSONPath())
 }
 
 // ValidateMPJSONFile reads path, checks it is entirely correct MP JSON, and returns status.
@@ -101,7 +117,7 @@ func ReadMps() ([]data.MP, error) {
 }
 
 func WriteMps(mps []data.MP) error {
-	return write(mps, mpJsonFilename)
+	return write(mps, MPJSONPath())
 }
 
 // WriteMpsTo writes MPs as validated indented JSON to path (atomic temp + replace).

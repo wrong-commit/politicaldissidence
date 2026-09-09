@@ -252,7 +252,7 @@ See [ENVIRONMENT.md](docs/ENVIRONMENT.md) for all runtime env flags (background 
         - [x] HTTPS Certificate Checks (see [SPEC_HTTPS_CERT.md](docs/specs/SPEC_HTTPS_CERT.md))
         - [x] Add HTTP Status Checks
     - [x] Custom search terms JSON
-    - [ ] If I get bored: run nikto/wpscan/sqlmap against targets
+    - [x] Custom DB Path
 - [x] Maintainence 
     - [x] Detect when URL disappears (used statuses instead, works better for reporting)
     - [x] Alert when current list changes found/removed (added console logs when importing members)

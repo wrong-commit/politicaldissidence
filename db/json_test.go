@@ -19,6 +19,43 @@ func writeTemp(t *testing.T, name, contents string) string {
 	return path
 }
 
+func TestMPJSONPath(t *testing.T) {
+	t.Setenv(EnvMPDataPath, "")
+	if got := MPJSONPath(); got != DefaultMPJSONFilename {
+		t.Fatalf("unset: got %q want %q", got, DefaultMPJSONFilename)
+	}
+
+	t.Setenv(EnvMPDataPath, "  ")
+	if got := MPJSONPath(); got != DefaultMPJSONFilename {
+		t.Fatalf("whitespace: got %q want %q", got, DefaultMPJSONFilename)
+	}
+
+	t.Setenv(EnvMPDataPath, `C:\data\custom_mps.json`)
+	if got := MPJSONPath(); got != `C:\data\custom_mps.json` {
+		t.Fatalf("override: got %q", got)
+	}
+
+	t.Setenv(EnvMPDataPath, "  ./alt.json  ")
+	if got := MPJSONPath(); got != "./alt.json" {
+		t.Fatalf("trimmed override: got %q", got)
+	}
+}
+
+func TestReadMpsValidated_RespectsMPDataPath(t *testing.T) {
+	path := writeTemp(t, "override.json", `[
+  {"honorific":"Ms","firstName":"Alt","surnname":"Path","domains":[]}
+]`)
+	t.Setenv(EnvMPDataPath, path)
+
+	status := ReadMpsValidated()
+	if !status.Valid() {
+		t.Fatalf("expected valid, got %v", status.Err)
+	}
+	if len(status.MPs) != 1 || status.MPs[0].FirstName != "Alt" {
+		t.Fatalf("unexpected MPs: %+v", status.MPs)
+	}
+}
+
 func TestValidateMPJSONFile_ValidArray(t *testing.T) {
 	path := writeTemp(t, "mps.json", `[
   {"honorific":"Ms","firstName":"Jane","surnname":"Doe","domains":[]}

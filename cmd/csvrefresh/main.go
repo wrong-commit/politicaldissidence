@@ -12,7 +12,7 @@ import (
 
 func main() {
 	configPath := flag.String("config", csvrefresh.DefaultConfigPath, "path to csv_refresh.json")
-	mpPath := flag.String("mp", "mp_data.json", "MP JSON to merge against (use empty string for none)")
+	mpPath := flag.String("mp", db.MPJSONPath(), "MP JSON to merge against (use empty string for none; default respects MP_DATA_PATH)")
 	verbose := flag.Bool("v", false, "print debug lines (resolved download URL, etc.)")
 	flag.Parse()
 
@@ -85,8 +85,8 @@ func loadMPs(path string) ([]data.MP, error) {
 		}
 		return nil, err
 	}
-	// Prefer live DB helper when using the default filename.
-	if path == "mp_data.json" {
+	// Prefer live DB helper when using the configured default path.
+	if path == db.MPJSONPath() {
 		status := db.ReadMpsValidated()
 		if !status.Valid() {
 			return nil, fmt.Errorf("%s", status.LogMessage())

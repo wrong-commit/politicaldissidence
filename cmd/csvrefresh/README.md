@@ -12,7 +12,7 @@ go run ./cmd/csvrefresh -mp "" -v
 | Flag | Default | Meaning |
 |------|---------|---------|
 | `-config` | `csv_refresh.json` | Config path (`interval` + `entries`) |
-| `-mp` | `mp_data.json` | Existing DB to merge against (`""` = empty) |
+| `-mp` | `mp_data.json` (or `MP_DATA_PATH`) | Existing DB to merge against (`""` = empty) |
 | `-v` | false | Print DEBUG lines (resolved download URL) |
 
 Exit `1` on fetch/parse failure (all entries failed), `2` on bad config.
