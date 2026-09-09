@@ -94,19 +94,19 @@ See [KEYBOARD_SHORTCUTS.md](docs/KEYBOARD_SHORTCUTS.md).
         - [ ] Fetch CSV files 
     - [x] From CSV files extract (Honorific) (Full Name + Prefered Name) (Party) (Electorate) into database
     - [x] Alert when new MP found
-    - [ ] Run background job every hour that (see [SPEC_BACKGROUND_CSV_REFRESH.md](docs/specs/SPEC_BACKGROUND_CSV_REFRESH.md))
-        - [ ] Ctrl+L triggers a run (do not run on startup)
-        - [ ] Refetches CSV from the page linked in source code
-            - [ ] Source URL from config file
-            - [ ] HTTPS Lookup page 
-            - [ ] Find CSV download link on page by download file name (allsenel.csv)
-            - [ ] Download CSV link
-            - [ ] log any errors to console
-            - [ ] If CSV downloaded, follow next steps
-        - [ ] Outputs any CSV parsing errors to Console Log
-        - [ ] Run the MP merge logic like cmd/mergeDatabases does
-        - [ ] Console Log when new members are added or merged
-        - [ ] Let the user save manually
+    - [x] Run background job every hour that: (see [SPEC_BACKGROUND_CSV_REFRESH.md](docs/specs/SPEC_BACKGROUND_CSV_REFRESH.md))
+        - [x] Ctrl+L triggers a run (do not run on startup)
+        - [x] Refetches CSV from the page linked in source code
+            - [x] Source URL from config file
+            - [x] HTTPS Lookup page 
+            - [x] Find CSV download link on page by download file name (allsenel.csv)
+            - [x] Download CSV link
+            - [x] log any errors to console
+            - [x] If CSV downloaded, follow next steps
+        - [x] Outputs any CSV parsing errors to Console Log
+        - [x] Run the MP merge logic like cmd/mergeDatabases does
+        - [x] Console Log when new members are added or merged
+        - [x] Let the user save manually
 - [ ] CLI 
     - [x] Linking MP and domain
     - [x] Display list of MPs requiring linkage

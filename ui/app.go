@@ -32,6 +32,8 @@ func InitApp() {
 
 	ui.started = true
 	ui.log(ui.startupLog, false)
+	ui.loadCsvRefreshConfig()
+	ui.armCsvRefreshTicker() // first fire after one interval; no run on startup
 	go ui.startBackgroundWhois(false)
 	go ui.startBackgroundDns(false)
 	go ui.startBackgroundHttps(false)

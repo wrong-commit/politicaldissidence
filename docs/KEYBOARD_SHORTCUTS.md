@@ -16,6 +16,7 @@ In-app help: press **Ctrl+H** to open a modal listing shortcuts for the current 
 | **Ctrl+S** | Save MPs and domains to disk                                                                                        |
 | **Ctrl+R** | Reload MPs and domains from disk                                                                                    |
 | **Ctrl+P** | Force-recheck all domains (WHOIS + DNS + HTTPS), ignoring lastChecked / checkedAt                                   |
+| **Ctrl+L** | Refresh MPs from configured CSV (`csv_refresh.json`); merge in memory — save with Ctrl+S                            |
 | **PgUp**   | Scroll Domain Information panel up one page                                                                         |
 | **PgDn**   | Scroll Domain Information panel down one page                                                                       |
 
@@ -120,6 +121,7 @@ Ctrl+C          Quit / close modal
 Ctrl+S          Save
 Ctrl+R          Reload
 Ctrl+P          Force recheck all domains
+Ctrl+L          Refresh MPs from CSV
 PgUp / PgDn     Scroll Domain Information
 Tab             Switch List ↔ Domains
 

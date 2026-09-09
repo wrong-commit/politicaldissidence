@@ -139,6 +139,8 @@ var keyHandlers = &handlers{
 	{nil, gocui.KeyCtrlR, "<CTRL>+r", "Reload ", onReload},
 	// 	ctrl p - force recheck all domains (ignore lastChecked)
 	{nil, gocui.KeyCtrlP, "<CTRL>+p", "Force recheck all domains (WHOIS/DNS/HTTPS)", onForceRecheckDomains},
+	// 	ctrl l - refresh MPs from configured CSV
+	{nil, gocui.KeyCtrlL, "<CTRL>+l", "Refresh MPs from CSV", onCsvRefresh},
 	// Domain Information (whois) panel scroll — global; panel is not focusable
 	{nil, gocui.KeyPgup, "<PGUP>", "Scroll Domain Information up", onWhoisPageUp},
 	{nil, gocui.KeyPgdn, "<PGDN>", "Scroll Domain Information down", onWhoisPageDown},
@@ -163,6 +165,14 @@ func onRemoveDomain(ui *UI, wrap bool) Fn {
 func onForceRecheckDomains(ui *UI, wrap bool) Fn {
 	return func(*gocui.Gui, *gocui.View) error {
 		return ui.rerunBackgroundChecks(true)
+	}
+}
+
+// onCsvRefresh fetches/parses the configured CSV and merges into memory (Ctrl+S to save).
+func onCsvRefresh(ui *UI, wrap bool) Fn {
+	return func(*gocui.Gui, *gocui.View) error {
+		go ui.tryCsvRefresh()
+		return nil
 	}
 }
 

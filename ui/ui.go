@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 
+	"politicaldissidence/csvrefresh"
 	"politicaldissidence/data"
 	"politicaldissidence/dnsrefresh"
 	"politicaldissidence/httpsrefresh"
@@ -39,6 +40,9 @@ type UI struct {
 	dnsRunner dnsrefresh.Runner
 	// Single-flight background HTTPS refresh
 	httpsRunner httpsrefresh.Runner
+	// Single-flight CSV refresh (Ctrl+L / hourly ticker)
+	csvRunner csvrefresh.Runner
+	csvConfig *csvrefresh.Config
 	// Jobs kicked when a domain is added (WHOIS, DNS, HTTPS, …)
 	domainAddedJobs []jobs.Job
 	// fontPath     string
