@@ -87,17 +87,18 @@ func (ui *UI) refreshDomainHttps(mpIndex, domainIdx int) {
 // drawSelectedWhois renders WHOIS + HTTPS + DNS for the domain currently selected in Member Domains.
 func (ui *UI) drawSelectedWhois() string {
 	if !ui.hasDomains() {
-		return panel.DrawWhoisPanel("", "", nil, nil, nil)
+		return panel.DrawWhoisPanel("", "", nil, nil, nil, nil)
 	}
 	idx := ui.state.domainState.index
 	domains := *ui.state.domainState.domains
 	if idx < 0 || idx >= len(domains) {
-		return panel.DrawWhoisPanel("", "", nil, nil, nil)
+		return panel.DrawWhoisPanel("", "", nil, nil, nil, nil)
 	}
 	mpName := ""
 	if mp := ui.mpAt(ui.state.currentIndex); mp != nil {
 		mpName = mp.Name()
 	}
 	d := domains[idx]
-	return panel.DrawWhoisPanel(d.Hostname, mpName, d.Whois, d.Https, d.DNS)
+	reasons := data.AlertReasons(d, time.Now(), data.AlertSoonWindow)
+	return panel.DrawWhoisPanel(d.Hostname, mpName, d.Whois, d.Https, d.DNS, reasons)
 }

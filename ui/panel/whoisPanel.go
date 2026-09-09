@@ -10,12 +10,26 @@ const whoisCheckedLayout = "06-01-02 15:04"
 const httpsExpiryLayout = "2006-01-02"
 
 // DrawWhoisPanel renders the Domain Information panel for a domain's latest WHOIS, HTTPS, and DNS records.
-func DrawWhoisPanel(hostname, mpName string, w *data.WhoisRecord, https *data.HttpsRecord, dns *data.DnsRecord) string {
-	if w == nil && https == nil && dns == nil {
+// When alertReasons is non-empty, those sniping reasons are shown first, separated by ====== from the rest.
+func DrawWhoisPanel(hostname, mpName string, w *data.WhoisRecord, https *data.HttpsRecord, dns *data.DnsRecord, alertReasons []string) string {
+	if w == nil && https == nil && dns == nil && len(alertReasons) == 0 {
 		return "No domain lookup yet"
 	}
 
 	var b strings.Builder
+	if len(alertReasons) > 0 {
+		b.WriteString("==[Alert Details]==\n")
+		for _, r := range alertReasons {
+			fmt.Fprintf(&b, "%s\n", r)
+		}
+		b.WriteString("===================\n")
+	}
+
+	if w == nil && https == nil && dns == nil {
+		b.WriteString("No domain lookup yet")
+		return b.String()
+	}
+
 	if w != nil {
 		if !w.CheckedAt.IsZero() {
 			fmt.Fprintf(&b, "Checked: %s\n", w.CheckedAt.Format(whoisCheckedLayout))

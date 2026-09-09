@@ -9,7 +9,7 @@ import (
 )
 
 func TestDrawWhoisPanel_Empty(t *testing.T) {
-	if got := DrawWhoisPanel("example.com", "", nil, nil, nil); got != "No domain lookup yet" {
+	if got := DrawWhoisPanel("example.com", "", nil, nil, nil, nil); got != "No domain lookup yet" {
 		t.Fatalf("nil: %q", got)
 	}
 }
@@ -24,7 +24,7 @@ func TestDrawWhoisPanel_Success(t *testing.T) {
 		Expiry:      "2027-01-01",
 		Registrar:   "Example Registrar Pty Ltd",
 		NameServers: []string{"ns1.example.net", "ns2.example.net"},
-	}, nil, nil)
+	}, nil, nil, nil)
 	lines := strings.Split(got, "\n")
 	if len(lines) == 0 || lines[0] != "Checked: 26-09-08 15:04" {
 		t.Fatalf("checked should be first line, got:\n%s", got)
@@ -68,7 +68,7 @@ func TestDrawWhoisPanel_WithHttpsAndDns(t *testing.T) {
 		CheckedAt: dnsChecked,
 		Empty:     true,
 		Outcome:   "empty",
-	})
+	}, nil)
 	if !strings.Contains(got, "HTTPS Status: enabled") {
 		t.Fatalf("missing HTTPS status:\n%s", got)
 	}
@@ -112,7 +112,7 @@ func TestDrawWhoisPanel_HttpsStatuses(t *testing.T) {
 			Status:     tt.status,
 			NotAfter:   tt.notAfter,
 			HTTPStatus: tt.httpStatus,
-		}, nil)
+		}, nil, nil)
 		if !strings.Contains(got, "HTTPS Status: "+tt.status) {
 			t.Fatalf("status %s missing in:\n%s", tt.status, got)
 		}
@@ -129,7 +129,7 @@ func TestDrawWhoisPanel_HttpsNotChecked(t *testing.T) {
 	got := DrawWhoisPanel("bare.example", "", &data.WhoisRecord{
 		CheckedAt: time.Date(2026, 1, 2, 3, 4, 0, 0, time.UTC),
 		Expiry:    "2028-01-01",
-	}, nil, nil)
+	}, nil, nil, nil)
 	if !strings.Contains(got, "HTTPS Status: not checked yet") {
 		t.Fatalf("got:\n%s", got)
 	}
@@ -145,7 +145,7 @@ func TestDrawWhoisPanel_OmitsBlankFields(t *testing.T) {
 	got := DrawWhoisPanel("bare.example", "", &data.WhoisRecord{
 		CheckedAt: time.Date(2026, 1, 2, 3, 4, 0, 0, time.UTC),
 		Expiry:    "2028-01-01",
-	}, nil, nil)
+	}, nil, nil, nil)
 	for _, line := range strings.Split(got, "\n") {
 		if strings.HasPrefix(line, "Status:") || strings.HasPrefix(line, "Registrar:") || strings.HasPrefix(line, "MP:") {
 			t.Fatalf("unexpected blank field line %q in:\n%s", line, got)
@@ -160,7 +160,7 @@ func TestDrawWhoisPanel_Failure(t *testing.T) {
 	got := DrawWhoisPanel("broken.example", "Bad MP", &data.WhoisRecord{
 		CheckedAt: time.Date(2026, 9, 8, 12, 0, 0, 0, time.UTC),
 		Error:     "Could not get WHOIS for <broken.example>",
-	}, nil, nil)
+	}, nil, nil, nil)
 	if !strings.HasPrefix(got, "Checked: 26-09-08 12:00\n") {
 		t.Fatalf("checked first:\n%s", got)
 	}
@@ -196,5 +196,57 @@ func TestDnsMarker(t *testing.T) {
 	}
 	if got := DnsMarker(&data.DnsRecord{Outcome: "ok", A: []string{"1.1.1.1"}}); got != "dns:ok" {
 		t.Fatalf("ok=%q", got)
+	}
+}
+
+func TestDrawWhoisPanel_AlertDetailsAtTop(t *testing.T) {
+	got := DrawWhoisPanel("alert.example", "Jane Doe", &data.WhoisRecord{
+		CheckedAt: time.Date(2026, 9, 8, 15, 4, 0, 0, time.UTC),
+		Expiry:    "2025-01-01",
+	}, &data.HttpsRecord{Status: "missing"}, &data.DnsRecord{
+		Empty:   true,
+		Outcome: "empty",
+	}, []string{data.AlertReasonExpired, data.AlertReasonDNSEmpty, data.AlertReasonHTTPSMissing})
+
+	wantPrefix := "==[Alert Details]==\nexpired\ndns-empty\nhttps-missing\n======\n"
+	if !strings.HasPrefix(got, wantPrefix) {
+		t.Fatalf("alert details should lead the panel, got:\n%s", got)
+	}
+	sep := strings.Index(got, "======\n")
+	if sep < 0 {
+		t.Fatal("missing separator")
+	}
+	body := got[sep+len("======\n"):]
+	if !strings.HasPrefix(body, "Checked:") {
+		t.Fatalf("WHOIS/HTTPS/DNS should follow separator, got body:\n%s", body)
+	}
+	if strings.Contains(body, "==[Alert Details]==") {
+		t.Fatalf("alert block should not repeat after separator:\n%s", got)
+	}
+	for _, want := range []string{
+		"alert.example",
+		"HTTPS Status: missing",
+		"DNS",
+	} {
+		if !strings.Contains(body, want) {
+			t.Fatalf("missing %q after separator in:\n%s", want, got)
+		}
+	}
+}
+
+func TestDrawWhoisPanel_NoAlertOmitsDetails(t *testing.T) {
+	got := DrawWhoisPanel("ok.example", "", &data.WhoisRecord{
+		Expiry: "2028-01-01",
+	}, nil, nil, nil)
+	if strings.Contains(got, "Alert Details") || strings.Contains(got, "======") {
+		t.Fatalf("should omit alert section when no reasons:\n%s", got)
+	}
+}
+
+func TestDrawWhoisPanel_AlertOnly(t *testing.T) {
+	got := DrawWhoisPanel("", "", nil, nil, nil, []string{data.AlertReasonSoon})
+	want := "==[Alert Details]==\nsoon\n======\nNo domain lookup yet"
+	if got != want {
+		t.Fatalf("got:\n%s\nwant:\n%s", got, want)
 	}
 }

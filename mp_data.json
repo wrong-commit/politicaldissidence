@@ -775,7 +775,7 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-09T10:00:25.0732741+10:00",
+           "checkedAt": "2026-09-09T10:06:25.9211971+10:00",
            "error": "Could not get WHOIS for \u003cjimchalmers.org\u003e"
          },
          "dns": {
