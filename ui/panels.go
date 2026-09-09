@@ -418,13 +418,13 @@ func (ui *UI) createPanelView(name string, x1, y1, x2, y2 int) (*gocui.View, err
 		break
 	case DOMAIN_PANEL:
 		v.Highlight = true
-		v.SelBgColor = gocui.ColorGreen
+		v.SelBgColor = gocui.ColorWhite
 		v.SelFgColor = gocui.ColorBlack
 		v.Wrap = true
 		break
 		//v.Editor = newList(ui)
 	case LIST_PANEL:
-		v.SelBgColor = gocui.ColorGreen
+		v.SelBgColor = gocui.ColorWhite
 		v.SelFgColor = gocui.ColorBlack
 		v.Highlight = true
 		v.Editable = true

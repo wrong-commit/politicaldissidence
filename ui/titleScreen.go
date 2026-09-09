@@ -8,7 +8,7 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
-const titleMinDuration = time.Second
+const titleMinDuration = time.Second * 1
 
 // titleScreenBlocking reports whether the startup title panel is showing.
 func (ui *UI) titleScreenBlocking() bool {
@@ -57,7 +57,9 @@ func (ui *UI) openTitleScreen(g *gocui.Gui) error {
 	v.Editable = false
 	v.Wrap = false
 	v.Highlight = false
+	v.Frame = false
 	v.Title = ""
+	v.FgColor = gocui.ColorRed
 
 	cw, ch := v.Size()
 	body := panel.DrawTitleASCII(art, cw, ch)

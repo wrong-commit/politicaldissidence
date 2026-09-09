@@ -1,13 +1,7 @@
-```
-              .__  .__  __  .__              .__        .___.__              .__    .___                          
-______   ____ |  | |__|/  |_|__| ____ _____  |  |     __| _/|__| ______ _____|__| __| _/____   ____   ____  ____  
-\____ \ /  _ \|  | |  \   __\  |/ ___\\__  \ |  |    / __ | |  |/  ___//  ___/  |/ __ |/ __ \ /    \_/ ___\/ __ \ 
-|  |_> >  <_> )  |_|  ||  | |  \  \___ / __ \|  |__ / /_/ | |  |\___ \ \___ \|  / /_/ \  ___/|   |  \  \__\  ___/ 
-|   __/ \____/|____/__||__| |__|\___  >____  /____/ \____ | |__/____  >____  >__\____ |\___  >___|  /\___  >___  >
-|__|                                \/     \/            \/         \/     \/        \/    \/     \/     \/    \/ 
-```
+# Domain Sniper
 
-A custom purpose TUI/CLI for stealing domains that might expire soon
+## Description
+A custom purpose TUI/CLI for stealing domains that might expire soon.
 - import any shape CSV file of politicians
 - easily search DuckDuckGo/Bing from within the TUI to find websites
 - check DNS for records indicating website handover to DNS registrar
@@ -17,7 +11,7 @@ A custom purpose TUI/CLI for stealing domains that might expire soon
 - a fancy startup screen
 
 ## What is the purpose of this?
-To build a build a toy app in a TUI. Originally I started this by hand, but with LLM assisted development features were added much faster. I have no clue what to do with this tool now.
+To build a build a toy app in a TUI. Originally I started this by hand to improve my go and TUI skills, but with LLM assisted development features were added much faster. I have no clue what to do with this tool now. 
 
 ## Generate source database
 

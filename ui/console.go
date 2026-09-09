@@ -10,8 +10,8 @@ const timeFormat = "06-01-02 15:04:05.000"
 // decorate changes the color of a string
 func decorate(s string, color string) string {
 	switch color {
-	case "green":
-		s = "\x1b[0;32m" + s
+	case "white":
+		s = "\x1b[0;37m" + s
 	case "red":
 		s = "\x1b[0;31m" + s
 	default:
@@ -25,7 +25,7 @@ func (ui *UI) log(message string, isError bool) error {
 	if isError {
 		message = decorate(message, "red")
 	} else {
-		message = decorate(message, "green")
+		message = decorate(message, "white")
 	}
 	return ui.appendLog(message)
 }
@@ -39,7 +39,7 @@ func (ui *UI) logPlain(message string) error {
 
 func (ui *UI) appendLog(message string) error {
 	if !ui.started {
-		ui.startupLog += time.Now().Format(timeFormat) + message + "\n"
+		ui.startupLog += time.Now().Format(timeFormat) + " " + message + "\n"
 		return nil
 	}
 	ui.consoleLog += time.Now().Format(timeFormat) + " " + message + "\n"

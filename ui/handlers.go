@@ -400,9 +400,9 @@ func (handlers handlers) HelpContent(activePanel string) string {
 	// print map into tables
 	for view, viewHandlers := range handlersWhere {
 		// LOOK AT MOI: filter out non current panel
-		if view != activePanel {
-			continue
-		}
+		// if view != activePanel {
+		// 	continue
+		// }
 
 		fmt.Fprintf(w, "\n\tPanel '%s'\t\n", view)
 		fmt.Fprint(w, HELP_TABLE_TITLE)
@@ -414,7 +414,7 @@ func (handlers handlers) HelpContent(activePanel string) string {
 		}
 	}
 
-	fmt.Fprintf(w, "\n\tGloba handlers\t\n")
+	fmt.Fprintf(w, "\n\tGlobal handlers\t\n")
 	fmt.Fprint(w, HELP_TABLE_TITLE)
 	fmt.Fprintf(w, "  %s\t: %s\n", "<CTRL>+h", "Toggle Help")
 	for _, handler := range anywhere {

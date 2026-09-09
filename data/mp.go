@@ -30,7 +30,7 @@ func (mp MP) NameWithHonorific() string {
 }
 
 func (mp MP) ToString() string {
-	return fmt.Sprintf("(%s) %s - %s", mp.Party, mp.NameWithHonorific(), mp.Electorate)
+	return fmt.Sprintf("(%s) %s - %s", mp.Party, mp.Name(), mp.Electorate)
 }
 
 func (mp MP) SearchTerm1() string {

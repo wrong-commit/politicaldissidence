@@ -798,7 +798,7 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-09T12:05:52.2072836+10:00",
+           "checkedAt": "2026-09-09T12:24:37.3712815+10:00",
            "error": "Could not parse \u003cau.linkedin.com\u003e"
          },
          "dns": {
@@ -997,7 +997,7 @@
          "alert": false,
          "lastChecked": "0001-01-01T00:00:00Z",
          "whois": {
-           "checkedAt": "2026-09-09T12:05:53.9941409+10:00",
+           "checkedAt": "2026-09-09T12:24:39.2062573+10:00",
            "error": "Could not get WHOIS for \u003cjimchalmers.org\u003e"
          },
          "dns": {
@@ -1852,7 +1852,19 @@
          "expiry": "",
          "expired": false,
          "alert": false,
-         "lastChecked": "0001-01-01T00:00:00Z",
+         "lastChecked": "2026-09-09T12:24:40.6661764+10:00",
+         "whois": {
+           "checkedAt": "2026-09-09T12:24:40.6661764+10:00",
+           "status": [
+             "serverrenewprohibited"
+           ],
+           "updated": "2026-08-15T21:55:05Z",
+           "registrar": "Melbourne IT",
+           "nameServers": [
+             "cheryl.ns.cloudflare.com",
+             "gerald.ns.cloudflare.com"
+           ]
+         },
          "dns": {
            "checkedAt": "2026-09-09T12:06:48.796997+10:00",
            "empty": false,
@@ -1875,6 +1887,24 @@
            "txt": [
              "v=spf1 include:_spf.mx.cloudflare.net include:sendgrid.net ~all"
            ]
+         },
+         "https": {
+           "checkedAt": "2026-09-09T12:24:36.8064119+10:00",
+           "status": "enabled",
+           "notAfter": "2026-11-05T21:00:54Z",
+           "httpStatus": 200,
+           "apex": {
+             "hostname": "andrewgiles.com.au",
+             "status": "enabled",
+             "notAfter": "2026-11-05T21:00:54Z",
+             "httpStatus": 200
+           },
+           "www": {
+             "hostname": "www.andrewgiles.com.au",
+             "status": "enabled",
+             "notAfter": "2026-11-05T21:00:54Z",
+             "httpStatus": 200
+           }
          }
        }
      ]
@@ -1913,7 +1943,43 @@
      "party": "ALP",
      "state": "WA",
      "level": "",
-     "domains": null
+     "domains": [
+       {
+         "hostname": "www.patrickgormanmp.com",
+         "expiry": "",
+         "expired": false,
+         "alert": false,
+         "lastChecked": "0001-01-01T00:00:00Z",
+         "dns": {
+           "checkedAt": "2026-09-09T12:24:48.7079153+10:00",
+           "empty": false,
+           "outcome": "ok",
+           "a": [
+             "198.185.159.145",
+             "198.49.23.144",
+             "198.185.159.144",
+             "198.49.23.145"
+           ],
+           "ns": [
+             "ns03.squarespacedns.com",
+             "dns1.p01.nsone.net",
+             "dns4.p01.nsone.net",
+             "ns04.squarespacedns.com",
+             "ns02.squarespacedns.com",
+             "dns2.p01.nsone.net",
+             "ns01.squarespacedns.com",
+             "dns3.p01.nsone.net"
+           ],
+           "mx": [
+             "aspmx.l.google.com",
+             "alt2.aspmx.l.google.com",
+             "alt1.aspmx.l.google.com",
+             "alt4.aspmx.l.google.com",
+             "alt3.aspmx.l.google.com"
+           ]
+         }
+       }
+     ]
    },
    {
      "honorific": "Mr",

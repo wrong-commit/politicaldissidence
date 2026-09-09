@@ -114,7 +114,7 @@ func (ui *UI) initGui(g *gocui.Gui) error {
 	// Default Panel settings
 	ui.gui.Highlight = true
 	ui.gui.InputEsc = false
-	ui.gui.SelFgColor = gocui.ColorGreen
+	ui.gui.SelFgColor = gocui.ColorRed
 
 	// Mouse settings
 	ui.gui.Cursor = true
