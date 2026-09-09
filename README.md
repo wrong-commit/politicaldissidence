@@ -1,17 +1,15 @@
 # Political Dissidence 
 
 ## Generate source database
-Download CSV files from https://www.aph.gov.au/Senators_and_Members/Contacting_Senators_and_Members
-Run cmd/csv2json with the right parameters
-```
-go run ./cmd/csv2json --senators "./allsenel.csv"
-```
+
+Import APH CSVs into MP JSON: [IMPORT_CSV.md](docs/IMPORT_CSV.md).
 
 ## Build and run
 
 Requires [Go](https://go.dev/dl/) (module targets Go 1.17+).
 
 From the project root:
+
 
 ```powershell
 go build
@@ -40,22 +38,6 @@ go build -o checkdomains.exe ./cmd/checkdomains
 .\checkdomains.exe -v
 .\checkdomains.exe -soon-days 90 -delay 1s
 .\checkdomains.exe -save=false
-```
-
-Import APH CSVs into MP JSON (writes `mps_from_csv.json` by default, not `mp_data.json`):
-
-```powershell
-go run ./cmd/csv2json -senators .\allsenph.csv -members .\FamilynameRepsCSV.csv
-go run ./cmd/csv2json -members .\FamilynameRepsCSV.csv -o .\mps_from_csv.json
-```
-
-Or build and run the executable:
-
-```powershell
-go build -o csv2json.exe ./cmd/csv2json
-.\csv2json.exe -senators .\allsenph.csv -members .\FamilynameRepsCSV.csv
-.\csv2json.exe -senators .\allsenph.csv -o .\senators.json
-.\csv2json.exe -members .\FamilynameRepsCSV.csv -o .\members.json
 ```
 
 Merge two MP JSON databases into a new file (dedupe by name; never overwrites `-o`):
@@ -110,7 +92,7 @@ See [KEYBOARD_SHORTCUTS.md](docs/KEYBOARD_SHORTCUTS.md).
         - [ ] Parse HTML 
         - [ ] Fetch CSV files 
     - [x] From CSV files extract (Honorific) (Full Name + Prefered Name) (Party) (Electorate) into database
-    - [ ] Alert when new MP found
+    - [x] Alert when new MP found
 - [ ] CLI 
     - [x] Linking MP and domain
     - [x] Display list of MPs requiring linkage
@@ -136,8 +118,8 @@ See [KEYBOARD_SHORTCUTS.md](docs/KEYBOARD_SHORTCUTS.md).
     - [x] Add multiple engines/search terms to url lookup
     - [x] DNS Record Checks as well as WHOIS
         - [x] [SPEC_DNS_EMPTY.md](docs/specs/SPEC_DNS_EMPTY.md)
-    - [ ] Import files easily
-        - [ ] easy config for modifying for different files
+    - [x] Import files easily
+        - [x] easy config for modifying for different files
         - [x] HTTPS Certificate Checks (see [SPEC_HTTPS_CERT.md](docs/specs/SPEC_HTTPS_CERT.md))
         - [x] Add HTTP Status Checks
 - [ ] Maintainence 
