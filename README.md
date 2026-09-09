@@ -56,22 +56,24 @@ Or in one step without writing a binary:
 go run .
 ```
 
-Batch watchlist (WHOIS + DNS, print / persist `alert` domains):
+Headless domain refresh (WHOIS + DNS + HTTPS, no TUI) — useful for scripts / cron:
 
 ```powershell
 go run ./cmd/checkdomains
 go run ./cmd/checkdomains -dry-run
 ```
 
+`-dry-run` classifies alerts from persisted data only (no network, no save). Live runs persist unless you pass `-save=false`.
+
 Or build and run the executable:
 
 ```powershell
 go build -o checkdomains.exe ./cmd/checkdomains
 .\checkdomains.exe
-.\checkdomains.exe -dry-run
+.\checkdomains.exe -dry-run # only look at current data
 .\checkdomains.exe -v
 .\checkdomains.exe -soon-days 90 -delay 1s
-.\checkdomains.exe -save=false
+.\checkdomains.exe -save=false # do not save JSON DB
 ```
 
 Merge two MP JSON databases into a new file (dedupe by name; never overwrites `-o`):
@@ -123,9 +125,10 @@ Ctrl+L (and the optional hourly ticker) fetch/parse **every** entry in `csv_refr
 
 APH examples: senators → `allsenel.csv` / `senators`; House of Reps → `FamilynameRepsCSV.csv` / `members`.
 
-Dry-run the same pipeline (no save):
+Headless CSV refresh (same pipeline as Ctrl+L; no TUI). Always a dry run — merges in memory only and never writes `mp_data.json`:
 
 ```powershell
+go run ./cmd/csvrefresh
 go run ./cmd/csvrefresh -v
 ```
 
