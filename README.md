@@ -1,5 +1,12 @@
 # Political Dissidence 
 
+A custom purpose TUI/CLI for
+- import any shape CSV file of targets
+- easily search DuckDuckGo/Bing from within the TUI to find personal websites
+- runs automated DNS/WHOIS/HTTPS status checks against any added host
+- raise an alert if anything indicates the domain might be expiring soon
+- automatically scan DNS/WHOIS/HTTPS records
+
 ## Generate source database
 
 Import APH CSVs into MP JSON: [IMPORT_CSV.md](docs/IMPORT_CSV.md).
@@ -75,6 +82,10 @@ That script runs `go build` and, on success, `./politicaldissidence`.
 
 See [KEYBOARD_SHORTCUTS.md](docs/KEYBOARD_SHORTCUTS.md).
 
+## Environment variables
+
+See [ENVIRONMENT.md](docs/ENVIRONMENT.md) for all runtime env flags (background WHOIS/DNS/HTTPS, 30-minute periodic rechecks, CSV ticker).
+
 ## Specs
 
 - [Background WHOIS refresh](docs/specs/SPEC_BACKGROUND_WHOIS.md)
@@ -148,6 +159,7 @@ See [KEYBOARD_SHORTCUTS.md](docs/KEYBOARD_SHORTCUTS.md).
     - [x] Detect when URL disappears (used statuses instead, works better for reporting)
     - [x] Alert when current list changes found/removed (added console logs when importing members)
     - [x] Check all domains on startup
+    - [x] Re-check due domains every 30 minutes (toggle: `SKIP_PERIODIC_DOMAIN_CHECKS`; see [ENVIRONMENT.md](docs/ENVIRONMENT.md))
     - [x] WHOIS information panel (see [SPEC_WHOIS_PANEL.md](docs/specs/SPEC_WHOIS_PANEL.md))
     - [x] JSON Validation on startup/reload
 - [ ] Code
