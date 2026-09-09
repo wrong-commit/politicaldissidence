@@ -45,6 +45,7 @@ const (
 	ADD_DOMAIN_PANEL = "adddomain"
 	SEARCHING_MODAL  = "searching"
 	LIST_URLS_MODAL  = "search"
+	TITLE_PANEL      = "title"
 	// SAVE_MODAL           = "save_modal"
 	// PROGRESS_MODAL       = "progress_modal"
 	// Log messages
@@ -139,6 +140,12 @@ var modalViews = map[string]panelProperties{
 		editable: false,
 		cursor:   false,
 	},
+	TITLE_PANEL: {
+		title:    "",
+		text:     "",
+		editable: false,
+		cursor:   false,
+	},
 }
 
 // Panel views to render
@@ -163,6 +170,15 @@ var (
 
 // Layout initialize the panel views and associates the mouse click bindings with them.
 func (ui *UI) Layout(g *gocui.Gui) error {
+	// During startup title: do not create main panels — only the title modal is shown.
+	if ui.titleOnly {
+		if _, err := ui.gui.View(TITLE_PANEL); err == nil {
+			if _, err := ui.gui.SetViewOnTop(TITLE_PANEL); err != nil && err != gocui.ErrUnknownView {
+				return err
+			}
+		}
+		return nil
+	}
 
 	if err := ui.ApplyMouseBindings(clickableViews); err != nil {
 		return err
@@ -217,6 +233,9 @@ func (ui *UI) Layout(g *gocui.Gui) error {
 
 // initPanelView initializes the panel view.
 func (ui *UI) initPanelView(name string) (*gocui.View, error) {
+	if ui.titleOnly {
+		return nil, gocui.ErrUnknownView
+	}
 	maxX, maxY := ui.gui.Size()
 
 	if ui.logExpanded && name == LOG_PANEL {
@@ -462,10 +481,11 @@ func (ui *UI) setPanelView(name string) error {
 	//if err := ui.closeModal(ui.currentModal); err != nil {
 	//	return err
 	//}
-	// Save cursor position before switch view
-	view := ui.gui.CurrentView()
-	x, y := view.Cursor()
-	ui.cursors.Set(view.Name(), x, y)
+	// Save cursor position before switch view (no-op when nothing is focused yet).
+	if view := ui.gui.CurrentView(); view != nil {
+		x, y := view.Cursor()
+		ui.cursors.Set(view.Name(), x, y)
+	}
 
 	if _, err := ui.gui.SetCurrentView(name); err != nil {
 		if err == gocui.ErrUnknownView {

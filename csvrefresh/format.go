@@ -6,6 +6,14 @@ func FormatTickerSkipped() string {
 	return fmt.Sprintf("INFO background CSV refresh ticker skipped (%s)", EnvSkipBackgroundCSVRefresh)
 }
 
+func FormatRunStart(n int) string {
+	return fmt.Sprintf("INFO CSV refresh: starting (%d entries)", n)
+}
+
+func FormatEntryStart(i, n int, filename, format string) string {
+	return fmt.Sprintf("INFO CSV refresh: entry %d/%d filename=%s format=%s", i, n, filename, format)
+}
+
 func FormatStart() string {
 	return "INFO CSV refresh: fetching listing page"
 }

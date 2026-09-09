@@ -57,13 +57,14 @@ type Deps struct {
 	Apply func(merged []data.MP)
 }
 
-// Result summarizes a CSV refresh run.
+// Result summarizes a CSV refresh run across all entries.
 type Result struct {
 	AddedCount  int
 	MergedCount int
 	ParsedCount int
 	Skipped     bool // true when config missing or already running handled by TryRun
 	Applied     bool
+	EntryFails  int
 }
 
 // Runner ensures only one CSV refresh runs at a time.
@@ -76,7 +77,7 @@ type Runner struct {
 // Env skip is NOT checked here (ticker arming only). Missing config → ERROR + skipped.
 func (r *Runner) TryRun(deps Deps) (Result, bool) {
 	deps = deps.withDefaults()
-	if deps.Config == nil {
+	if deps.Config == nil || len(deps.Config.Entries) == 0 {
 		deps.Log.Error(FormatConfigError("missing or invalid"))
 		return Result{Skipped: true}, true
 	}
@@ -129,74 +130,90 @@ func (d Deps) withDefaults() Deps {
 	return d
 }
 
-// Run executes fetch → parse → merge → apply. Never writes disk.
+// Run executes fetch → parse → merge for every config entry, then apply once. Never writes disk.
 func Run(deps Deps) Result {
 	deps = deps.withDefaults()
 	cfg := deps.Config
-	if cfg == nil {
+	if cfg == nil || len(cfg.Entries) == 0 {
 		deps.Log.Error(FormatConfigError("missing or invalid"))
 		return Result{Skipped: true}
 	}
 
-	deps.Log.Info(FormatStart())
+	current := deps.Current()
+	res := Result{}
+	anyOK := false
 
-	pageBody, err := deps.Get(cfg.CSVSourceURL)
-	if err != nil {
-		deps.Log.Error(FormatURLError(cfg.CSVSourceURL, err.Error()))
-		return Result{}
+	deps.Log.Info(FormatRunStart(len(cfg.Entries)))
+
+	for i := range cfg.Entries {
+		entry := &cfg.Entries[i]
+		deps.Log.Info(FormatEntryStart(i+1, len(cfg.Entries), entry.CSVFilename, entry.NormalizedFormat))
+
+		parsed, ok := runEntry(deps, entry)
+		if !ok {
+			res.EntryFails++
+			continue
+		}
+		anyOK = true
+		res.ParsedCount += len(parsed)
+
+		merged := deps.Merge(current, parsed)
+		current = merged.MPs
+
+		for _, name := range merged.AddedNames {
+			deps.Log.Info(FormatAdded(name))
+		}
+		for _, name := range merged.MergedNames {
+			deps.Log.Info(FormatMerged(name))
+		}
+		res.AddedCount += len(merged.AddedNames)
+		res.MergedCount += len(merged.MergedNames)
 	}
 
-	csvURL, err := deps.FindURL(cfg.CSVSourceURL, cfg.CSVFilename, pageBody)
+	if !anyOK {
+		return res
+	}
+
+	if res.AddedCount == 0 && res.MergedCount == 0 {
+		deps.Log.Info(FormatEndUnchanged())
+	} else {
+		deps.Log.Info(FormatEndChanged(res.AddedCount, res.MergedCount))
+	}
+	if deps.Apply != nil {
+		deps.Apply(current)
+		res.Applied = true
+	}
+	return res
+}
+
+func runEntry(deps Deps, entry *Entry) ([]data.MP, bool) {
+	deps.Log.Info(FormatStart())
+
+	pageBody, err := deps.Get(entry.CSVSourceURL)
 	if err != nil {
-		deps.Log.Error(FormatURLError(cfg.CSVSourceURL, err.Error()))
-		return Result{}
+		deps.Log.Error(FormatURLError(entry.CSVSourceURL, err.Error()))
+		return nil, false
+	}
+
+	csvURL, err := deps.FindURL(entry.CSVSourceURL, entry.CSVFilename, pageBody)
+	if err != nil {
+		deps.Log.Error(FormatURLError(entry.CSVSourceURL, err.Error()))
+		return nil, false
 	}
 	deps.Log.Debug(FormatDownloadURL(csvURL))
 
 	csvBody, err := deps.Get(csvURL)
 	if err != nil {
 		deps.Log.Error(FormatURLError(csvURL, err.Error()))
-		return Result{}
+		return nil, false
 	}
-	deps.Log.Info(FormatDownloadOK(cfg.CSVFilename, len(csvBody)))
+	deps.Log.Info(FormatDownloadOK(entry.CSVFilename, len(csvBody)))
 
-	parsed, err := deps.Parse(csvBody, cfg.ColumnMap, cfg.ResolvedLevel)
+	parsed, err := deps.Parse(csvBody, entry.ColumnMap, entry.ResolvedLevel)
 	if err != nil {
 		deps.Log.Error(FormatParseError(err.Error()))
-		return Result{}
+		return nil, false
 	}
-	deps.Log.Info(FormatParsed(len(parsed), cfg.NormalizedFormat))
-
-	a := deps.Current()
-	merged := deps.Merge(a, parsed)
-
-	for _, name := range merged.AddedNames {
-		deps.Log.Info(FormatAdded(name))
-	}
-	for _, name := range merged.MergedNames {
-		deps.Log.Info(FormatMerged(name))
-	}
-
-	res := Result{
-		AddedCount:  len(merged.AddedNames),
-		MergedCount: len(merged.MergedNames),
-		ParsedCount: len(parsed),
-	}
-
-	if res.AddedCount == 0 && res.MergedCount == 0 {
-		deps.Log.Info(FormatEndUnchanged())
-		// Still apply so memory matches merge output (stable / deduped).
-		if deps.Apply != nil {
-			deps.Apply(merged.MPs)
-			res.Applied = true
-		}
-		return res
-	}
-
-	deps.Log.Info(FormatEndChanged(res.AddedCount, res.MergedCount))
-	if deps.Apply != nil {
-		deps.Apply(merged.MPs)
-		res.Applied = true
-	}
-	return res
+	deps.Log.Info(FormatParsed(len(parsed), entry.NormalizedFormat))
+	return parsed, true
 }

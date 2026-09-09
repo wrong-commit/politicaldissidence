@@ -16,7 +16,7 @@ In-app help: press **Ctrl+H** to open a modal listing shortcuts for the current 
 | **Ctrl+S** | Save MPs and domains to disk                                                                                        |
 | **Ctrl+R** | Reload MPs and domains from disk                                                                                    |
 | **Ctrl+P** | Force-recheck all domains (WHOIS + DNS + HTTPS), ignoring lastChecked / checkedAt                                   |
-| **Ctrl+L** | Refresh MPs from configured CSV (`csv_refresh.json`); merge in memory — save with Ctrl+S                            |
+| **Ctrl+L** | Reload `csv_refresh.json`, fetch/parse CSV, merge in memory — save with Ctrl+S                                      |
 | **l**      | Toggle Log panel full height (press again to restore). When expanded, PgUp/PgDn scroll the log. When restored, log jumps to the bottom. |
 | **PgUp**   | Scroll Domain Information up one page; or Log up one page when the log panel is expanded                            |
 | **PgDn**   | Scroll Domain Information down one page; or Log down one page when the log panel is expanded                        |
@@ -131,7 +131,7 @@ Ctrl+C          Quit / close modal
 Ctrl+S          Save
 Ctrl+R          Reload
 Ctrl+P          Force recheck all domains
-Ctrl+L          Refresh MPs from CSV
+Ctrl+L          Reload csv_refresh.json + refresh MPs from CSV
 l               Toggle log panel full height
 PgUp / PgDn     Scroll Domain Information (or Log when expanded)
 Tab             Switch List ↔ Domains

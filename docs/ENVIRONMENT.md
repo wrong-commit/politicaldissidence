@@ -9,6 +9,7 @@ Runtime flags read by the TUI (and related packages). Values are case-insensitiv
 | `SKIP_BACKGROUND_HTTPS_LOOKUP` | `true` / unset / other | enabled (unset) | When `true`, the automatic background HTTPS scan does **not** run (startup and periodic). Manual **`u`** / domain-added HTTPS still run. Logs: `INFO background HTTPS skipped (SKIP_BACKGROUND_HTTPS_LOOKUP=true)`. |
 | `SKIP_PERIODIC_DOMAIN_CHECKS` | `true` / unset / other | enabled (unset) | When `true`, the **30-minute** ticker that re-runs WHOIS / DNS / HTTPS is not armed. Startup one-shot scans still run (unless their own `SKIP_BACKGROUND_*` flags are set). Manual **`u`** unaffected. Logs once at arm time: `INFO periodic domain checks ticker skipped (SKIP_PERIODIC_DOMAIN_CHECKS=true)`. |
 | `SKIP_BACKGROUND_CSV_REFRESH` | `true` / unset / other | enabled (unset) | When `true`, the hourly CSV refresh ticker is not armed. **Ctrl+L** still runs when `csv_refresh.json` is valid. Logs: `INFO background CSV refresh ticker skipped (SKIP_BACKGROUND_CSV_REFRESH)`. |
+| `SKIP_TITLE_SCREEN` | `true` / unset / other | title shown (unset) | When `true`, the startup ASCII title panel is not shown and the ≥1s hold is skipped. Load / tickers / background jobs are unchanged. Logs: `INFO title screen skipped (SKIP_TITLE_SCREEN=true)`. See [SPEC_TITLE_SCREEN.md](specs/SPEC_TITLE_SCREEN.md). |
 
 ## Periodic domain checks (detail)
 
@@ -38,6 +39,10 @@ $env:SKIP_BACKGROUND_WHOIS_LOOKUP = "true"
 $env:SKIP_BACKGROUND_DNS_LOOKUP = "true"
 $env:SKIP_BACKGROUND_HTTPS_LOOKUP = "true"
 $env:SKIP_PERIODIC_DOMAIN_CHECKS = "true"
+.\politicaldissidence.exe
+
+# Skip the startup title splash (no 1s hold)
+$env:SKIP_TITLE_SCREEN = "true"
 .\politicaldissidence.exe
 ```
 

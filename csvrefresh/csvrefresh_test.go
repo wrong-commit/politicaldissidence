@@ -50,29 +50,16 @@ func customCSV() string {
 		"Hon,Pat,Smith,IND,WA,Perth\n"
 }
 
-func validCfg(t *testing.T, format string) *Config {
+func validCfg(t *testing.T, formats ...string) *Config {
 	t.Helper()
-	raw := `{"csvSourceURL":"https://example.org/page","csvFilename":"allsenel.csv","format":"` + format + `"}`
-	if format == FormatCustom {
-		raw = `{
-			"csvSourceURL":"https://example.org/page",
-			"csvFilename":"roster.csv",
-			"format":"custom",
-			"level":"State Senator",
-			"columns":{
-				"honorific":"Title",
-				"firstName":"First Name",
-				"surname":"Surname",
-				"party":"Party",
-				"state":"State",
-				"electorate":"District"
-			}
-		}`
+	if len(formats) == 0 {
+		formats = []string{FormatSenators}
 	}
-	if format == FormatMembers {
-		raw = `{"csvSourceURL":"https://example.org/page","csvFilename":"FamilynameRepsCSV.csv","format":"members"}`
+	parts := make([]string, len(formats))
+	for i, f := range formats {
+		parts[i] = entryJSON(f)
 	}
-	c, err := ParseConfig([]byte(raw))
+	c, err := ParseConfig(wrapEntries(parts...))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -125,6 +112,47 @@ func TestRun_AddAndMerge(t *testing.T) {
 	}
 }
 
+func TestRun_MultipleEntries(t *testing.T) {
+	log := &memLog{}
+	var applied []data.MP
+	cfg := validCfg(t, FormatSenators, FormatMembers)
+	html := `<html>
+		<a href="/files/allsenel.csv">s</a>
+		<a href="/files/FamilynameRepsCSV.csv">m</a>
+	</html>`
+
+	res := Run(Deps{
+		Log:    log,
+		Config: cfg,
+		Current: func() []data.MP {
+			return nil
+		},
+		Get: func(u string) ([]byte, error) {
+			if strings.Contains(u, "page") {
+				return []byte(html), nil
+			}
+			if strings.Contains(u, "FamilynameRepsCSV") {
+				return []byte(memberCSV()), nil
+			}
+			return []byte(senatorCSV()), nil
+		},
+		Apply: func(merged []data.MP) {
+			applied = merged
+		},
+	})
+
+	if res.ParsedCount != 3 || res.AddedCount != 3 || res.EntryFails != 0 {
+		t.Fatalf("res=%+v", res)
+	}
+	if !res.Applied || len(applied) != 3 {
+		t.Fatalf("applied=%d flag=%v", len(applied), res.Applied)
+	}
+	joined := strings.Join(log.info, "\n")
+	if !strings.Contains(joined, "entry 1/2") || !strings.Contains(joined, "entry 2/2") {
+		t.Fatalf("missing entry logs: %s", joined)
+	}
+}
+
 func TestRun_UnchangedEmptyCSV(t *testing.T) {
 	log := &memLog{}
 	cfg := validCfg(t, FormatSenators)
@@ -161,7 +189,7 @@ func TestRun_DownloadError(t *testing.T) {
 		Get:    func(string) ([]byte, error) { return nil, errors.New("dial fail") },
 		Apply:  func([]data.MP) { t.Fatal("must not apply") },
 	})
-	if res.Applied || res.ParsedCount != 0 {
+	if res.Applied || res.ParsedCount != 0 || res.EntryFails != 1 {
 		t.Fatalf("res=%+v", res)
 	}
 	if len(log.err) == 0 || !strings.Contains(log.err[0], "dial fail") {
@@ -187,11 +215,43 @@ func TestRun_ParseError(t *testing.T) {
 		},
 		Apply: func([]data.MP) { t.Fatal("must not apply") },
 	})
-	if res.Applied {
-		t.Fatal("applied")
+	if res.Applied || res.EntryFails != 1 {
+		t.Fatalf("res=%+v", res)
 	}
 	if len(log.err) == 0 || !strings.Contains(log.err[0], "parse:") {
 		t.Fatalf("err=%v", log.err)
+	}
+}
+
+func TestRun_SecondEntryContinuesAfterFirstFails(t *testing.T) {
+	log := &memLog{}
+	var applied []data.MP
+	cfg := validCfg(t, FormatSenators, FormatMembers)
+	html := `<html>
+		<a href="/files/allsenel.csv">s</a>
+		<a href="/files/FamilynameRepsCSV.csv">m</a>
+	</html>`
+
+	res := Run(Deps{
+		Log:     log,
+		Config:  cfg,
+		Current: func() []data.MP { return nil },
+		Get: func(u string) ([]byte, error) {
+			if strings.Contains(u, "page") {
+				return []byte(html), nil
+			}
+			if strings.Contains(u, "allsenel") {
+				return nil, errors.New("senators down")
+			}
+			return []byte(memberCSV()), nil
+		},
+		Apply: func(m []data.MP) { applied = m },
+	})
+	if res.EntryFails != 1 || res.ParsedCount != 1 || res.AddedCount != 1 || !res.Applied {
+		t.Fatalf("res=%+v", res)
+	}
+	if len(applied) != 1 || applied[0].Surname != "Doe" {
+		t.Fatalf("applied=%+v", applied)
 	}
 }
 

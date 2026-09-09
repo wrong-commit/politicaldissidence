@@ -99,7 +99,7 @@ func (ui *UI) refreshDomainWhois(mpIndex, domainIdx int) {
 }
 
 func (ui *UI) refreshDomainPanel() {
-	if ui.gui == nil {
+	if ui.gui == nil || ui.titleOnly {
 		return
 	}
 	ui.gui.Update(func(g *gocui.Gui) error {
@@ -119,7 +119,7 @@ func (ui *UI) refreshDomainPanel() {
 }
 
 func (ui *UI) refreshWhoisPanel() {
-	if ui.gui == nil {
+	if ui.gui == nil || ui.titleOnly {
 		return
 	}
 	ui.gui.Update(func(g *gocui.Gui) error {

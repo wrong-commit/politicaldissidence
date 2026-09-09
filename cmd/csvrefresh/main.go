@@ -28,9 +28,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Fprintf(os.Stderr, "INFO csvrefresh: config=%s format=%s filename=%s currentMPs=%d\n",
-		*configPath, cfg.NormalizedFormat, cfg.CSVFilename, len(current))
-	fmt.Fprintf(os.Stderr, "INFO csvrefresh: sourceURL=%s\n", cfg.CSVSourceURL)
+	fmt.Fprintf(os.Stderr, "INFO csvrefresh: config=%s entries=%d interval=%s currentMPs=%d\n",
+		*configPath, len(cfg.Entries), cfg.Interval, len(current))
+	for i, e := range cfg.Entries {
+		fmt.Fprintf(os.Stderr, "INFO csvrefresh: entry[%d] format=%s filename=%s url=%s\n",
+			i, e.NormalizedFormat, e.CSVFilename, e.CSVSourceURL)
+	}
 
 	log := csvrefresh.LogFn{
 		OnInfo: func(msg string) {
@@ -62,13 +65,13 @@ func main() {
 	if res.Skipped {
 		os.Exit(1)
 	}
-	if res.ParsedCount == 0 && res.AddedCount == 0 && res.MergedCount == 0 && !res.Applied {
-		// fetch/parse failed (errors already logged)
+	if !res.Applied {
+		// all entries failed (errors already logged)
 		os.Exit(1)
 	}
 
-	fmt.Fprintf(os.Stderr, "INFO csvrefresh: done parsed=%d added=%d merged=%d inMemory=%d (not saved)\n",
-		res.ParsedCount, res.AddedCount, res.MergedCount, appliedN)
+	fmt.Fprintf(os.Stderr, "INFO csvrefresh: done parsed=%d added=%d merged=%d entryFails=%d inMemory=%d (not saved)\n",
+		res.ParsedCount, res.AddedCount, res.MergedCount, res.EntryFails, appliedN)
 }
 
 func loadMPs(path string) ([]data.MP, error) {

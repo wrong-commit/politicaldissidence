@@ -23,23 +23,21 @@ import (
 func InitApp() {
 	ui := NewUI()
 	defer ui.Close()
+	defer func() { fmt.Println(ui.consoleLog) }()
 	// create internal structures and setup views in gocui
 	ui.Init()
-	// load data
-	if err := ui.Load(); err != nil {
-		ui.log(fmt.Sprintf("Could not load MPs <%s>", err.Error()), true)
+
+	if !TitleScreenEnabled() {
+		_ = ui.logPlain(FormatTitleScreenSkipped())
+		ui.runStartupAfterInit()
+		ui.Loop()
+		return
 	}
 
-	ui.started = true
-	ui.log(ui.startupLog, false)
-	ui.loadCsvRefreshConfig()
-	ui.armCsvRefreshTicker() // first fire after one interval; no run on startup
-	go ui.startBackgroundWhois(false)
-	go ui.startBackgroundDns(false)
-	go ui.startBackgroundHttps(false)
-	ui.armPeriodicDomainChecksTicker() // first fire after 30m; due domains only
+	// MainLoop must run so the title can paint; main panels stay hidden until load finishes.
+	ui.titleOnly = true
+	go ui.startupWithTitle()
 	ui.Loop()
-	defer func() { fmt.Println(ui.consoleLog) }()
 }
 
 // Save saves written MP and domain details to disk
@@ -246,6 +244,11 @@ func (ui *UI) selectMp(newMpIndex int) error {
 		ui.state.currentIndex = newMpIndex
 		// Point at Domains on the canonical all slice, not a filtered copy
 		ui.state.domainState = &DomainState{&mp.Domains, 0}
+	}
+
+	// During title-only startup, keep state in memory but do not create main panels.
+	if ui.titleOnly {
+		return nil
 	}
 
 	domainView, err := ui.initPanelView(DOMAIN_PANEL)
