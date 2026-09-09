@@ -17,6 +17,19 @@ To build a build a toy app in a TUI. Originally I started this by hand to improv
 
 Import APH CSVs into MP JSON: [IMPORT_CSV.md](docs/IMPORT_CSV.md).
 
+### Debug alert fixtures
+
+`mp_debug_examples.json` holds six `DEBUG *` MPs (also prepended at the top of `mp_data.json`) for UI alert demos. Filter **have alerts** to find them. Fresh `lastChecked` / `checkedAt` values avoid background WHOIS/DNS/HTTPS overwriting the fixtures for ~10 days.
+
+| Surname | Alert reason(s) | Notes |
+| ------- | --------------- | ----- |
+| `HttpsCertError` | `https-expired` | Certificate past `notAfter` |
+| `DnsExpirySoon` | `soon` | Domain/WHOIS expiry within 90 days (no separate DNS-expiry alert) |
+| `DnsExpired` | `expired` | Domain/WHOIS expiry in the past |
+| `DnsMissing` | `dns-empty` | Empty DNS / no records |
+| `WhoisExpirySoon` | `soon` | WHOIS expiry within 90 days |
+| `WhoisExpired` | `expired` | WHOIS expiry in the past |
+
 ## Build and run
 
 ### Quickstart
@@ -124,6 +137,7 @@ On macOS / Linux (or Git Bash), the `make` script builds then runs:
 That script runs `go build` and, on success, `./politicaldissidence`.
 
 ## Search terms (`search_terms.json`)
+
 
 Guess-domain search (**g**) loads query templates from `search_terms.json` next to the app. Each template is a Go `text/template` rendered from the selected MP. The file is reloaded when opening the search flow (no restart needed after edits). Missing or invalid config falls back to the two built-in terms (`SearchTerm1` / `SearchTerm2`).
 

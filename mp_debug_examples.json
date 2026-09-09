@@ -1,0 +1,242 @@
+[
+  {
+    "honorific": "Mr",
+    "firstName": "DEBUG",
+    "surnname": "HttpsCertError",
+    "otherName": "",
+    "preferredName": "DEBUG",
+    "electorate": "Fixture",
+    "party": "DEBUG",
+    "state": "ACT",
+    "level": "Debug Fixture",
+    "domains": [
+      {
+        "hostname": "debug-https-cert-error.example",
+        "expiry": "2028-06-01",
+        "expired": false,
+        "alert": true,
+        "lastChecked": "2026-09-09T12:00:00+10:00",
+        "whois": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "expiry": "2028-06-01",
+          "updated": "2026-01-15T00:00:00Z",
+          "registrar": "DEBUG Registrar"
+        },
+        "dns": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "empty": false,
+          "outcome": "ok",
+          "a": ["203.0.113.10"],
+          "ns": ["ns1.example."]
+        },
+        "https": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "status": "expired",
+          "notAfter": "2026-09-01T00:00:00Z",
+          "error": "certificate has expired",
+          "httpStatus": 0,
+          "apex": {
+            "hostname": "debug-https-cert-error.example",
+            "status": "expired",
+            "notAfter": "2026-09-01T00:00:00Z",
+            "error": "certificate has expired"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "honorific": "Mr",
+    "firstName": "DEBUG",
+    "surnname": "DnsExpirySoon",
+    "otherName": "",
+    "preferredName": "DEBUG",
+    "electorate": "Fixture",
+    "party": "DEBUG",
+    "state": "ACT",
+    "level": "Debug Fixture",
+    "domains": [
+      {
+        "hostname": "debug-dns-expiry-soon.example",
+        "expiry": "2026-10-15",
+        "expired": false,
+        "alert": true,
+        "lastChecked": "2026-09-09T12:00:00+10:00",
+        "whois": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "expiry": "2026-10-15",
+          "updated": "2026-01-15T00:00:00Z",
+          "registrar": "DEBUG Registrar"
+        },
+        "dns": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "empty": false,
+          "outcome": "ok",
+          "a": ["203.0.113.11"],
+          "ns": ["ns1.example."]
+        },
+        "https": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "status": "enabled",
+          "notAfter": "2027-09-01T00:00:00Z",
+          "httpStatus": 200
+        }
+      }
+    ]
+  },
+  {
+    "honorific": "Mr",
+    "firstName": "DEBUG",
+    "surnname": "DnsExpired",
+    "otherName": "",
+    "preferredName": "DEBUG",
+    "electorate": "Fixture",
+    "party": "DEBUG",
+    "state": "ACT",
+    "level": "Debug Fixture",
+    "domains": [
+      {
+        "hostname": "debug-dns-expired.example",
+        "expiry": "2026-08-01",
+        "expired": true,
+        "alert": true,
+        "lastChecked": "2026-09-09T12:00:00+10:00",
+        "whois": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "expiry": "2026-08-01",
+          "updated": "2025-12-01T00:00:00Z",
+          "registrar": "DEBUG Registrar"
+        },
+        "dns": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "empty": false,
+          "outcome": "ok",
+          "a": ["203.0.113.12"],
+          "ns": ["ns1.example."]
+        },
+        "https": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "status": "enabled",
+          "notAfter": "2027-09-01T00:00:00Z",
+          "httpStatus": 200
+        }
+      }
+    ]
+  },
+  {
+    "honorific": "Mr",
+    "firstName": "DEBUG",
+    "surnname": "DnsMissing",
+    "otherName": "",
+    "preferredName": "DEBUG",
+    "electorate": "Fixture",
+    "party": "DEBUG",
+    "state": "ACT",
+    "level": "Debug Fixture",
+    "domains": [
+      {
+        "hostname": "debug-dns-missing.example",
+        "expiry": "2028-06-01",
+        "expired": false,
+        "alert": true,
+        "lastChecked": "2026-09-09T12:00:00+10:00",
+        "whois": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "expiry": "2028-06-01",
+          "updated": "2026-01-15T00:00:00Z",
+          "registrar": "DEBUG Registrar"
+        },
+        "dns": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "empty": true,
+          "outcome": "empty",
+          "error": "no A/NS/MX records"
+        },
+        "https": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "status": "enabled",
+          "notAfter": "2027-09-01T00:00:00Z",
+          "httpStatus": 200
+        }
+      }
+    ]
+  },
+  {
+    "honorific": "Mr",
+    "firstName": "DEBUG",
+    "surnname": "WhoisExpirySoon",
+    "otherName": "",
+    "preferredName": "DEBUG",
+    "electorate": "Fixture",
+    "party": "DEBUG",
+    "state": "ACT",
+    "level": "Debug Fixture",
+    "domains": [
+      {
+        "hostname": "debug-whois-expiry-soon.example",
+        "expiry": "2026-11-01",
+        "expired": false,
+        "alert": true,
+        "lastChecked": "2026-09-09T12:00:00+10:00",
+        "whois": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "expiry": "2026-11-01",
+          "updated": "2026-02-01T00:00:00Z",
+          "registrar": "DEBUG Registrar"
+        },
+        "dns": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "empty": false,
+          "outcome": "ok",
+          "a": ["203.0.113.13"],
+          "ns": ["ns1.example."]
+        },
+        "https": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "status": "enabled",
+          "notAfter": "2027-09-01T00:00:00Z",
+          "httpStatus": 200
+        }
+      }
+    ]
+  },
+  {
+    "honorific": "Mr",
+    "firstName": "DEBUG",
+    "surnname": "WhoisExpired",
+    "otherName": "",
+    "preferredName": "DEBUG",
+    "electorate": "Fixture",
+    "party": "DEBUG",
+    "state": "ACT",
+    "level": "Debug Fixture",
+    "domains": [
+      {
+        "hostname": "debug-whois-expired.example",
+        "expiry": "2026-07-15",
+        "expired": true,
+        "alert": true,
+        "lastChecked": "2026-09-09T12:00:00+10:00",
+        "whois": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "expiry": "2026-07-15",
+          "updated": "2025-11-01T00:00:00Z",
+          "registrar": "DEBUG Registrar"
+        },
+        "dns": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "empty": false,
+          "outcome": "ok",
+          "a": ["203.0.113.14"],
+          "ns": ["ns1.example."]
+        },
+        "https": {
+          "checkedAt": "2026-09-09T12:00:00+10:00",
+          "status": "enabled",
+          "notAfter": "2027-09-01T00:00:00Z",
+          "httpStatus": 200
+        }
+      }
+    ]
+  }
+]
