@@ -237,7 +237,7 @@ See [ENVIRONMENT.md](docs/ENVIRONMENT.md) for all runtime env flags (background 
         - [x] easy config for modifying for different files
         - [x] HTTPS Certificate Checks (see [SPEC_HTTPS_CERT.md](docs/specs/SPEC_HTTPS_CERT.md))
         - [x] Add HTTP Status Checks
-    - [ ] Custom search terms JSON
+    - [x] Custom search terms JSON
     - [ ] If I get bored: run nikto/wpscan/sqlmap against targets
 - [x] Maintainence 
     - [x] Detect when URL disappears (used statuses instead, works better for reporting)
