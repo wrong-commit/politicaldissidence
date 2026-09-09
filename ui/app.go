@@ -21,6 +21,10 @@ import (
 
 // InitApp initialize the CLI application.
 func InitApp() {
+	// Clear the terminal screen before gocui starts
+	fmt.Print("\033[H\033[2J")
+
+	// Start gocui
 	ui := NewUI()
 	defer ui.Close()
 	defer func() { fmt.Println(ui.consoleLog) }()
