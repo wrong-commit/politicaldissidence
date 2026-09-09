@@ -80,6 +80,7 @@ See [KEYBOARD_SHORTCUTS.md](docs/KEYBOARD_SHORTCUTS.md).
 - [Select a URL search paging (v2)](docs/specs/SPEC_SELECT_URL_PAGING.md)
 - [Select a URL searcher controls (v3)](docs/specs/SPEC_SELECT_URL_SEARCHER_V3.md)
 - [Merge MP JSON databases](docs/specs/SPEC_MERGE_DATABASES.md)
+- [Hourly background CSV refresh](docs/specs/SPEC_BACKGROUND_CSV_REFRESH.md)
 
 ## TODO
 
@@ -93,6 +94,19 @@ See [KEYBOARD_SHORTCUTS.md](docs/KEYBOARD_SHORTCUTS.md).
         - [ ] Fetch CSV files 
     - [x] From CSV files extract (Honorific) (Full Name + Prefered Name) (Party) (Electorate) into database
     - [x] Alert when new MP found
+    - [ ] Run background job every hour that (see [SPEC_BACKGROUND_CSV_REFRESH.md](docs/specs/SPEC_BACKGROUND_CSV_REFRESH.md))
+        - [ ] Ctrl+L triggers a run (do not run on startup)
+        - [ ] Refetches CSV from the page linked in source code
+            - [ ] Source URL from config file
+            - [ ] HTTPS Lookup page 
+            - [ ] Find CSV download link on page by download file name (allsenel.csv)
+            - [ ] Download CSV link
+            - [ ] log any errors to console
+            - [ ] If CSV downloaded, follow next steps
+        - [ ] Outputs any CSV parsing errors to Console Log
+        - [ ] Run the MP merge logic like cmd/mergeDatabases does
+        - [ ] Console Log when new members are added or merged
+        - [ ] Let the user save manually
 - [ ] CLI 
     - [x] Linking MP and domain
     - [x] Display list of MPs requiring linkage
@@ -123,8 +137,8 @@ See [KEYBOARD_SHORTCUTS.md](docs/KEYBOARD_SHORTCUTS.md).
         - [x] HTTPS Certificate Checks (see [SPEC_HTTPS_CERT.md](docs/specs/SPEC_HTTPS_CERT.md))
         - [x] Add HTTP Status Checks
 - [ ] Maintainence 
-    - [ ] Detect when URL disappears
-    - [ ] Alert when current list changes found/removed
+    - [x] Detect when URL disappears (used statuses instead, works better for reporting)
+    - [x] Alert when current list changes found/removed (added console logs when importing members)
     - [x] Check all domains on startup
     - [x] WHOIS information panel (see [SPEC_WHOIS_PANEL.md](docs/specs/SPEC_WHOIS_PANEL.md))
     - [x] JSON Validation on startup/reload
