@@ -27,6 +27,9 @@ func TestMergeMPs_UniquePreserved(t *testing.T) {
 	if len(got.MergedNames) != 0 {
 		t.Fatalf("MergedNames=%v", got.MergedNames)
 	}
+	if len(got.AddedNames) != 1 || got.AddedNames[0] != "Grace Hopper" {
+		t.Fatalf("AddedNames=%v", got.AddedNames)
+	}
 	if got.MPs[0].Party != "ALP" || got.MPs[0].Domains[0].Whois == nil || got.MPs[0].Domains[0].Https.HTTPStatus != 200 {
 		t.Fatalf("unique member checks should be preserved: %+v", got.MPs[0].Domains[0])
 	}
@@ -54,6 +57,9 @@ func TestMergeMPs_SameNameLaterPartyWins(t *testing.T) {
 	}
 	if len(got.MergedNames) != 1 || got.MergedNames[0] != "Jane Doe" {
 		t.Fatalf("MergedNames=%v", got.MergedNames)
+	}
+	if len(got.AddedNames) != 0 {
+		t.Fatalf("AddedNames=%v want empty", got.AddedNames)
 	}
 	mp := got.MPs[0]
 	if mp.Party != "LP" || mp.Electorate != "New" || mp.State != "VIC" || mp.Level != "new-level" {

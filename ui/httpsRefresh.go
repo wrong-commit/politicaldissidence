@@ -55,11 +55,12 @@ func (ui *UI) onHttpsLookup(mpName string, info httpscheck.Info, err error) {
 
 // startBackgroundHttps runs a one-shot background HTTPS refresh after load.
 // Honours SKIP_BACKGROUND_HTTPS_LOOKUP=true unless force is true.
+// Updates stay in memory until the user saves (Ctrl+S).
 func (ui *UI) startBackgroundHttps(force bool) {
 	if ui.state.all == nil {
 		return
 	}
-	deps := ui.httpsRefreshDeps(force, httpsrefresh.DefaultLookupDelay, true)
+	deps := ui.httpsRefreshDeps(force, httpsrefresh.DefaultLookupDelay, false)
 	if _, ok := ui.httpsRunner.TryRun(*ui.state.all, deps); !ok {
 		ui.whoisLog("HTTPS refresh already running", false)
 	}

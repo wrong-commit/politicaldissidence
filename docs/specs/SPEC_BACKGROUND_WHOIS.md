@@ -20,9 +20,9 @@ While the TUI is running, a background job refreshes WHOIS expiry for every load
 
 ## Background process
 
-**Trigger:** start once after MPs are loaded (e.g. end of `UI.Load` / `InitApp`), as a goroutine. v1 default: **once per session after load**, non-blocking. Optional later: periodic re-run (e.g. daily).
+**Trigger:** start once after MPs are loaded (e.g. end of `UI.Load` / `InitApp`), as a goroutine. Also re-run every **30 minutes** for domains still due under the 10-day throttle (same `force=false` path). See [ENVIRONMENT.md](../ENVIRONMENT.md) (`SKIP_PERIODIC_DOMAIN_CHECKS`).
 
-**Disable via env:** if `SKIP_BACKGROUND_WHOIS_LOOKUP=true` (case-insensitive), do **not** start the background refresh. Log a single INFO (or DEBUG) that background WHOIS was skipped because of the env var. Manual **Ctrl+U** is unaffected and still runs WHOIS.
+**Disable via env:** if `SKIP_BACKGROUND_WHOIS_LOOKUP=true` (case-insensitive), do **not** start the background refresh (startup or periodic tick). Log a single INFO (or DEBUG) that background WHOIS was skipped because of the env var. Manual **Ctrl+U** / **`u`** is unaffected and still runs WHOIS.
 
 **Scope:** iterate `ui.state.all` (all loaded MPs), not the current filter / `visible` list.
 

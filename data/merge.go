@@ -6,6 +6,7 @@ import "strings"
 type MergeResult struct {
 	MPs         []MP
 	MergedNames []string // display names that collapsed at least once (order of first merge)
+	AddedNames  []string // names from b that were not in a (order of first appearance in b)
 }
 
 // MergeMPs merges two MP slices (a then b). Later records win for party/bio fields
@@ -15,8 +16,14 @@ func MergeMPs(a, b []MP) MergeResult {
 	indexByName := make(map[string]int)
 	mergedOnce := make(map[string]struct{})
 	var mergedNames []string
+	var addedNames []string
 
-	appendOrMerge := func(mp MP) {
+	fromA := make(map[string]struct{}, len(a))
+	for _, mp := range a {
+		fromA[nameKey(mp)] = struct{}{}
+	}
+
+	appendOrMerge := func(mp MP, fromB bool) {
 		key := nameKey(mp)
 		if i, ok := indexByName[key]; ok {
 			out[i] = mergeMP(out[i], mp)
@@ -28,15 +35,20 @@ func MergeMPs(a, b []MP) MergeResult {
 		}
 		indexByName[key] = len(out)
 		out = append(out, cloneMP(mp))
+		if fromB {
+			if _, existed := fromA[key]; !existed {
+				addedNames = append(addedNames, out[len(out)-1].Name())
+			}
+		}
 	}
 
 	for _, mp := range a {
-		appendOrMerge(mp)
+		appendOrMerge(mp, false)
 	}
 	for _, mp := range b {
-		appendOrMerge(mp)
+		appendOrMerge(mp, true)
 	}
-	return MergeResult{MPs: out, MergedNames: mergedNames}
+	return MergeResult{MPs: out, MergedNames: mergedNames, AddedNames: addedNames}
 }
 
 func nameKey(mp MP) string {

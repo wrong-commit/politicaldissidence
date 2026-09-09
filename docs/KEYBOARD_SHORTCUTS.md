@@ -16,8 +16,10 @@ In-app help: press **Ctrl+H** to open a modal listing shortcuts for the current 
 | **Ctrl+S** | Save MPs and domains to disk                                                                                        |
 | **Ctrl+R** | Reload MPs and domains from disk                                                                                    |
 | **Ctrl+P** | Force-recheck all domains (WHOIS + DNS + HTTPS), ignoring lastChecked / checkedAt                                   |
-| **PgUp**   | Scroll Domain Information panel up one page                                                                         |
-| **PgDn**   | Scroll Domain Information panel down one page                                                                       |
+| **Ctrl+L** | Refresh MPs from configured CSV (`csv_refresh.json`); merge in memory — save with Ctrl+S                            |
+| **l**      | Toggle Log panel full height (press again to restore). When expanded, PgUp/PgDn scroll the log. When restored, log jumps to the bottom. |
+| **PgUp**   | Scroll Domain Information up one page; or Log up one page when the log panel is expanded                            |
+| **PgDn**   | Scroll Domain Information down one page; or Log down one page when the log panel is expanded                        |
 
 
 ---
@@ -63,7 +65,16 @@ Focus this panel with **Tab** (or click it). Shows domains for the currently sel
 
 ## Domain Information panel (`whois`)
 
-Display-only (not focusable). Shows WHOIS + DNS for the domain selected in Member Domains. Scroll with **PgUp** / **PgDn** from anywhere (see Global).
+Display-only (not focusable). Shows WHOIS + DNS for the domain selected in Member Domains. Scroll with **PgUp** / **PgDn** from anywhere when the log panel is not expanded (see Global).
+
+
+---
+
+
+
+## Log panel (`log`)
+
+Display-only (not focusable). Bottom strip of the main layout by default. The panel title shows **`l: expand`** when minimized, or **`l: collapse, <PGUP>: up, <PGDN>: down`** when expanded. Press **l** to expand to full height; press **l** again to restore. While expanded, **PgUp** / **PgDn** scroll the log and **↑** / **↓** are ignored. Restoring the panel resets the viewport to the bottom (newest lines).
 
 
 ---
@@ -120,7 +131,9 @@ Ctrl+C          Quit / close modal
 Ctrl+S          Save
 Ctrl+R          Reload
 Ctrl+P          Force recheck all domains
-PgUp / PgDn     Scroll Domain Information
+Ctrl+L          Refresh MPs from CSV
+l               Toggle log panel full height
+PgUp / PgDn     Scroll Domain Information (or Log when expanded)
 Tab             Switch List ↔ Domains
 
 List / Domains:

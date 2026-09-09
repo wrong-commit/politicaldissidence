@@ -180,6 +180,7 @@ func getMpRows(records [][]string, cols ColumnMap) ([]data.MP, error) {
  * first array in records. This index is then used to extract all column values in the same order as the columns array.
  */
 func extractColumns(records [][]string, columns []string) ([][]string, error) {
+	const unmapped = -2
 	indexes := make([]int, len(columns))
 	for i := range indexes {
 		indexes[i] = -1
@@ -189,6 +190,10 @@ func extractColumns(records [][]string, columns []string) ([][]string, error) {
 
 	fmt.Println("[*] Calculating", len(columns), "columns from", len(records[0]), "rows")
 	for x, col := range columns {
+		if col == "" {
+			indexes[x] = unmapped
+			continue
+		}
 		for y, rowCol := range firstRow {
 			if col == rowCol {
 				indexes[x] = y
@@ -204,6 +209,10 @@ func extractColumns(records [][]string, columns []string) ([][]string, error) {
 	for rI, rowCols := range records[1:] {
 		rowVals := make([]string, len(columns))
 		for cI, csvColIndex := range indexes {
+			if csvColIndex == unmapped {
+				rowVals[cI] = ""
+				continue
+			}
 			rowVals[cI] = rowCols[csvColIndex]
 		}
 		values[rI] = rowVals

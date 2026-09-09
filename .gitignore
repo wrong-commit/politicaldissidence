@@ -6,5 +6,6 @@ allsenph.csv
 All members by name.csv
 *.exe
 *.exe~
+mp_data_premerge.json
 mps_merged.json
 output.json
