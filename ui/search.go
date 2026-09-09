@@ -2,8 +2,10 @@ package ui
 
 import (
 	"fmt"
+	"os"
 	"politicaldissidence/data"
 	"politicaldissidence/searching"
+	"politicaldissidence/searchterms"
 
 	"github.com/jroimartin/gocui"
 )
@@ -11,7 +13,7 @@ import (
 // SearchPrefs holds session search choices that survive closing Select a URL.
 type SearchPrefs struct {
 	engine    searching.Engine
-	termIndex int // 1 or 2
+	termIndex int // 0-based index into search term config
 }
 
 func (p SearchPrefs) Engine() searching.Engine {
@@ -19,17 +21,17 @@ func (p SearchPrefs) Engine() searching.Engine {
 }
 
 func (p SearchPrefs) TermIndex() int {
-	if p.termIndex == 2 {
-		return 2
+	if p.termIndex < 0 {
+		return 0
 	}
-	return 1
+	return p.termIndex
 }
 
 // SearchState holds applicate search results for the open guess-URL flow.
 type SearchState struct {
 	// term should be cleared once the results are consumed
 	term string
-	// page is 0-based (←/→ paging); not shown in the modal title
+	// page is 0-based ([/] paging); not shown in the modal title
 	page   int
 	result *[]searching.Link
 }
@@ -41,23 +43,56 @@ func (ui *UI) ensureSearchPrefs() {
 	if ui.state.searchPrefs.engine == "" {
 		ui.state.searchPrefs.engine = searching.EngineBing
 	}
-	if ui.state.searchPrefs.termIndex != 1 && ui.state.searchPrefs.termIndex != 2 {
-		ui.state.searchPrefs.termIndex = 1
+	if ui.state.searchPrefs.termIndex < 0 {
+		ui.state.searchPrefs.termIndex = 0
 	}
+}
+
+func (ui *UI) searchTerms() *searchterms.Config {
+	if ui.state != nil && ui.state.searchTerms != nil {
+		return ui.state.searchTerms
+	}
+	return searchterms.Builtin()
+}
+
+// loadSearchTerms loads search_terms.json for this guess-URL flow (or built-ins).
+func (ui *UI) loadSearchTerms() {
+	ui.ensureSearchPrefs()
+	cfg, err := searchterms.LoadFile(searchterms.DefaultConfigPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			_ = ui.log(fmt.Sprintf("No %s; using built-in search terms", searchterms.DefaultConfigPath), false)
+		} else {
+			_ = ui.log(fmt.Sprintf("ERROR search terms: %v; using built-in search terms", err), true)
+		}
+		ui.state.searchTerms = searchterms.Builtin()
+	} else {
+		ui.state.searchTerms = cfg
+		_ = ui.log(fmt.Sprintf("Loaded %d search terms from %s", cfg.Len(), searchterms.DefaultConfigPath), false)
+	}
+
+	clamped, changed := ui.state.searchTerms.ClampIndex(ui.state.searchPrefs.termIndex)
+	if changed {
+		_ = ui.log(fmt.Sprintf("Search term index clamped to T%d/%d", clamped+1, ui.state.searchTerms.Len()), false)
+	}
+	ui.state.searchPrefs.termIndex = clamped
 }
 
 func (ui *UI) searchTermForMP(mp data.MP) string {
 	ui.ensureSearchPrefs()
-	if ui.state.searchPrefs.TermIndex() == 2 {
-		return mp.SearchTerm2()
+	cfg := ui.searchTerms()
+	term, err := cfg.Render(ui.state.searchPrefs.TermIndex(), mp)
+	if err != nil {
+		_ = ui.log(fmt.Sprintf("ERROR rendering search term: %v", err), true)
+		return mp.SearchTerm1()
 	}
-	return mp.SearchTerm1()
+	return term
 }
 
 // SearchAndDisplay takes an MP and performs a background search (page 0)
 // using the session engine/term prefs before prompting for URL results.
 func (ui *UI) SearchAndDisplay(g *gocui.Gui, mp data.MP) {
-	ui.ensureSearchPrefs()
+	ui.loadSearchTerms()
 	term := ui.searchTermForMP(mp)
 	ui.fetchSearchPage(g, term, 0, nil, 0, mp.Name())
 }
@@ -78,7 +113,7 @@ func (ui *UI) changeURLSearchPage(g *gocui.Gui, delta int) error {
 	}
 	nextPage := ui.state.searchState.page + delta
 	if nextPage < 0 {
-		return nil // already on first page
+		return ui.log("Already on first page", false)
 	}
 	return ui.refetchURLSearch(g, term, nextPage)
 }
@@ -100,24 +135,26 @@ func (ui *UI) toggleURLSearchEngine(g *gocui.Gui) error {
 	return ui.refetchURLSearch(g, term, 0)
 }
 
-// toggleURLSearchTerm switches SearchTerm1 ↔ SearchTerm2 and re-fetches page 0.
-func (ui *UI) toggleURLSearchTerm(g *gocui.Gui) error {
+// changeURLSearchTerm cycles the configured search term by delta (wrap) and re-fetches page 0.
+// Prefer openSearchTermsModal for interactive picking; this remains for programmatic use.
+func (ui *UI) changeURLSearchTerm(g *gocui.Gui, delta int) error {
 	ui.ensureSearchPrefs()
 	mp := ui.mpAt(ui.state.currentIndex)
 	if mp == nil {
-		return ui.log("No MP selected for term toggle", true)
+		return ui.log("No MP selected for term change", true)
 	}
-	if ui.state.searchPrefs.TermIndex() == 1 {
-		ui.state.searchPrefs.termIndex = 2
-	} else {
-		ui.state.searchPrefs.termIndex = 1
+	cfg := ui.searchTerms()
+	next, ok := cfg.WrapIndex(ui.state.searchPrefs.TermIndex(), delta)
+	if !ok {
+		return ui.log("Only one search term configured", false)
 	}
+	ui.state.searchPrefs.termIndex = next
 	term := ui.searchTermForMP(*mp)
-	_ = ui.log(fmt.Sprintf("Search term → T%d <%s>", ui.state.searchPrefs.TermIndex(), term), false)
+	_ = ui.log(fmt.Sprintf("Search term → %s <%s>", cfg.DisplayIndex(next), term), false)
 	return ui.refetchURLSearch(g, term, 0)
 }
 
-// refetchURLSearch closes Select a URL if open, shows Searching, and fetches term/page.
+// refetchURLSearch closes Select a URL / term picker if open, shows Searching, and fetches term/page.
 func (ui *UI) refetchURLSearch(g *gocui.Gui, term string, page int) error {
 	if ui.currentModal == SEARCHING_MODAL {
 		return ui.log("Search already in progress", false)
@@ -135,9 +172,14 @@ func (ui *UI) refetchURLSearch(g *gocui.Gui, term string, page int) error {
 		}
 	}
 
-	if ui.currentModal == LIST_URLS_MODAL {
+	switch ui.currentModal {
+	case LIST_URLS_MODAL:
 		if err := ui.closeModal(LIST_URLS_MODAL); err != nil {
 			return ui.log(fmt.Sprintf("Could not close URL list modal: %v", err), true)
+		}
+	case SEARCH_TERMS_MODAL:
+		if err := ui.closeModal(SEARCH_TERMS_MODAL); err != nil {
+			return ui.log(fmt.Sprintf("Could not close search terms modal: %v", err), true)
 		}
 	}
 	if _, err := ui.openSearchingModal(g); err != nil {
@@ -236,6 +278,7 @@ func (ui *UI) closeListUrlsModal() error {
 // (no pagination; the active search string is shown in the modal body).
 func (ui *UI) urlListModalTitle() string {
 	ui.ensureSearchPrefs()
-	return fmt.Sprintf("Select a URL (%s · T%d)",
-		ui.state.searchPrefs.Engine().Short(), ui.state.searchPrefs.TermIndex())
+	cfg := ui.searchTerms()
+	return fmt.Sprintf("Select a URL (%s · %s)",
+		ui.state.searchPrefs.Engine().Short(), cfg.DisplayIndex(ui.state.searchPrefs.TermIndex()))
 }

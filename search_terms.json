@@ -1,0 +1,14 @@
+{
+  "terms": [
+    {
+      "id": "t1",
+      "label": "Generic Search Term 1",
+      "template": "{{.NameWithHonorific}} member for {{.Electorate}} {{.Party}} "
+    },
+    {
+      "id": "t2",
+      "label": "Generic Search Term 2",
+      "template": "{{.Name}} member for {{.Electorate}} {{.Party}} "
+    }
+  ]
+}

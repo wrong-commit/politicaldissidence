@@ -127,7 +127,7 @@ That script runs `go build` and, on success, `./politicaldissidence`.
 
 Guess-domain search (**g**) loads query templates from `search_terms.json` next to the app. Each template is a Go `text/template` rendered from the selected MP. The file is reloaded when opening the search flow (no restart needed after edits). Missing or invalid config falls back to the two built-in terms (`SearchTerm1` / `SearchTerm2`).
 
-From Select a URL, **←** / **→** cycle terms (wrap at ends); last chosen term index is kept for the session.
+From Select a URL, **t** opens a **Select a search term** modal; **←** / **→** page terms there (wrap at ends). **Enter** searches with the chosen term; last chosen term index is kept for the session.
 
 ```json
 {

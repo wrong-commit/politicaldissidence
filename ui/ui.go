@@ -13,6 +13,7 @@ import (
 	"politicaldissidence/jobs"
 	"politicaldissidence/refresh"
 	"politicaldissidence/searching"
+	"politicaldissidence/searchterms"
 
 	"github.com/jroimartin/gocui"
 )
@@ -68,6 +69,10 @@ type State struct {
 	searchState *SearchState
 	// session search prefs (engine / term); survive closing Select a URL
 	searchPrefs SearchPrefs
+	// search term templates loaded for the open guess-URL flow
+	searchTerms *searchterms.Config
+	// termPickerIndex is the browse cursor while Select a search term is open
+	termPickerIndex int
 }
 
 // State for the Domain list
@@ -84,7 +89,7 @@ func NewUI() *UI {
 	ui := new(UI)
 	ui.state = &State{filter: "all", currentIndex: -1, searchPrefs: SearchPrefs{
 		engine:    searching.EngineBing,
-		termIndex: 1,
+		termIndex: 0,
 	}}
 	ui.gui, err = gocui.NewGui(gocui.OutputNormal)
 	if err != nil {

@@ -45,6 +45,7 @@ const (
 	ADD_DOMAIN_PANEL = "adddomain"
 	SEARCHING_MODAL  = "searching"
 	LIST_URLS_MODAL  = "search"
+	SEARCH_TERMS_MODAL = "search_terms"
 	TITLE_PANEL      = "title"
 	// SAVE_MODAL           = "save_modal"
 	// PROGRESS_MODAL       = "progress_modal"
@@ -136,6 +137,12 @@ var modalViews = map[string]panelProperties{
 	},
 	LIST_URLS_MODAL: {
 		title:    "Select a URL",
+		text:     "",
+		editable: false,
+		cursor:   false,
+	},
+	SEARCH_TERMS_MODAL: {
+		title:    "Select a search term",
 		text:     "",
 		editable: false,
 		cursor:   false,
@@ -617,6 +624,13 @@ func (ui *UI) closeOpenedModals(views []string) error {
 			name := view.Name()
 			if name == LIST_URLS_MODAL {
 				ui.resetURLSearchState()
+			}
+			if name == SEARCH_TERMS_MODAL {
+				ui.closeModal(name)
+				if ui.state.searchState != nil && ui.state.searchState.result != nil && len(*ui.state.searchState.result) > 0 {
+					return ui.toggleListUrlsModal(ui.gui)
+				}
+				return nil
 			}
 			ui.closeModal(name)
 		}

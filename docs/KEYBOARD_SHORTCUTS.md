@@ -87,7 +87,7 @@ Opened after **g** finishes searching. Lists candidate URLs/domains for the sele
 
 Status line at the top of the modal: `↑/↓: Move, enter: Add Domain, c: Copy Link, ←/→: Page, e: Engine, t: Term`
 
-Title includes page, engine, and term index, e.g. `Select a URL (Page 1 · Bing · T1)`.
+Title includes engine and term index, e.g. `Select a URL (Bing · T1/2)`. Search queries come from `search_terms.json` (see README).
 
 
 | Key        | Action                                                              |
@@ -99,8 +99,23 @@ Title includes page, engine, and term index, e.g. `Select a URL (Page 1 · Bing 
 | **←**      | Previous result page (no-op on page 1)                              |
 | **→**      | Next result page (shows Searching while fetching)                   |
 | **e**      | Toggle search engine Bing ↔ DuckDuckGo; re-fetch page 0             |
-| **t**      | Toggle search term T1 ↔ T2; re-fetch page 0                         |
+| **t**      | Open **Select a search term** modal                                 |
 | **Ctrl+C** | Close modal without quitting                                        |
+
+
+---
+
+
+
+## Select a search term modal (`search_terms`)
+
+Opened with **t** from Select a URL. Browse configured templates without searching until you confirm.
+
+| Key        | Action                                                                 |
+| ---------- | ---------------------------------------------------------------------- |
+| **←** / **→** | Previous / next term (wraps; preview updates in the panel)           |
+| **Enter**  | Use this term, close picker, search page 0, reopen Select a URL        |
+| **Ctrl+C** | Cancel (keep previous term); reopen Select a URL                       |
 
 
 ---
@@ -149,7 +164,8 @@ Domains only:
 
 URL picker:
   Enter         Confirm selection
-  ↑ ↓ ← →      Move / page
-  e / t         Engine / term
+  ↑ ↓           Move
+  ← →           Result page
+  e / t         Engine / search term modal
 ```
 

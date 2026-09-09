@@ -30,6 +30,7 @@ var addDomainView = []string{ADD_DOMAIN_PANEL}
 var tabViews = []string{LIST_PANEL, DOMAIN_PANEL}
 var domainViews = []string{DOMAIN_PANEL}
 var listUrlView = []string{LIST_URLS_MODAL}
+var searchTermsView = []string{SEARCH_TERMS_MODAL}
 
 // TODO: handlers should be passed a Shift modifier
 var keyHandlers = &handlers{
@@ -91,11 +92,27 @@ var keyHandlers = &handlers{
 			return ui.toggleURLSearchEngine(g)
 		}
 	}},
-	{listUrlView, 't', "t", "Toggle search term", func(ui *UI, wrap bool) Fn {
+	{listUrlView, 't', "t", "Select search term", func(ui *UI, wrap bool) Fn {
 		return func(g *gocui.Gui, v *gocui.View) error {
-			return ui.toggleURLSearchTerm(g)
+			return ui.openSearchTermsModal(g)
 		}
 	}},
+	{searchTermsView, gocui.KeyArrowRight, "<RIGHT>", "Next search term", func(ui *UI, wrap bool) Fn {
+		return func(g *gocui.Gui, v *gocui.View) error {
+			return ui.pageSearchTermsModal(g, 1)
+		}
+	}},
+	{searchTermsView, gocui.KeyArrowLeft, "<LEFT>", "Prev search term", func(ui *UI, wrap bool) Fn {
+		return func(g *gocui.Gui, v *gocui.View) error {
+			return ui.pageSearchTermsModal(g, -1)
+		}
+	}},
+	{searchTermsView, gocui.KeyEnter, "<ENTER>", "Search with term", func(ui *UI, wrap bool) Fn {
+		return func(g *gocui.Gui, v *gocui.View) error {
+			return ui.confirmSearchTermsModal(g)
+		}
+	}},
+
 	// LIST_PANEL:
 	//	up/down -  keys to navigate MPs
 	{listView, gocui.KeyArrowUp, "<UP>", "Previous Mp", onPrevMp},

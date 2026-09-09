@@ -8,9 +8,9 @@ Extends [SPEC_SELECT_URL_SEARCHER_V3.md](SPEC_SELECT_URL_SEARCHER_V3.md). v3 har
 2. **Load** that config when opening the search / Select a URL flow.
 3. Let the user **cycle** among rendered terms while Select a URL is open (term shown in the panel).
 4. **Remember** the last chosen term index for the rest of the app session.
-5. Drive term changes with **← / →**, using the same Searching → re-fetch page 0 → reopen Select a URL pattern that result paging uses today.
+5. Drive term changes from a **Select a search term** modal (**t**), using **← / →** to page terms (preview only) and **Enter** to search page 0 — same left/right paging feel as Select a URL result pages.
 
-Result-page navigation must move to different keys so ← / → are free for terms (see §5).
+Result-page navigation on Select a URL stays on **← / →**. Term browsing lives in the dedicated modal.
 
 ## Motivation
 
@@ -175,52 +175,36 @@ Rules:
 
 Remove the v3 assumption that `termIndex` is only `1` or `2`. Retire **`t`** as a binary toggle (see §5), or keep **`t`** as an alias for → (next term) if useful — prefer removing **`t`** from the status line once ← / → own term cycling, to avoid two ways to do the same thing.
 
-### 5. ← / → choose search terms (same navigation pattern as result paging)
+### 5. Select a search term modal (**t** + ← / →)
 
 #### Interaction
 
-From Select a URL:
+From Select a URL, **`t`** opens **Select a search term** (`SEARCH_TERMS_MODAL`):
 
-| Key | New action |
-| --- | ---------- |
-| **→** | Next search term (`termIndex + 1`); **wrap** from last → first |
-| **←** | Previous search term (`termIndex - 1`); **wrap** from first → last |
+1. Close Select a URL **without** clearing `searchState` results.
+2. Open the term picker at the current `termIndex` (browse cursor `termPickerIndex`).
+3. Show label + rendered preview for the selected MP.
 
-On each real term change:
-
-1. Resolve new template → new query string for the current MP.
-2. Close Select a URL.
-3. Open / focus Searching.
-4. Fetch **page 0** with the **current engine** and new term (same helper as today’s `refetchURLSearch` / `toggleURLSearchTerm`).
-5. On success, reopen Select a URL; on failure, restore prior results when possible (v2/v3 failure behaviour).
-6. Update title / `Search:` line / console (`Search term → T{n}/{N} <query>`).
-
-Ignore ← / → for terms while Searching is already open (same “search already in progress” guard).
-
-If only **one** term is configured, wrap leaves the index unchanged: **no-op + INFO** (`Only one search term configured`) — do not re-fetch.
-
-#### Result paging must move
-
-Today ← / → page SERP results. After this change they cycle **terms**. Relocate result paging to:
+In the term picker:
 
 | Key | Action |
 | --- | ------ |
-| **`[`** | Previous result page (no-op on page 0 + INFO) |
-| **`]`** | Next result page |
+| **→** | Next search term (`termPickerIndex + 1`); **wrap** from last → first; update preview only |
+| **←** | Previous search term (`termPickerIndex - 1`); **wrap** from first → last; update preview only |
+| **Enter** | Commit `termIndex`, close picker, Searching → fetch page 0 → reopen Select a URL |
+| **Ctrl+C** | Cancel (do not change `termIndex`); reopen Select a URL with prior results |
 
-(Alternative if `[` / `]` are awkward on some layouts: **`n`** / **`p`**. Pick **`[`** / **`]`** unless implementation hits binding issues.)
+If only **one** term is configured, wrap leaves the index unchanged: **no-op + INFO** (`Only one search term configured`) — do not re-fetch on ←/→.
 
-Update status line, e.g.:
+#### Result paging on Select a URL
+
+← / → on Select a URL remain **result page** navigation (unchanged from v2/v3). Status line:
 
 ```text
-↑/↓: Move, enter: Add Domain, c: Copy Link, ←/→: Term, [/]: Page, e: Engine
+↑/↓: Move, enter: Add Domain, c: Copy Link, ←/→: Page, e: Engine, t: Term
 ```
 
 Update [KEYBOARD_SHORTCUTS.md](../KEYBOARD_SHORTCUTS.md) and Ctrl+H help text.
-
-#### Why reuse the page-nav *flow*
-
-Term changes already need a network round-trip (new query). Reusing close → Searching → fetch → reopen keeps one mental model and one code path (`refetchURLSearch`), differing only in whether `term` or `page` changes.
 
 ### 6. State sketch
 
@@ -251,13 +235,18 @@ SearchState:
 | **↑** / **↓** | Previous / next URL result |
 | **Enter** | Add hostname; close modal |
 | **c** | Copy full URL |
-| **←** / **→** | Previous / next **search term** (wrap at ends); Searching → page 0 results |
-| **`[`** / **`]`** | Previous / next **result page** |
+| **←** / **→** | Previous / next **result page** |
 | **e** | Toggle Bing ↔ DuckDuckGo; re-fetch page 0 |
+| **t** | Open Select a search term modal |
 | **Ctrl+C** | Close modal without quitting |
 
-**`t`** removed (or deprecated alias for →). Document the removal in KEYBOARD_SHORTCUTS.
+#### Select a search term modal
 
+| Key | Action |
+| --- | ------ |
+| **←** / **→** | Page terms (wrap; preview only) |
+| **Enter** | Commit term; Searching → page 0 results |
+| **Ctrl+C** | Cancel; reopen Select a URL |
 ### 8. Logging (console)
 
 | Event | Level |
@@ -294,19 +283,19 @@ SearchState:
 
 ## Acceptance criteria
 
-- [ ] `search_terms.json` defines one or more templates using documented `MP` placeholders; invalid / missing file falls back to today’s two built-in strings with a console message
-- [ ] Opening the search flow (**g**) loads (or reloads) the config and renders the preferred term for the selected MP
-- [ ] Select a URL shows the rendered term and a clear `T{n}/{N}` (or equivalent) indicator
-- [ ] **←** / **→** cycle terms with **wrap at both ends**, show Searching, re-fetch page 0, reopen Select a URL (same pattern as former page nav); single-term list is no-op + INFO
-- [ ] Last `termIndex` is kept in `SearchPrefs` across modal close and reused on the next **g**
-- [ ] Result paging still works via **`[`** / **`]`** (or the chosen alternate keys)
-- [ ] Status bar and KEYBOARD_SHORTCUTS document the new bindings; **`t`** binary toggle is gone or clearly aliased
-- [ ] Unit tests for config parse/validate, template render for a sample MP, index clamp after reload, and wrap-at-ends (including single-term no-op)
+- [x] `search_terms.json` defines one or more templates using documented `MP` placeholders; invalid / missing file falls back to today’s two built-in strings with a console message
+- [x] Opening the search flow (**g**) loads (or reloads) the config and renders the preferred term for the selected MP
+- [x] Select a URL shows the rendered term and a clear `T{n}/{N}` (or equivalent) indicator
+- [x] **t** opens Select a search term; **←** / **→** page terms with **wrap at both ends** (preview only); **Enter** shows Searching, re-fetches page 0, reopens Select a URL; single-term list ←/→ is no-op + INFO
+- [x] Last `termIndex` is kept in `SearchPrefs` across modal close and reused on the next **g**
+- [x] Result paging on Select a URL still works via **←** / **→**
+- [x] Status bar and KEYBOARD_SHORTCUTS document **t** and the term picker bindings
+- [x] Unit tests for config parse/validate, template render for a sample MP, index clamp after reload, and wrap-at-ends (including single-term no-op)
 
 ## Relation to prior specs
 
 | Spec | Still true? |
 | ---- | ----------- |
 | [SPEC_SELECT_URL_MODAL.md](SPEC_SELECT_URL_MODAL.md) | Yes (list / enter / copy) |
-| [SPEC_SELECT_URL_PAGING.md](SPEC_SELECT_URL_PAGING.md) | Paging remains; **keys change** from ←/→ to `[`/`]` |
-| [SPEC_SELECT_URL_SEARCHER_V3.md](SPEC_SELECT_URL_SEARCHER_V3.md) | Engine toggle **`e`** remains; fixed T1/T2 + **`t`** superseded by this spec |
+| [SPEC_SELECT_URL_PAGING.md](SPEC_SELECT_URL_PAGING.md) | Paging remains on ←/→ for Select a URL |
+| [SPEC_SELECT_URL_SEARCHER_V3.md](SPEC_SELECT_URL_SEARCHER_V3.md) | Engine toggle **`e`** remains; fixed T1/T2 + binary **`t`** superseded by config + term picker modal |
