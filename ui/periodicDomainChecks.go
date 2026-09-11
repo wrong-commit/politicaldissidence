@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	// EnvSkipPeriodicDomainChecks disables the 30-minute WHOIS/DNS/HTTPS recheck ticker
+	// EnvSkipPeriodicDomainChecks disables the 30-minute WHOIS/DNS/HTTPS/registrar recheck ticker
 	// when set to "true" (case-insensitive). Startup checks and manual `u` are unaffected.
 	EnvSkipPeriodicDomainChecks = "SKIP_PERIODIC_DOMAIN_CHECKS"
 
@@ -43,6 +43,7 @@ func (ui *UI) armPeriodicDomainChecksTicker() {
 			go ui.startBackgroundWhois(false)
 			go ui.startBackgroundDns(false)
 			go ui.startBackgroundHttps(false)
+			go ui.startBackgroundRegistrar(false)
 		}
 	}()
 }

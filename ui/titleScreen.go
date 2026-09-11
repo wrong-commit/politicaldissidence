@@ -109,6 +109,7 @@ func (ui *UI) runStartupAfterInit() {
 	go ui.startBackgroundWhois(false)
 	go ui.startBackgroundDns(false)
 	go ui.startBackgroundHttps(false)
+	go ui.startBackgroundRegistrar(false)
 	ui.armPeriodicDomainChecksTicker()
 }
 
@@ -145,6 +146,7 @@ func (ui *UI) startupWithTitle() {
 		go ui.startBackgroundWhois(false)
 		go ui.startBackgroundDns(false)
 		go ui.startBackgroundHttps(false)
+		go ui.startBackgroundRegistrar(false)
 		ui.armPeriodicDomainChecksTicker()
 		return nil
 	})

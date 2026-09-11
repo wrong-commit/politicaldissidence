@@ -9,6 +9,7 @@ import (
 
 	"politicaldissidence/dnscheck"
 	"politicaldissidence/httpscheck"
+	"politicaldissidence/registrarcheck"
 )
 
 func TestDomain_UpdateExpiry_Success(t *testing.T) {
@@ -620,5 +621,111 @@ func TestRefreshAlert_AfterHttpsClears(t *testing.T) {
 	}
 	if d.Alert {
 		t.Fatal("expected Alert cleared after https enabled")
+	}
+}
+
+func TestDomain_NeedsRegistrar(t *testing.T) {
+	at := time.Date(2026, 9, 11, 12, 0, 0, 0, time.UTC)
+	maxAge := 10 * 24 * time.Hour
+	fresh := at.Add(-time.Hour)
+	stale := at.Add(-11 * 24 * time.Hour)
+
+	tests := []struct {
+		name    string
+		d       Domain
+		sources []string
+		want    bool
+	}{
+		{"no sources", Domain{}, nil, false},
+		{"only unimplemented", Domain{}, []string{"namecheap"}, false},
+		{"never checked godaddy", Domain{}, []string{"godaddy"}, true},
+		{"fresh godaddy", Domain{RegistrarLookups: map[string]*RegistrarLookupRecord{
+			"godaddy": {CheckedAt: fresh, Purchaseable: "no", WeirdResponse: "no"},
+		}}, []string{"godaddy", "namecheap"}, false},
+		{"stale godaddy", Domain{RegistrarLookups: map[string]*RegistrarLookupRecord{
+			"godaddy": {CheckedAt: stale, Purchaseable: "no", WeirdResponse: "no"},
+		}}, []string{"godaddy"}, true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.d.NeedsRegistrar(at, maxAge, tt.sources); got != tt.want {
+				t.Fatalf("got %v want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestAlertReasons_Registrar(t *testing.T) {
+	at := time.Date(2026, 9, 11, 12, 0, 0, 0, time.UTC)
+	far := at.Add(200 * 24 * time.Hour).Format("2006-01-02")
+	tests := []struct {
+		name string
+		d    Domain
+		want []string
+	}{
+		{"none", Domain{Expiry: far}, nil},
+		{"weird purchaseable", Domain{Expiry: far, RegistrarLookups: map[string]*RegistrarLookupRecord{
+			"godaddy": {Purchaseable: "weird", WeirdResponse: "yes"},
+		}}, []string{AlertReasonRegistrarWeird}},
+		{"weirdResponse weird", Domain{Expiry: far, RegistrarLookups: map[string]*RegistrarLookupRecord{
+			"godaddy": {Purchaseable: "no", WeirdResponse: "weird"},
+		}}, []string{AlertReasonRegistrarWeird}},
+		{"purchaseable yes", Domain{Expiry: far, RegistrarLookups: map[string]*RegistrarLookupRecord{
+			"godaddy": {Purchaseable: "yes", WeirdResponse: "no"},
+		}}, []string{AlertReasonRegistrarPurchaseable}},
+		{"clean no", Domain{Expiry: far, RegistrarLookups: map[string]*RegistrarLookupRecord{
+			"godaddy": {Purchaseable: "no", WeirdResponse: "no"},
+		}}, nil},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := AlertReasons(tt.d, at, AlertSoonWindow)
+			if len(got) != len(tt.want) {
+				t.Fatalf("got %v want %v", got, tt.want)
+			}
+			for i := range tt.want {
+				if got[i] != tt.want[i] {
+					t.Fatalf("got %v want %v", got, tt.want)
+				}
+			}
+		})
+	}
+}
+
+func TestDomain_UpdateRegistrarSource(t *testing.T) {
+	fixed := time.Date(2026, 9, 11, 12, 0, 0, 0, time.UTC)
+	prevNow := now
+	now = func() time.Time { return fixed }
+	defer func() { now = prevNow }()
+
+	d := Domain{Hostname: "example.com.au"}
+	info, err := d.updateRegistrarSource("godaddy", func(hostname, source string) (registrarcheck.Info, error) {
+		return registrarcheck.Info{
+			Source: source, Hostname: hostname,
+			Purchaseable: registrarcheck.TriNo, WeirdResponse: registrarcheck.TriNo,
+		}, nil
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if info.Purchaseable != "no" {
+		t.Fatal(info)
+	}
+	rec := d.RegistrarLookups["godaddy"]
+	if rec == nil || rec.Purchaseable != "no" || !rec.CheckedAt.Equal(fixed) {
+		t.Fatalf("%+v", rec)
+	}
+	if d.Alert {
+		t.Fatal("clean no should not alert")
+	}
+
+	_, err = d.updateRegistrarSource("namecheap", func(hostname, source string) (registrarcheck.Info, error) {
+		return registrarcheck.Info{Message: "not implemented"}, registrarcheck.ErrNotImplemented
+	})
+	if !errors.Is(err, registrarcheck.ErrNotImplemented) {
+		t.Fatal(err)
+	}
+	if _, ok := d.RegistrarLookups["namecheap"]; ok {
+		t.Fatal("should not persist unimplemented")
 	}
 }

@@ -3,16 +3,20 @@ package panel
 import (
 	"fmt"
 	"politicaldissidence/data"
+	"politicaldissidence/registrarcheck"
+	"sort"
 	"strings"
 )
 
 const whoisCheckedLayout = "06-01-02 15:04"
 const httpsExpiryLayout = "2006-01-02"
 
-// DrawWhoisPanel renders the Domain Information panel for a domain's latest WHOIS, HTTPS, and DNS records.
+// DrawWhoisPanel renders the Domain Information panel for a domain's latest WHOIS, HTTPS, DNS, and registrar records.
 // When alertReasons is non-empty, those sniping reasons are shown first, separated by ====== from the rest.
-func DrawWhoisPanel(hostname, mpName string, w *data.WhoisRecord, https *data.HttpsRecord, dns *data.DnsRecord, alertReasons []string) string {
-	if w == nil && https == nil && dns == nil && len(alertReasons) == 0 {
+// Registrar lines sit at the top of lookup content (after Alert Details).
+func DrawWhoisPanel(hostname, mpName string, w *data.WhoisRecord, https *data.HttpsRecord, dns *data.DnsRecord, registrar map[string]*data.RegistrarLookupRecord, alertReasons []string) string {
+	hasRegistrar := len(registrar) > 0
+	if w == nil && https == nil && dns == nil && !hasRegistrar && len(alertReasons) == 0 {
 		return "No domain lookup yet"
 	}
 
@@ -25,10 +29,12 @@ func DrawWhoisPanel(hostname, mpName string, w *data.WhoisRecord, https *data.Ht
 		b.WriteString("===================\n")
 	}
 
-	if w == nil && https == nil && dns == nil {
+	if w == nil && https == nil && dns == nil && !hasRegistrar {
 		b.WriteString("No domain lookup yet")
 		return b.String()
 	}
+
+	appendRegistrarSection(&b, registrar)
 
 	if w != nil {
 		if !w.CheckedAt.IsZero() {
@@ -78,7 +84,7 @@ func DrawWhoisPanel(hostname, mpName string, w *data.WhoisRecord, https *data.Ht
 				}
 			}
 		}
-	} else {
+	} else if https != nil || dns != nil {
 		host := hostname
 		if host == "" {
 			host = "(unknown)"
@@ -88,11 +94,57 @@ func DrawWhoisPanel(hostname, mpName string, w *data.WhoisRecord, https *data.Ht
 			fmt.Fprintf(&b, "MP: %s\n", mpName)
 		}
 		b.WriteString("No domain lookup yet\n")
+	} else if hasRegistrar {
+		host := hostname
+		if host == "" {
+			host = "(unknown)"
+		}
+		fmt.Fprintf(&b, "%s\n", host)
+		if mpName != "" {
+			fmt.Fprintf(&b, "MP: %s\n", mpName)
+		}
 	}
 
 	appendHttpsSection(&b, https)
 	appendDnsSection(&b, dns)
 	return strings.TrimSuffix(b.String(), "\n")
+}
+
+func appendRegistrarSection(b *strings.Builder, registrar map[string]*data.RegistrarLookupRecord) {
+	if len(registrar) == 0 {
+		return
+	}
+	keys := make([]string, 0, len(registrar))
+	for k, rec := range registrar {
+		if rec == nil {
+			continue
+		}
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, src := range keys {
+		rec := registrar[src]
+		purchaseable := rec.Purchaseable
+		if purchaseable == "" {
+			purchaseable = registrarcheck.TriWeird
+		}
+		weird := rec.WeirdResponse
+		if weird == "" {
+			weird = registrarcheck.TriWeird
+		}
+		when := ""
+		if !rec.CheckedAt.IsZero() {
+			when = " (" + rec.CheckedAt.Format(whoisCheckedLayout) + ")"
+		}
+		fmt.Fprintf(b, "%s%s: purchaseable=%s  weird=%s\n", registrarcheck.SourceLabel(src), when, purchaseable, weird)
+		if rec.Error != "" && (weird == registrarcheck.TriYes || weird == registrarcheck.TriWeird) {
+			errMsg := rec.Error
+			if len(errMsg) > 120 {
+				errMsg = errMsg[:120]
+			}
+			fmt.Fprintf(b, "  Error: %s\n", errMsg)
+		}
+	}
 }
 
 func appendHttpsSection(b *strings.Builder, https *data.HttpsRecord) {

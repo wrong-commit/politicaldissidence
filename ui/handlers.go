@@ -155,7 +155,7 @@ var keyHandlers = &handlers{
 	// 	ctrl r - reload
 	{nil, gocui.KeyCtrlR, "<CTRL>+r", "Reload ", onReload},
 	// 	ctrl p - force recheck all domains (ignore lastChecked)
-	{nil, gocui.KeyCtrlP, "<CTRL>+p", "Force recheck all domains (WHOIS/DNS/HTTPS)", onForceRecheckDomains},
+	{nil, gocui.KeyCtrlP, "<CTRL>+p", "Force recheck all domains (WHOIS/DNS/HTTPS/registrar)", onForceRecheckDomains},
 	// 	ctrl l - refresh MPs from configured CSV
 	{nil, gocui.KeyCtrlL, "<CTRL>+l", "Reload csv_refresh.json + refresh MPs", onCsvRefresh},
 	// 	l - expand / restore log panel

@@ -1,9 +1,11 @@
 package data
 
 import (
+	"errors"
 	"fmt"
 	"politicaldissidence/dnscheck"
 	"politicaldissidence/httpscheck"
+	"politicaldissidence/registrarcheck"
 	"politicaldissidence/whois"
 	"strings"
 	"time"
@@ -17,6 +19,9 @@ const DnsMaxAge = WhoisMaxAge
 
 // HttpsMaxAge is the background HTTPS refresh throttle window.
 const HttpsMaxAge = WhoisMaxAge
+
+// RegistrarMaxAge is the background registrar refresh throttle window.
+const RegistrarMaxAge = WhoisMaxAge
 
 // AlertSoonWindow is how far ahead a WHOIS expiry counts as "soon" for sniping alerts.
 const AlertSoonWindow = 90 * 24 * time.Hour
@@ -40,9 +45,14 @@ const (
 	AlertReasonHTTPSExpired  = "https-expired"
 	AlertReasonHTTPSSoon     = "https-soon"
 	AlertReasonHTTPSMissing  = "https-missing"
-	AlertReasonHTTP404       = "http-404"
-	AlertReasonHTTP500       = "http-500"
+	AlertReasonHTTP404                 = "http-404"
+	AlertReasonHTTP500                 = "http-500"
+	AlertReasonRegistrarWeird          = "registrar-weird"
+	AlertReasonRegistrarPurchaseable   = "registrar-purchaseable"
 )
+
+// lookupRegistrar is the registrar lookup function; overridden in tests.
+var lookupRegistrar = registrarcheck.Lookup
 
 // lookupInfo is the WHOIS lookup function; overridden in tests.
 var lookupInfo = whois.Lookup
@@ -100,6 +110,14 @@ type HttpsRecord struct {
 	WWW        *HttpsHostRecord `json:"www,omitempty"`
 }
 
+// RegistrarLookupRecord is the latest registrar availability check for one source.
+type RegistrarLookupRecord struct {
+	CheckedAt     time.Time `json:"checkedAt,omitempty"`
+	Purchaseable  string    `json:"purchaseable"`  // yes | no | weird
+	WeirdResponse string    `json:"weirdResponse"` // yes | no | weird
+	Error         string    `json:"error,omitempty"`
+}
+
 type Domain struct {
 	/* Domain Hostname */
 	Hostname string `json:"hostname"`
@@ -116,6 +134,8 @@ type Domain struct {
 	DNS *DnsRecord `json:"dns,omitempty"`
 	/* Latest HTTPS certificate check; omitempty when never looked up */
 	Https *HttpsRecord `json:"https,omitempty"`
+	/* Latest registrar availability by source id; omitempty when never looked up */
+	RegistrarLookups map[string]*RegistrarLookupRecord `json:"registrarLookups,omitempty"`
 }
 
 // NeedsWhois reports whether a WHOIS lookup should run for the background job.
@@ -144,6 +164,24 @@ func (d Domain) NeedsHttps(at time.Time, maxAge time.Duration) bool {
 		return true
 	}
 	return !d.Https.CheckedAt.After(at.Add(-maxAge))
+}
+
+// NeedsRegistrar reports whether any implemented configured source is due.
+// Unimplemented source ids are ignored for freshness.
+func (d Domain) NeedsRegistrar(at time.Time, maxAge time.Duration, sources []string) bool {
+	for _, src := range sources {
+		if !registrarcheck.IsImplemented(src) {
+			continue
+		}
+		rec := d.RegistrarLookups[src]
+		if rec == nil || rec.CheckedAt.IsZero() {
+			return true
+		}
+		if !rec.CheckedAt.After(at.Add(-maxAge)) {
+			return true
+		}
+	}
+	return false
 }
 
 // UpdateExpiry updates the expiry on a domain object via live WHOIS.
@@ -302,6 +340,45 @@ func hostRecordFromInfo(h httpscheck.HostInfo) *HttpsHostRecord {
 	return rec
 }
 
+// UpdateRegistrarSource runs one registrar source lookup and persists the result.
+// ErrNotImplemented is returned without writing RegistrarLookups.
+func (d *Domain) UpdateRegistrarSource(source string) (registrarcheck.Info, error) {
+	return d.updateRegistrarSource(source, lookupRegistrar)
+}
+
+func (d *Domain) updateRegistrarSource(source string, lookup func(hostname, source string) (registrarcheck.Info, error)) (info registrarcheck.Info, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("recovered in UpdateRegistrarSource: %v", r)
+		}
+	}()
+	info, err = lookup(d.Hostname, source)
+	if err != nil && errors.Is(err, registrarcheck.ErrNotImplemented) {
+		return info, err
+	}
+	checked := now()
+	if d.RegistrarLookups == nil {
+		d.RegistrarLookups = make(map[string]*RegistrarLookupRecord)
+	}
+	rec := &RegistrarLookupRecord{
+		CheckedAt:     checked,
+		Purchaseable:  info.Purchaseable,
+		WeirdResponse: info.WeirdResponse,
+	}
+	if info.Purchaseable == "" {
+		rec.Purchaseable = registrarcheck.TriWeird
+	}
+	if info.WeirdResponse == "" {
+		rec.WeirdResponse = registrarcheck.TriYes
+	}
+	if info.Message != "" {
+		rec.Error = info.Message
+	}
+	d.RegistrarLookups[source] = rec
+	d.RefreshAlert(checked, AlertSoonWindow)
+	return info, err
+}
+
 // expiryLayouts are tried in order when parsing Domain.Expiry for alerts.
 // Calendar dates without a zone are interpreted in local time.
 var expiryLayouts = []string{
@@ -381,6 +458,26 @@ func AlertReasons(d Domain, at time.Time, soonWindow time.Duration) []string {
 			reasons = append(reasons, AlertReasonHTTP500)
 		}
 	}
+	for _, rec := range d.RegistrarLookups {
+		if rec == nil {
+			continue
+		}
+		if rec.Purchaseable == registrarcheck.TriWeird ||
+			rec.WeirdResponse == registrarcheck.TriYes ||
+			rec.WeirdResponse == registrarcheck.TriWeird {
+			reasons = append(reasons, AlertReasonRegistrarWeird)
+			break
+		}
+	}
+	for _, rec := range d.RegistrarLookups {
+		if rec == nil {
+			continue
+		}
+		if rec.Purchaseable == registrarcheck.TriYes {
+			reasons = append(reasons, AlertReasonRegistrarPurchaseable)
+			break
+		}
+	}
 	return reasons
 }
 
@@ -389,7 +486,7 @@ func ComputeAlert(d Domain, at time.Time, soonWindow time.Duration) bool {
 	return len(AlertReasons(d, at, soonWindow)) > 0
 }
 
-// RefreshAlert sets Alert from current Expiry, Whois.Updated, DNS, and HTTPS using the shared classifier.
+// RefreshAlert sets Alert from current Expiry, Whois.Updated, DNS, HTTPS, and registrar using the shared classifier.
 func (d *Domain) RefreshAlert(at time.Time, soonWindow time.Duration) {
 	d.Alert = ComputeAlert(*d, at, soonWindow)
 }

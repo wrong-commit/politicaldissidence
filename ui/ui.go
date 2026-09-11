@@ -12,6 +12,7 @@ import (
 	"politicaldissidence/httpsrefresh"
 	"politicaldissidence/jobs"
 	"politicaldissidence/refresh"
+	"politicaldissidence/registrarrefresh"
 	"politicaldissidence/searching"
 	"politicaldissidence/searchterms"
 
@@ -45,10 +46,12 @@ type UI struct {
 	dnsRunner dnsrefresh.Runner
 	// Single-flight background HTTPS refresh
 	httpsRunner httpsrefresh.Runner
+	// Single-flight background registrar refresh
+	registrarRunner registrarrefresh.Runner
 	// Single-flight CSV refresh (Ctrl+L / hourly ticker)
 	csvRunner csvrefresh.Runner
 	csvConfig *csvrefresh.Config
-	// Jobs kicked when a domain is added (WHOIS, DNS, HTTPS, …)
+	// Jobs kicked when a domain is added (WHOIS, DNS, HTTPS, registrar, …)
 	domainAddedJobs []jobs.Job
 	// fontPath     string
 }
@@ -101,6 +104,7 @@ func NewUI() *UI {
 		jobs.NewWhoisOnAdd(ui.refreshDomainWhois),
 		jobs.NewDnsOnAdd(ui.refreshDomainDns),
 		jobs.NewHttpsOnAdd(ui.refreshDomainHttps),
+		jobs.NewRegistrarOnAdd(ui.refreshDomainRegistrar),
 		// jobs.NewCalcDemo(),
 	}
 	return ui

@@ -12,6 +12,7 @@ import (
 	"politicaldissidence/httpsrefresh"
 	"politicaldissidence/jobs"
 	"politicaldissidence/refresh"
+	"politicaldissidence/registrarrefresh"
 	"politicaldissidence/ui/panel"
 	"strings"
 	"unicode/utf8"
@@ -289,7 +290,7 @@ func (ui *UI) selectDomain(newIndex int) error {
 	return nil
 }
 
-// checkDomain will update WHOIS expiry, DNS, and HTTPS for the selected domain in the buffer.
+// checkDomain will update WHOIS expiry, DNS, HTTPS, and registrar for the selected domain in the buffer.
 // Uses the same INFO/DEBUG/INFO log lines as the background refresh jobs (no 10-day skip).
 func (ui *UI) checkDomain() error {
 	if ui.state.domainState == nil || ui.state.domainState.domains == nil {
@@ -308,10 +309,11 @@ func (ui *UI) checkDomain() error {
 	_ = refresh.Run([]data.MP{one}, ui.whoisRefreshDeps(true, 0, false))
 	_ = dnsrefresh.Run([]data.MP{one}, ui.dnsRefreshDeps(true, 0, false))
 	_ = httpsrefresh.Run([]data.MP{one}, ui.httpsRefreshDeps(true, 0, false))
+	_ = registrarrefresh.Run([]data.MP{one}, ui.registrarRefreshDeps(true, 0, false))
 	return ui.setPanelView(DOMAIN_PANEL)
 }
 
-// rerunBackgroundChecks kicks WHOIS, DNS, and HTTPS background scans for all domains.
+// rerunBackgroundChecks kicks WHOIS, DNS, HTTPS, and registrar background scans for all domains.
 // When force is false, fresh lastChecked / checkedAt values are skipped (same as startup).
 // When force is true, every domain is rechecked and SKIP_BACKGROUND_* env skips are ignored.
 func (ui *UI) rerunBackgroundChecks(force bool) error {
@@ -319,13 +321,14 @@ func (ui *UI) rerunBackgroundChecks(force bool) error {
 		return ui.log("Could not start domain checks: no MPs loaded", true)
 	}
 	if force {
-		_ = ui.log("Force-checking all domains (WHOIS/DNS/HTTPS)", false)
+		_ = ui.log("Force-checking all domains (WHOIS/DNS/HTTPS/registrar)", false)
 	} else {
-		_ = ui.log("Rechecking domains (WHOIS/DNS/HTTPS), skipping fresh lastChecked", false)
+		_ = ui.log("Rechecking domains (WHOIS/DNS/HTTPS/registrar), skipping fresh lastChecked", false)
 	}
 	go ui.startBackgroundWhois(force)
 	go ui.startBackgroundDns(force)
 	go ui.startBackgroundHttps(force)
+	go ui.startBackgroundRegistrar(force)
 	return nil
 }
 

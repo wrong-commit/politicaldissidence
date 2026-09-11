@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -9,13 +10,15 @@ import (
 
 	"politicaldissidence/data"
 	"politicaldissidence/db"
+	"politicaldissidence/domainlookups"
+	"politicaldissidence/registrarcheck"
 )
 
 func main() {
 	soonDays := flag.Int("soon-days", int(data.AlertSoonWindow/(24*time.Hour)), "days ahead that count as soon for WHOIS alert")
-	delay := flag.Duration("delay", time.Second, "sleep between domain WHOIS+DNS+HTTPS checks")
+	delay := flag.Duration("delay", time.Second, "sleep between domain WHOIS+DNS+HTTPS+registrar checks")
 	dryRun := flag.Bool("dry-run", false, "classify from persisted data only; no network, no save")
-	save := flag.Bool("save", true, "persist WHOIS/DNS/HTTPS/alert after live run")
+	save := flag.Bool("save", true, "persist WHOIS/DNS/HTTPS/registrar/alert after live run")
 	verbose := flag.Bool("v", false, "debug logging per domain")
 	flag.Parse()
 
@@ -31,6 +34,16 @@ func main() {
 	}
 	mps := status.MPs
 
+	var lookupCfg domainlookups.Config
+	if !*dryRun {
+		cfg, err := domainlookups.LoadFile(domainlookups.DefaultConfigPath)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "ERROR checkdomains: registrar config: %v\n", err)
+		} else {
+			lookupCfg = cfg
+		}
+	}
+
 	total := 0
 	for _, mp := range mps {
 		total += len(mp.Domains)
@@ -39,18 +52,20 @@ func main() {
 
 	now := time.Now()
 	var (
-		alertCount         int
-		expiredCount       int
-		soonCount          int
-		updatedStaleCount  int
-		emptyCount         int
-		httpsExpiredCount  int
-		httpsSoonCount     int
-		httpsMissingCount  int
-		http404Count       int
-		http500Count       int
-		errorCount         int
-		mutated            bool
+		alertCount                int
+		expiredCount              int
+		soonCount                 int
+		updatedStaleCount         int
+		emptyCount                int
+		httpsExpiredCount         int
+		httpsSoonCount            int
+		httpsMissingCount         int
+		http404Count              int
+		http500Count              int
+		registrarWeirdCount       int
+		registrarPurchaseableCount int
+		errorCount                int
+		mutated                   bool
 	)
 
 	domainIndex := 0
@@ -71,6 +86,19 @@ func main() {
 				if _, err := dom.UpdateHttps(); err != nil {
 					fmt.Fprintf(os.Stderr, "ERROR checkdomains: domain %s for MP \"%s\" https error: %v\n", dom.Hostname, mp.Name(), err)
 					errorCount++
+				}
+				for _, src := range lookupCfg.SourcesForHostname(dom.Hostname) {
+					info, err := dom.UpdateRegistrarSource(src)
+					if errors.Is(err, registrarcheck.ErrNotImplemented) {
+						fmt.Fprintf(os.Stderr, "%s\n", registrarcheck.FormatNotImplemented(src, dom.Hostname))
+						continue
+					}
+					if err != nil {
+						fmt.Fprintf(os.Stderr, "ERROR checkdomains: domain %s for MP \"%s\" registrar %s: %v\n", dom.Hostname, mp.Name(), src, err)
+						errorCount++
+					} else if *verbose {
+						fmt.Fprintf(os.Stderr, "%s\n", registrarcheck.FormatLookupInfo(src, dom.Hostname, info.Purchaseable, info.WeirdResponse))
+					}
 				}
 				mutated = true
 				if domainIndex < total && *delay > 0 {
@@ -110,6 +138,10 @@ func main() {
 					http404Count++
 				case data.AlertReasonHTTP500:
 					http500Count++
+				case data.AlertReasonRegistrarWeird:
+					registrarWeirdCount++
+				case data.AlertReasonRegistrarPurchaseable:
+					registrarPurchaseableCount++
 				}
 			}
 			dnsOutcome := "?"
@@ -145,6 +177,6 @@ func main() {
 		fmt.Println("# no alerts")
 	}
 	fmt.Fprintf(os.Stderr, "INFO checkdomains: done alert=%d errors=%d\n", alertCount, errorCount)
-	fmt.Printf("# checked=%d alert=%d expired=%d soon=%d updated-stale=%d dns-empty=%d https-expired=%d https-soon=%d https-missing=%d http-404=%d http-500=%d errors=%d\n",
-		total, alertCount, expiredCount, soonCount, updatedStaleCount, emptyCount, httpsExpiredCount, httpsSoonCount, httpsMissingCount, http404Count, http500Count, errorCount)
+	fmt.Printf("# checked=%d alert=%d expired=%d soon=%d updated-stale=%d dns-empty=%d https-expired=%d https-soon=%d https-missing=%d http-404=%d http-500=%d registrar-weird=%d registrar-purchaseable=%d errors=%d\n",
+		total, alertCount, expiredCount, soonCount, updatedStaleCount, emptyCount, httpsExpiredCount, httpsSoonCount, httpsMissingCount, http404Count, http500Count, registrarWeirdCount, registrarPurchaseableCount, errorCount)
 }

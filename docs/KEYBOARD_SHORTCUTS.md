@@ -15,7 +15,7 @@ In-app help: press **Ctrl+H** to open a modal listing shortcuts for the current 
 | **Ctrl+C** | Quit the app, or close the open modal if one is showing. Does not save to avoid corrupting the DB while developing. |
 | **Ctrl+S** | Save MPs and domains to disk                                                                                        |
 | **Ctrl+R** | Reload MPs and domains from disk                                                                                    |
-| **Ctrl+P** | Force-recheck all domains (WHOIS + DNS + HTTPS), ignoring lastChecked / checkedAt                                   |
+| **Ctrl+P** | Force-recheck all domains (WHOIS + DNS + HTTPS + registrar), ignoring lastChecked / checkedAt                                   |
 | **Ctrl+L** | Reload `csv_refresh.json`, fetch/parse CSV, merge in memory — save with Ctrl+S                                      |
 | **l**      | Toggle Log panel full height (press again to restore). When expanded, PgUp/PgDn scroll the log. When restored, log jumps to the bottom. |
 | **PgUp**   | Scroll Domain Information up one page; or Log up one page when the log panel is expanded                            |
@@ -55,7 +55,7 @@ Focus this panel with **Tab** (or click it). Shows domains for the currently sel
 | **↓**      | Next domain                                                  |
 | **Tab**    | Focus next panel (List)                                      |
 | **g**      | Guess domain (same as on List)                               |
-| **u**      | Check domain (WHOIS + DNS + HTTPS for the selected domain) |
+| **u**      | Check domain (WHOIS + DNS + HTTPS + registrar for the selected domain) |
 | **Ctrl+D** | Remove the selected domain from the current MP             |
 
 

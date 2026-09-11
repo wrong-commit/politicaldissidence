@@ -132,3 +132,22 @@ func TestNewHttpsOnAdd(t *testing.T) {
 		t.Fatalf("nil run: %v", err)
 	}
 }
+
+func TestNewRegistrarOnAdd(t *testing.T) {
+	var mp, dom int
+	j := NewRegistrarOnAdd(func(mpIndex, domainIdx int) {
+		mp, dom = mpIndex, domainIdx
+	})
+	if j.Name() != "registrar-on-add" {
+		t.Fatalf("Name = %q", j.Name())
+	}
+	if err := j.Run(Context{MPIndex: 6, DomainIdx: 7}); err != nil {
+		t.Fatal(err)
+	}
+	if mp != 6 || dom != 7 {
+		t.Fatalf("got mp=%d dom=%d", mp, dom)
+	}
+	if err := NewRegistrarOnAdd(nil).Run(Context{}); err != nil {
+		t.Fatalf("nil run: %v", err)
+	}
+}
